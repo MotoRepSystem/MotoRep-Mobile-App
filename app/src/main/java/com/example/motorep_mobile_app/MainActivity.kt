@@ -1,11 +1,11 @@
-package com.example.motorep_mobile_app.data
+package com.example.motorep_mobile_app
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.motorep_mobile_app.R
+import com.example.motorep_mobile_app.activity_dashboard
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,4 +18,5 @@ class MainActivity : AppCompatActivity() {
             insets
         }
     }
+
 }

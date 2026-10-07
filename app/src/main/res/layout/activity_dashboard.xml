@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/linearLayoutMainTitle"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:background="#FFFFFF"
@@ -26,13 +26,13 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/imgmenu"
+                android:id="@+id/imgMenu"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                app:srcCompat="@drawable/menublack_icon" />
+                app:srcCompat="@drawable/icon_menuacces" />
 
             <TextView
-                android:id="@+id/txtdashboard"
+                android:id="@+id/txtDashboard"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -46,7 +46,8 @@
                 android:id="@+id/imgnotificacion"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                app:srcCompat="@drawable/notificacion" />
+                app:srcCompat="@drawable/icon_notificacion"
+                />
 
         </LinearLayout>
 
@@ -68,7 +69,7 @@
                 android:background="@color/white">
 
                 <TextView
-                    android:id="@+id/txtbienvenida"
+                    android:id="@+id/txtWelcome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -81,233 +82,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/txtadmin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="290dp"
-                    android:fontFamily="@font/roboto"
-                    android:text="Administrador"
-                    android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txtbienvenida" />
 
-                <androidx.gridlayout.widget.GridLayout
-                    android:id="@+id/gridLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="16dp"
-                    android:paddingStart="20dp"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    app:alignmentMode="alignMargins"
-                    app:columnCount="2"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtadmin"
-                    app:useDefaultMargins="false">
-
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/CardViewVentasTotales"
-                        android:layout_width="140dp"
-                        android:layout_height="160dp"
-                        app:cardCornerRadius="14dp"
-                        app:cardElevation="4dp"
-                        app:layout_gravity="center">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="8dp">
-
-                            <ImageView
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                app:srcCompat="@drawable/vventas_icon" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingTop="5dp"
-                                android:fontFamily="@font/roboto"
-                                android:text="Ventas Totales"
-                                android:textAlignment="center"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/roboto"
-                                android:text="$7,340"
-                                android:textAlignment="center"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/roboto"
-                                android:text="El ultimo mes"
-                                android:textAlignment="center"
-                                android:textSize="12sp" />
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/CardViewInventario"
-                        android:layout_width="140dp"
-                        android:layout_height="160dp"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="4dp"
-                        app:layout_gravity="center">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="8dp">
-
-                            <ImageView
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                app:srcCompat="@drawable/ccompras_icon" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingTop="5dp"
-                                android:fontFamily="@font/roboto"
-                                android:text="Compras Totales"
-                                android:textAlignment="center"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/roboto"
-                                android:text="$4,790"
-                                android:textAlignment="center"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/roboto"
-                                android:text="El ultimo mes"
-                                android:textAlignment="center"
-                                android:textSize="12sp" />
-
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/CardViewReportes"
-                        android:layout_width="140dp"
-                        android:layout_height="160dp"
-                        android:layout_marginTop="40dp"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="4dp"
-                        app:layout_gravity="center">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="8dp">
-
-                            <ImageView
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                app:srcCompat="@drawable/tickket_pro_icon" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingTop="5dp"
-                                android:fontFamily="@font/roboto"
-                                android:text="Ticket Promedio"
-                                android:textAlignment="center"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/roboto"
-                                android:text="$25.60"
-                                android:textAlignment="center"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/roboto"
-                                android:text="Por Cliente"
-                                android:textAlignment="center"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/CardViewConfiguracion"
-                        android:layout_width="140dp"
-                        android:layout_height="160dp"
-                        android:layout_marginTop="40dp"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="4dp"
-                        app:layout_gravity="center">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="8dp">
-
-                            <ImageView
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                app:srcCompat="@drawable/tickket_pro_icon" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingTop="5dp"
-                                android:fontFamily="@font/roboto"
-                                android:text="Satisfaccion"
-                                android:textAlignment="center"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/roboto"
-                                android:text="$4.7/5"
-                                android:textAlignment="center"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/roboto"
-                                android:text="Promedio"
-                                android:textAlignment="center"
-                                android:textSize="12sp" />
-
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                </androidx.gridlayout.widget.GridLayout>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/FloatingActionButtonAgregar"
@@ -401,8 +176,6 @@
                             android:textStyle="bold"
                             app:layout_constraintBottom_toTopOf="@id/txtControlinv"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/cardLogo"
-                            app:layout_constraintTop_toTopOf="@id/cardLogo"
                             app:layout_constraintVertical_chainStyle="packed" />
 
                         <TextView
@@ -414,18 +187,8 @@
                             android:text="Administrador"
                             android:textColor="@color/green_let"
                             android:textSize="13sp"
-                            app:layout_constraintBottom_toBottomOf="@id/cardLogo"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/cardLogo"
                             app:layout_constraintTop_toBottomOf="@id/txtInv" />
-
-                        <ImageView
-                            android:id="@+id/imgCerrarMenu"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/icons8_men__48" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -436,8 +199,10 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+
             <LinearLayout
-                android:id="@+id/LinearLayoutDashboardInicio"
+                android:id="@+id/drawerLayoutInicio"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"
@@ -454,6 +219,153 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:text="Inicio"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Operacionales"
+                android:textColor="@color/green_let"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/drawerLayoutFacturas"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:srcCompat="@drawable/icon_fact"
+                    app:tint="@color/green_let"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="Facturación"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/drawerLayoutCompras"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:srcCompat="@drawable/icon_cart"
+                    app:tint="@color/green_let"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="Compras"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/drawerLayoutCaja"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:srcCompat="@drawable/icon_box"
+                    app:tint="@color/green_let"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="Caja"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/drawerLayoutInventario"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:srcCompat="@drawable/icon_list"
+                    app:tint="@color/green_let"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="Inventario"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/drawerLayoutClientes"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:srcCompat="@drawable/icon_user"
+                    app:tint="@color/green_let"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="Clientes"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/drawerLayoutEmpleados"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:srcCompat="@drawable/icon_people"
+                    app:tint="@color/green_let"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="Empleados"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
