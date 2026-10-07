@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/roboto"
-                    android:text="¡Bienvenido - Resumen General!"
+                    android:text="Resumen de Clientes"
                     android:textColor="#000000"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -83,9 +83,8 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/FloatingActionButtonAgregar"
+                    android:id="@+id/floatingActionButtonAgregar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="331dp"
@@ -381,7 +380,7 @@
 
 
             <LinearLayout
-                android:id="@+id/LinearLayoutIndicadores"
+                android:id="@+id/drawerLayoutIndicadores"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"
@@ -404,7 +403,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/LinearLayoutTendencias"
+                android:id="@+id/drawerLayoutTendencias"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"
@@ -427,7 +426,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/LinearLayoutIncidencias"
+                android:id="@+id/drawerLayoutIncidencias"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"
@@ -459,7 +458,7 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:id="@+id/LinearLayoutNotificaciones"
+                android:id="@+id/drawerLayoutNotificaciones"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"
@@ -482,7 +481,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/LinearLayoutNotificaciones"
+                android:id="@+id/drawerLayoutConfiguracion"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"
@@ -498,7 +497,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:text="Notificaciones"
+                    android:text="Configuracion"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -510,7 +509,7 @@
                 android:layout_weight="1" />
 
             <LinearLayout
-                android:id="@+id/LinearLayoutCerrarSesion"
+                android:id="@+id/drawerLayoutCerrarSesion"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"

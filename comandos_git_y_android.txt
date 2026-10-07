@@ -1,0 +1,487 @@
+=====================================================================
+  GUÍA RÁPIDA: GIT/GITHUB + EJECUCIÓN DE APPS ANDROID DESDE VS CODE
+=====================================================================
+Terminal en VS Code: Ctrl + `
+Los comandos de Gradle usan ".\gradlew" en CMD/PowerShell (Windows)
+y "./gradlew" en Mac/Linux.
+
+
+=====================================================================
+PARTE 1: GIT Y GITHUB
+=====================================================================
+
+---------------------------------------------------------------------
+1.1 CONFIGURACIÓN INICIAL (una sola vez por PC)
+---------------------------------------------------------------------
+git --version                                  -> verifica que Git está instalado
+git config --global user.name "Tu Nombre"      -> tu nombre en los commits
+git config --global user.email "tu@correo.com" -> usa el mismo correo de GitHub
+git config --global --list                     -> ver tu configuración
+git config --global init.defaultBranch main    -> la rama inicial se llamará main
+
+
+---------------------------------------------------------------------
+1.2 CLONAR UN REPOSITORIO
+---------------------------------------------------------------------
+git clone https://github.com/USUARIO/REPO.git
+cd REPO
+
+Clonar una rama específica:
+git clone -b nombre-rama https://github.com/USUARIO/REPO.git
+
+Clonar en una carpeta con otro nombre:
+git clone https://github.com/USUARIO/REPO.git mi-carpeta
+
+CONSEJO: clona en una ruta SIN espacios y FUERA de OneDrive, por ejemplo
+C:\proyectos\. OneDrive sincroniza miles de archivos de build y vuelve
+lento a Gradle; además puede corromper la carpeta .git.
+
+
+---------------------------------------------------------------------
+1.3 VER EL ESTADO
+---------------------------------------------------------------------
+git status                  -> qué archivos cambiaron
+git log --oneline           -> historial resumido
+git log --oneline --graph --all   -> historial con ramas
+git diff                    -> ver cambios sin agregar
+git diff --staged           -> ver cambios ya agregados
+git branch                  -> ramas locales (la actual lleva *)
+git branch -a               -> ramas locales y remotas
+git remote -v               -> a qué repositorio remoto apunta
+
+
+---------------------------------------------------------------------
+1.4 RAMAS (BRANCHES)
+---------------------------------------------------------------------
+Crear una rama y cambiarte a ella:
+git checkout -b feature/mi-rama
+(equivalente moderno)
+git switch -c feature/mi-rama
+
+Cambiar de rama:
+git checkout nombre-rama
+git switch nombre-rama
+
+Traer una rama que existe en GitHub pero no en tu PC:
+git fetch
+git switch nombre-rama
+
+Renombrar la rama actual:
+git branch -m nuevo-nombre
+
+Borrar una rama local (ya fusionada):
+git branch -d nombre-rama
+Forzar borrado (aunque no esté fusionada, cuidado):
+git branch -D nombre-rama
+
+Borrar una rama en GitHub:
+git push origin --delete nombre-rama
+
+CONSEJOS:
+- NUNCA trabajes directo en main. Una rama por tarea o funcionalidad.
+- Nombres claros: feature/login, fix/crash-inventario, docs/readme.
+- Antes de crear tu rama, actualiza main:
+    git switch main
+    git pull
+    git switch -c feature/mi-rama
+
+
+---------------------------------------------------------------------
+1.5 GUARDAR CAMBIOS Y SUBIR A TU RAMA (flujo diario)
+---------------------------------------------------------------------
+1) Ver qué cambió:
+   git status
+
+2) Agregar archivos al commit:
+   git add archivo.java          -> un archivo
+   git add carpeta/              -> una carpeta
+   git add .                     -> todo (revisa antes con git status)
+
+3) Crear el commit:
+   git commit -m "Agrega pantalla de incidencias"
+
+4) Subir a GitHub:
+   Primera vez que subes la rama:
+   git push -u origin feature/mi-rama
+   Las siguientes veces:
+   git push
+
+Atajo para archivos ya rastreados (agrega y hace commit):
+git commit -am "Mensaje"
+(no incluye archivos nuevos)
+
+Corregir el último commit (si NO lo has subido aún):
+git commit --amend -m "Nuevo mensaje"
+
+CONSEJOS:
+- Commits pequeños y frecuentes, con mensajes que digan QUÉ hiciste.
+  Mal: "cambios", "arreglos".  Bien: "Corrige crash al abrir el reporte".
+- Revisa SIEMPRE git status antes de git add . para no subir basura.
+- Haz git pull antes de empezar a trabajar cada día.
+
+
+---------------------------------------------------------------------
+1.6 ACTUALIZAR TU TRABAJO CON LO DE OTROS
+---------------------------------------------------------------------
+git pull                         -> trae y fusiona cambios de tu rama
+git fetch                        -> trae cambios sin fusionar (solo mirar)
+git pull origin main             -> trae los cambios de main a tu rama actual
+
+Flujo recomendado para ponerte al día con main:
+git switch main
+git pull
+git switch feature/mi-rama
+git merge main
+
+Si hay conflictos:
+- Git marca los archivos con <<<<<<<, =======, >>>>>>>
+- Abre el archivo en VS Code, elige qué código se queda y borra las marcas
+- Luego:
+  git add archivo-resuelto
+  git commit
+Abortar un merge que salió mal:
+git merge --abort
+
+
+---------------------------------------------------------------------
+1.7 FUSIONAR TU RAMA (Pull Request)
+---------------------------------------------------------------------
+1) Sube tu rama:        git push -u origin feature/mi-rama
+2) En GitHub aparece el botón "Compare & pull request"
+3) Describe los cambios, pide revisión a un compañero
+4) Cuando se apruebe, se hace "Merge" en GitHub
+5) Localmente:
+   git switch main
+   git pull
+   git branch -d feature/mi-rama
+
+CONSEJO: en equipo (como SPARKTech), usa Pull Requests en vez de
+fusionar directo a main. Otra persona revisa y se evitan errores.
+
+
+---------------------------------------------------------------------
+1.8 DESHACER COSAS (con cuidado)
+---------------------------------------------------------------------
+Quitar un archivo del área de preparación (sin perder cambios):
+git restore --staged archivo
+
+Descartar cambios de un archivo (PIERDES los cambios):
+git restore archivo
+
+Deshacer el último commit pero conservar los cambios:
+git reset --soft HEAD~1
+
+Deshacer el último commit y descartar los cambios (PELIGROSO):
+git reset --hard HEAD~1
+
+Crear un commit que revierte otro (seguro para ramas ya subidas):
+git revert ID_DEL_COMMIT
+
+Guardar cambios temporalmente sin hacer commit:
+git stash
+git stash pop        -> recuperarlos
+git stash list       -> ver los guardados
+
+REGLA DE ORO: nunca uses "git push --force" en ramas compartidas,
+borra el trabajo de los demás.
+
+
+---------------------------------------------------------------------
+1.9 .gitignore PARA ANDROID (importante)
+---------------------------------------------------------------------
+NO subas estos archivos/carpetas a GitHub:
+
+    local.properties
+    .gradle/
+    build/
+    app/build/
+    .idea/
+    *.iml
+    captures/
+    .externalNativeBuild/
+    .cxx/
+    *.apk
+    *.aab
+    *.jks
+    *.keystore
+
+Por qué importa:
+- local.properties contiene la ruta de TU SDK. Es distinta en cada PC y
+  por eso te dio el error "SDK location not found" al descargar el proyecto.
+  Cada persona debe crear el suyo.
+- Los .jks / .keystore son las llaves de firma de la app: JAMÁS se suben
+  a un repositorio público.
+- Nunca subas contraseñas, tokens ni claves de API (google-services.json
+  con claves sensibles, etc.). Si ya subiste algo así, cámbialo, porque
+  quedó en el historial aunque lo borres después.
+
+IMPORTANTE para imágenes/recursos: los archivos de res/drawable SÍ deben
+subirse. Si un compañero no los subió, a los demás les falla el build con
+"resource drawable/xxx not found". Antes de hacer push, revisa con
+git status que tus íconos e imágenes aparezcan como archivos nuevos y
+agrégalos.
+
+Si un archivo ya se subió por error:
+git rm --cached local.properties
+git commit -m "Quita local.properties del repositorio"
+git push
+
+
+---------------------------------------------------------------------
+1.10 AUTENTICACIÓN EN GITHUB
+---------------------------------------------------------------------
+GitHub ya no acepta la contraseña normal en la terminal. Opciones:
+- Instalar Git for Windows: abre una ventana del navegador para iniciar
+  sesión la primera vez (Git Credential Manager).
+- O usar un Personal Access Token (Settings > Developer settings >
+  Personal access tokens) como contraseña.
+- O usar SSH:
+    ssh-keygen -t ed25519 -C "tu@correo.com"
+    (agrega la clave pública .pub en GitHub > Settings > SSH keys)
+    git clone git@github.com:USUARIO/REPO.git
+
+
+=====================================================================
+PARTE 2: EJECUTAR APPS ANDROID DESDE VS CODE (SIN ANDROID STUDIO)
+=====================================================================
+
+---------------------------------------------------------------------
+2.1 PREPARACIÓN DE LA PC (una sola vez)
+---------------------------------------------------------------------
+a) Agregar adb al PATH:
+   C:\Users\TU_USUARIO\AppData\Local\Android\Sdk\platform-tools
+   (Variables de entorno > Path de usuario > Nuevo)
+
+b) Java: apuntar JAVA_HOME al JBR de Android Studio:
+   JAVA_HOME = C:\Program Files\Android\Android Studio\jbr
+   y agregar %JAVA_HOME%\bin al Path.
+
+c) Reiniciar VS Code por completo después de cambiar variables.
+
+d) Verificar:
+   adb version
+   java -version
+
+Solo para la terminal actual (sin tocar variables permanentes):
+CMD:
+   set JAVA_HOME=C:\Program Files\Android\Android Studio\jbr
+   set PATH=%PATH%;%JAVA_HOME%\bin
+   set PATH=%PATH%;C:\Users\TU_USUARIO\AppData\Local\Android\Sdk\platform-tools
+PowerShell:
+   $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
+   $env:Path += ";$env:JAVA_HOME\bin"
+   $env:Path += ";C:\Users\TU_USUARIO\AppData\Local\Android\Sdk\platform-tools"
+
+
+---------------------------------------------------------------------
+2.2 ARCHIVO local.properties (cada vez que clones un proyecto)
+---------------------------------------------------------------------
+Crear en la raíz del proyecto (donde está gradlew.bat):
+
+CMD:
+echo sdk.dir=C\:\\Users\\TU_USUARIO\\AppData\\Local\\Android\\Sdk> local.properties
+
+Contenido esperado:
+sdk.dir=C\:\\Users\\TU_USUARIO\\AppData\\Local\\Android\\Sdk
+
+Las barras "\:" y "\\" son obligatorias.
+Alternativa: definir la variable de entorno ANDROID_HOME con la ruta del SDK.
+
+
+---------------------------------------------------------------------
+2.3 CONECTAR EL CELULAR
+---------------------------------------------------------------------
+En el celular:
+1. Ajustes > Acerca del teléfono > tocar 7 veces "Número de compilación"
+2. Ajustes > Opciones de desarrollador > activar "Depuración USB"
+3. En Xiaomi/Oppo/Vivo: activar también "Instalar vía USB"
+4. Conectar con cable de DATOS (algunos cables solo cargan)
+5. Aceptar el aviso "¿Permitir depuración USB?"
+
+En la PC:
+adb devices
+
+Resultados posibles:
+- "device"        -> todo bien
+- "unauthorized"  -> acepta el aviso en el celular
+- lista vacía     -> cable, modo USB (poner "Transferencia de archivos"),
+                     o falta el driver del fabricante
+
+Si no responde:
+adb kill-server
+adb start-server
+adb devices
+
+Si hay varios dispositivos conectados:
+adb -s ID_DEL_DISPOSITIVO install app.apk
+
+
+---------------------------------------------------------------------
+2.4 COMPILAR E INSTALAR
+---------------------------------------------------------------------
+.\gradlew installDebug                 -> compila e instala en el celular
+.\gradlew assembleDebug                -> solo genera el APK
+.\gradlew clean                        -> borra los archivos compilados
+.\gradlew clean installDebug           -> limpiar y reinstalar desde cero
+.\gradlew build                        -> compila todo y corre verificaciones
+.\gradlew tasks                        -> lista todas las tareas disponibles
+
+APK generado en:
+app\build\outputs\apk\debug\app-debug.apk
+
+Instalar un APK manualmente:
+adb install app\build\outputs\apk\debug\app-debug.apk
+Reinstalar conservando los datos:
+adb install -r app\build\outputs\apk\debug\app-debug.apk
+
+Guardar el resultado en un archivo para leer los errores:
+.\gradlew installDebug --console=plain > build_log.txt 2>&1
+findstr /C:"BUILD" /C:"What went wrong" /C:"error:" build_log.txt
+
+Más detalle de un error:
+.\gradlew installDebug --stacktrace
+.\gradlew installDebug --info
+
+
+---------------------------------------------------------------------
+2.5 ABRIR, CERRAR Y DESINSTALAR LA APP
+---------------------------------------------------------------------
+Reemplaza com.example.inventoryapp por tu applicationId
+(está en app/build.gradle, dentro de defaultConfig).
+
+Abrir la app:
+adb shell monkey -p com.example.inventoryapp -c android.intent.category.LAUNCHER 1
+
+Abrir una Activity específica:
+adb shell am start -n com.example.inventoryapp/.MainActivity
+
+Todo en uno (CMD):
+.\gradlew installDebug && adb shell monkey -p com.example.inventoryapp -c android.intent.category.LAUNCHER 1
+Todo en uno (PowerShell):
+.\gradlew installDebug; adb shell monkey -p com.example.inventoryapp -c android.intent.category.LAUNCHER 1
+
+Cerrar la app a la fuerza:
+adb shell am force-stop com.example.inventoryapp
+
+Borrar los datos de la app (como instalación nueva):
+adb shell pm clear com.example.inventoryapp
+
+Desinstalar:
+adb uninstall com.example.inventoryapp
+
+
+---------------------------------------------------------------------
+2.6 VER ERRORES Y LOGS
+---------------------------------------------------------------------
+adb logcat *:E                         -> solo errores
+adb logcat -c                          -> limpiar el log
+adb logcat *:E > logcat.txt            -> guardar en archivo (Ctrl+C para parar)
+adb logcat --pid=$(adb shell pidof -s com.example.inventoryapp)   -> Mac/Linux
+adb logcat | findstr "inventoryapp"    -> filtrar por nombre (Windows)
+adb logcat | findstr "AndroidRuntime"  -> ver crashes
+
+Cuando la app se cierra sola al abrir, el error está en logcat, busca
+la línea "FATAL EXCEPTION" y lo que sigue.
+
+
+---------------------------------------------------------------------
+2.7 OTROS COMANDOS ÚTILES DE ADB
+---------------------------------------------------------------------
+adb shell screencap -p /sdcard/pantalla.png
+adb pull /sdcard/pantalla.png                 -> captura de pantalla a la PC
+adb shell screenrecord /sdcard/video.mp4      -> grabar pantalla (Ctrl+C para parar)
+adb pull /sdcard/video.mp4
+adb shell getprop ro.build.version.release    -> versión de Android del celular
+adb shell getprop ro.product.model            -> modelo del celular
+adb shell pm list packages | findstr inventory   -> ver si la app está instalada
+
+
+---------------------------------------------------------------------
+2.8 EMULADOR DESDE LA TERMINAL (si algún día lo necesitas)
+---------------------------------------------------------------------
+Listar emuladores creados:
+%LOCALAPPDATA%\Android\Sdk\emulator\emulator -list-avds
+Abrir uno:
+%LOCALAPPDATA%\Android\Sdk\emulator\emulator -avd NOMBRE_DEL_AVD
+CONSEJO: en PCs con poca RAM, el celular físico es mucho más rápido
+que el emulador.
+
+
+---------------------------------------------------------------------
+2.9 EXTENSIONES ÚTILES DE VS CODE
+---------------------------------------------------------------------
+- Kotlin / Kotlin Language (resaltado y ayuda de sintaxis)
+- Extension Pack for Java (si tu proyecto es Java)
+- XML (Red Hat) (validación de layouts y recursos)
+- Gradle for Java (ejecutar tareas desde una barra lateral)
+- GitLens (ver quién cambió cada línea, historial visual)
+- Git Graph (ver ramas y commits gráficamente)
+Aviso: ninguna extensión de VS Code previsualiza pantallas Android como
+lo hace Android Studio. Se edita en VS Code y se ve el resultado en el
+celular.
+
+
+=====================================================================
+PARTE 3: ERRORES FRECUENTES Y SU SOLUCIÓN
+=====================================================================
+
+"JAVA_HOME is not set and no 'java' command could be found"
+  -> Configura JAVA_HOME (sección 2.1) y reinicia VS Code.
+
+"'adb' no se reconoce como un comando"
+  -> Agrega platform-tools al Path (sección 2.1) y reinicia VS Code.
+
+"SDK location not found"
+  -> Crea local.properties (sección 2.2).
+
+"resource drawable/xxx not found"
+  -> Falta una imagen en app\src\main\res\drawable\. Pídesela a quien
+     creó el layout, o revisa que se haya subido a Git. El nombre debe
+     coincidir exacto: minúsculas, sin espacios ni guiones.
+
+"INSTALL_FAILED_UPDATE_INCOMPATIBLE" / "INSTALL_FAILED_..."
+  -> Desinstala la app del celular (adb uninstall ...) y reinstala.
+     Si es "INSTALL_FAILED_USER_RESTRICTED": activa "Instalar vía USB".
+     Si es "INSTALL_FAILED_OLDER_SDK": el celular tiene una versión de
+     Android menor al minSdk del proyecto.
+
+"error: device unauthorized"
+  -> Acepta el aviso de depuración en el celular; si no aparece,
+     "Revocar autorizaciones de depuración USB" y reconecta.
+
+"Could not resolve ..." / errores de dependencias
+  -> Revisa tu conexión a internet; la primera compilación descarga
+     muchas librerías. Reintenta con .\gradlew --refresh-dependencies installDebug
+
+"git: failed to push some refs" (rejected)
+  -> Alguien subió cambios antes. Haz git pull, resuelve conflictos si
+     los hay, y vuelve a hacer git push.
+
+"fatal: not a git repository"
+  -> No estás dentro de la carpeta del proyecto, o no se hizo git init/clone.
+
+El proyecto descargado como ZIP (carpeta "-master")
+  -> No trae historial de Git. Para trabajar en equipo, clona con
+     git clone en vez de descargar el ZIP.
+
+
+=====================================================================
+PARTE 4: CONSEJOS GENERALES
+=====================================================================
+1. Haz git pull antes de empezar a trabajar y git push al terminar.
+2. Una rama por tarea. Nunca trabajes directo en main.
+3. Commits pequeños con mensajes claros.
+4. Revisa git status antes de cada git add . / git commit.
+5. Nunca subas local.properties, claves, contraseñas ni keystores.
+6. Sube los recursos (drawable, layouts) junto con el código que los usa.
+7. Guarda el proyecto fuera de OneDrive y en una ruta sin espacios.
+8. Ante un error de Gradle, lee el bloque "What went wrong", no el
+   resumen final "BUILD FAILED".
+9. Ejecuta .\gradlew clean si algo se comporta raro tras cambiar de rama.
+10. Prueba en celular físico con cable de datos: es más rápido que
+    el emulador.
+11. Antes de abrir un Pull Request, compila y prueba en tu celular. Que
+    compile en tu PC es el mínimo para poder pedir revisión.
+12. Haz respaldo de tu trabajo con push frecuente: lo que está en GitHub
+    no se pierde si falla tu PC.
+=====================================================================
