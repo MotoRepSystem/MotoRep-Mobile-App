@@ -383,7 +383,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="@color/dark_navy"
-                                app:srcCompat="@drawable/icon_dashboard"
+                                app:srcCompat="@drawable/icon_bag"
                                 app:tint="@color/green_let"/>
                         </androidx.cardview.widget.CardView>
 
@@ -446,7 +446,8 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    app:srcCompat="@drawable/inicio_icon" />
+                    app:srcCompat="@drawable/icon_menu"
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -478,7 +479,8 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    app:srcCompat="@drawable/indicadores_icon" />
+                    app:srcCompat="@drawable/icon_star"
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -500,7 +502,8 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    app:srcCompat="@drawable/tendencias_icon" />
+                    app:srcCompat="@drawable/icon_stats"
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -522,7 +525,8 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    app:srcCompat="@drawable/incidencias_icon" />
+                    app:srcCompat="@drawable/icon_alert"
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -553,7 +557,8 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    app:srcCompat="@drawable/notificaciones_icon" />
+                    app:srcCompat="@drawable/icon_notificacion"
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -566,7 +571,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/LinearLayoutConfiguracion"
+                android:id="@+id/LinearLayoutNotificaciones"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"
@@ -575,13 +580,14 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    app:srcCompat="@drawable/configuracion_icon" />
+                    app:srcCompat="@drawable/icon_setting"
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:text="Configuración"
+                    android:text="Notificaciones"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -602,7 +608,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    app:srcCompat="@drawable/salir_icon" />
+                    app:srcCompat="@drawable/icon_exit" />
 
                 <TextView
                     android:layout_width="wrap_content"
