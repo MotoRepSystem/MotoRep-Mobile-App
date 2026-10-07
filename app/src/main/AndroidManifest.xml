@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MotoRepMobileApp">
         <activity
-            android:name=".data.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -23,6 +23,10 @@
         </activity>
         <activity
             android:name=".activity_login"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity_dashboard"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
     </application>
