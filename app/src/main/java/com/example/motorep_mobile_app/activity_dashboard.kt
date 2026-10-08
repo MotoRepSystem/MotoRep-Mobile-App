@@ -6,14 +6,17 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
 
 class activity_dashboard : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var imgMenu: ImageView
+    private lateinit var navViews: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,176 +25,110 @@ class activity_dashboard : AppCompatActivity() {
 
         setContentView(R.layout.activity_dashboard)
 
-        // Referencias principales del Dashboard
         drawerLayout = findViewById(R.id.DrawerLayout)
-        imgMenu = findViewById(R.id.imgMenu)
+        navViews = findViewById(R.id.navigationView)
 
-        // Ajuste de la pantalla para las barras del sistema
-        ViewCompat.setOnApplyWindowInsetsListener(
-            findViewById(R.id.mainConstraint)
-        ) { v, insets ->
+        val mainConstraint = findViewById<ConstraintLayout>(R.id.mainConstraint)
+        val linearLayout = findViewById<LinearLayout>(R.id.linearLayoutMainTitle)
 
-            val systemBars =
-                insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        // Responsividad del Dashboard y del menú lateral
+        ViewCompat.setOnApplyWindowInsetsListener(drawerLayout) { _, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
 
-            v.setPadding(
-                systemBars.left,
+            linearLayout.setPadding(
+                linearLayout.paddingLeft,
                 systemBars.top,
-                systemBars.right,
+                linearLayout.paddingRight,
+                linearLayout.paddingBottom
+            )
+
+            mainConstraint.setPadding(0, 0, 0, systemBars.bottom)
+
+            navViews.setPadding(
+                0,
+                systemBars.top,
+                0,
                 systemBars.bottom
             )
 
             insets
         }
 
-        // Configurar botón del menú
-        configurarBotonMenu()
-
-        // Configurar opciones del menú
-        configurarNavegacion()
-    }
-
-    // BOTÓN DEL MENÚ LATERAL
-
-    private fun configurarBotonMenu() {
-
-        imgMenu.setOnClickListener {
-
-            // Abrir el menú lateral
-            drawerLayout.openDrawer(
-                findViewById(R.id.navigationView)
-            )
+        // Botón abrir menú
+        val btnMenu = findViewById<ImageView>(R.id.imgMenu)
+        btnMenu.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
         }
-    }
 
-    // NAVEGACIÓN DEL MENÚ
+        /*// Botón cerrar menú
+        val btnMenuVolver = findViewById<ImageView>(R.id.imgCerrarMenu)
+        btnMenuVolver.setOnClickListener {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }*/
 
-    private fun configurarNavegacion() {
+        val btnFacturas = findViewById<LinearLayout>(R.id.drawerLayoutFacturas)
+        btnFacturas.setOnClickListener {
+            val intent = Intent(this, activity_facturacion::class.java)
+            startActivity(intent)
+        }
 
-        // INICIO
+        val btnCompras = findViewById<LinearLayout>(R.id.drawerLayoutCompras)
+        btnCompras.setOnClickListener {
+            val intent = Intent(this, activity_compras::class.java)
+            startActivity(intent)
+        }
 
-        findViewById<LinearLayout>(R.id.drawerLayoutInicio)
-            .setOnClickListener {
+        val btnClientes = findViewById<LinearLayout>(R.id.drawerLayoutClientes)
+        btnClientes.setOnClickListener {
+            val intent = Intent(this, activity_clientes::class.java)
+            startActivity(intent)
+        }
 
-                // Dashboard.
-                drawerLayout.closeDrawers()
-            }
+        val btnEmpleados = findViewById<LinearLayout>(R.id.drawerLayoutEmpleados)
+        btnEmpleados.setOnClickListener {
+            val intent = Intent(this, activity_empleados::class.java)
+            startActivity(intent)
+        }
 
-        // FACTURACIÓN
+        val btnInventario = findViewById<LinearLayout>(R.id.drawerLayoutInventario)
+        btnInventario.setOnClickListener {
+            val intent = Intent(this, activity_inventario::class.java)
+            startActivity(intent)
+        }
 
-        findViewById<LinearLayout>(R.id.drawerLayoutFacturas)
-            .setOnClickListener {
+        val btnCaja = findViewById<LinearLayout>(R.id.drawerLayoutCaja)
+        btnCaja.setOnClickListener {
+            val intent = Intent(this, activity_caja::class.java)
+            startActivity(intent)
+        }
 
-                abrirPantalla(activity_facturacion::class.java)
-            }
 
-        // COMPRAS
+        val btnIndicadores = findViewById<LinearLayout>(R.id.LinearLayoutIndicadores)
+        btnIndicadores.setOnClickListener {
+            val intent = Intent(this, activity_indicadores::class.java)
+            startActivity(intent)
+        }
 
-        findViewById<LinearLayout>(R.id.drawerLayoutCompras)
-            .setOnClickListener {
+        val btnTendencias = findViewById<LinearLayout>(R.id.LinearLayoutTendencias)
+        btnTendencias.setOnClickListener {
+            val intent = Intent(this, activity_tendencias::class.java)
+            startActivity(intent)
+        }
 
-                abrirPantalla(activity_compras::class.java)
-            }
-
-        // CAJA
-
-        findViewById<LinearLayout>(R.id.drawerLayoutCaja)
-            .setOnClickListener {
-
-                abrirPantalla(activity_caja::class.java)
-            }
-
-        // INVENTARIO
-
-        findViewById<LinearLayout>(R.id.drawerLayoutInventario)
-            .setOnClickListener {
-
-                abrirPantalla(activity_inventario::class.java)
-            }
-
-        // CLIENTES
-        findViewById<LinearLayout>(R.id.drawerLayoutClientes)
-            .setOnClickListener {
-
-                abrirPantalla(activity_clientes::class.java)
-            }
-
-        // EMPLEADOS
-
-        findViewById<LinearLayout>(R.id.drawerLayoutEmpleados)
-            .setOnClickListener {
-
-                abrirPantalla(activity_empleados::class.java)
-            }
-
-        // INDICADORES
-
-        findViewById<LinearLayout>(R.id.LinearLayoutIndicadores)
-            .setOnClickListener {
-
-                abrirPantalla(activity_indicadores::class.java)
-            }
-
-        // TENDENCIAS
-
-        findViewById<LinearLayout>(R.id.LinearLayoutTendencias)
-            .setOnClickListener {
-
-                abrirPantalla(activity_tendencias::class.java)
-            }
-
-        // INCIDENCIAS
-
-        findViewById<LinearLayout>(R.id.LinearLayoutIncidencias)
-            .setOnClickListener {
-
-                abrirPantalla(activity_incidencias::class.java)
-            }
-
-        // NOTIFICACIONES
-
-        findViewById<LinearLayout>(R.id.LinearLayoutNotificaciones)
-            .setOnClickListener {
-
-                abrirPantalla(activity_notificaciones::class.java)
-            }
-
-        // CONFIGURACIÓN
-
-        findViewById<LinearLayout>(R.id.LinearLayoutConfiguracion)
-            .setOnClickListener {
-
-                abrirPantalla(activity_configuracion::class.java)
-            }
-
-        // CERRAR SESIÓN
-        findViewById<LinearLayout>(R.id.LinearLayoutCerrarSesion)
-            .setOnClickListener {
-
-                val intent =
-                    Intent(this, activity_login::class.java)
-
-                intent.flags =
-                    Intent.FLAG_ACTIVITY_NEW_TASK or
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK
-
-                startActivity(intent)
-
-                finish()
-            }
-    }
-
-    // FUNCIÓN AUXILIAR PARA ABRIR ACTIVITIES
-
-    private fun abrirPantalla(pantalla: Class<*>) {
-
-        // Cerrar el menú lateral
-        drawerLayout.closeDrawers()
-
-        // Crear Intent hacia la pantalla seleccionada
-        val intent = Intent(this, pantalla)
-
-        // Abrir la pantalla
-        startActivity(intent)
+        val btnIncidencias = findViewById<LinearLayout>(R.id.LinearLayoutIncidencias)
+        btnIncidencias.setOnClickListener {
+            val intent = Intent(this, activity_incidencias::class.java)
+            startActivity(intent)
+        }
+        val btnInicio = findViewById<LinearLayout>(R.id.drawerLayoutInicio)
+        btnInicio.setOnClickListener {
+            val intent = Intent(this, activity_dashboard::class.java)
+            startActivity(intent)
+        }
+        val btnSalir = findViewById<LinearLayout>(R.id.linearLayoutCerrarSesion)
+        btnSalir.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
