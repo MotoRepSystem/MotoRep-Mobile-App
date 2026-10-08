@@ -1,226 +1,227 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity_login">
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/main"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".activity_login">
 
 
-    <!--LOGO DE LA APLICACIÓN-->
-    <ImageView
-        android:id="@+id/imgLogo"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
+<!--LOGO DE LA APLICACIÓN-->
+<ImageView
+    android:id="@+id/imgLogo"
+    android:layout_width="180dp"
+    android:layout_height="180dp"
 
-        android:layout_marginStart="93dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="93dp"
+    android:layout_marginStart="93dp"
+    android:layout_marginTop="50dp"
+    android:layout_marginEnd="93dp"
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
 
-        app:srcCompat="@drawable/logo_motorep_enmanuel" />
-
-
-    <!-- NOMBRE DE LA APLICACIÓN
-
-        TextView se utiliza para mostrar el nombre principal de la aplicación.-->
-    <TextView
-        android:id="@+id/txttitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginTop="10dp"
-
-        android:text="MotoRep Enmanuel"
-        android:textColor="#022D36"
-        android:textSize="22sp"
-        android:fontFamily="@font/roboto"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgLogo" />
+    app:srcCompat="@drawable/logo_motorep_enmanuel" />
 
 
-    <!--DESCRIPCIÓN DE LA APLICACIÓN, TextView utilizado para indicar que la aplicación corresponde al control de inventario.-->
-    <TextView
-        android:id="@+id/txtdescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+<!-- NOMBRE DE LA APLICACIÓN
 
-        android:layout_marginTop="0dp"
+    TextView se utiliza para mostrar el nombre principal de la aplicación.-->
+<TextView
+    android:id="@+id/txttitle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
 
-        android:text="Facturación, Control de Inventario y Reportes"
-        android:textColor="@color/green_let"
-        android:textSize="15sp"
-        android:fontFamily="@font/roboto"
+    android:layout_marginTop="10dp"
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txttitle" />
+    android:text="MotoRep Enmanuel"
+    android:textColor="#022D36"
+    android:textSize="22sp"
+    android:fontFamily="@font/roboto"
 
-
-    <!--CAMPO DE USUARIO-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtLayoutUser"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-
-        android:layout_marginTop="25dp"
-
-        android:hint="Usuario"
-        android:textColorHint="#000000"
-        android:fontFamily="@font/roboto"
-
-        app:boxStrokeColor="#000000"
-        app:boxStrokeWidth="1dp"
-        app:boxStrokeWidthFocused="2dp"
-        app:expandedHintEnabled="false"
-        app:hintTextColor="#000000"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtdescription">
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/imgLogo" />
 
 
-        <!-- ENTRADA DEL USUARIO-->
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tieUser"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+<!--DESCRIPCIÓN DE LA APLICACIÓN, TextView utilizado para indicar que la aplicación corresponde al control de inventario.-->
+<TextView
+    android:id="@+id/txtdescription"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
 
-            android:textColor="#000000"
-            android:textColorLink="#000000"
-            android:textSize="16sp" />
+    android:layout_marginTop="0dp"
 
-    </com.google.android.material.textfield.TextInputLayout>
+    android:text="Facturación, Control de Inventario y Reportes"
+    android:textColor="@color/green_let"
+    android:textSize="15sp"
+    android:fontFamily="@font/roboto"
 
-
-    <!--CAMPO DE CONTRASEÑA-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtLayouPassword"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-
-        android:layout_marginTop="25dp"
-
-        android:hint="Contraseña"
-        android:textColorHint="#000000"
-        android:fontFamily="@font/roboto"
-
-        app:boxStrokeColor="#000000"
-        app:boxStrokeWidth="1dp"
-        app:boxStrokeWidthFocused="2dp"
-        app:expandedHintEnabled="false"
-        app:hintTextColor="#000000"
-
-        app:endIconMode="password_toggle"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtlayoutuser">
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/txttitle" />
 
 
-        <!--ENTRADA DE CONTRASEÑA-->
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tiePassword"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            android:inputType="textPassword"
-            android:textColor="#000000"
-            android:textColorLink="#000000"
-            android:textSize="16sp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+<!--CAMPO DE USUARIO-->
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/txtLayoutUser"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
 
 
+    android:layout_marginTop="25dp"
+
+    android:hint="Usuario"
+    android:textColorHint="#000000"
+    android:fontFamily="@font/roboto"
+
+    app:boxStrokeColor="#000000"
+    app:boxStrokeWidth="1dp"
+    app:boxStrokeWidthFocused="2dp"
+    app:expandedHintEnabled="false"
+    app:hintTextColor="#000000"
+
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/txtdescription">
+
+
+    <!-- ENTRADA DEL USUARIO-->
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/tieUser"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:textColor="#000000"
+        android:textColorLink="#000000"
+        android:textSize="16sp" />
+
+</com.google.android.material.textfield.TextInputLayout>
+
+
+<!--CAMPO DE CONTRASEÑA-->
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/txtLayoutPassword"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+
+    android:layout_marginTop="25dp"
+
+    android:hint="Contraseña"
+    android:textColorHint="#000000"
+    android:fontFamily="@font/roboto"
+
+    app:boxStrokeColor="#000000"
+    app:boxStrokeWidth="1dp"
+    app:boxStrokeWidthFocused="2dp"
+    app:expandedHintEnabled="false"
+    app:hintTextColor="#000000"
+
+    app:endIconMode="password_toggle"
+
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/txtLayoutUser">
+
+
+    <!--ENTRADA DE CONTRASEÑA-->
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/tiePassword"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:inputType="textPassword"
+        android:textColor="#000000"
+        android:textColorLink="#000000"
+        android:textSize="16sp" />
+
+</com.google.android.material.textfield.TextInputLayout>
 
 
 
-    <!-- RECUPERACIÓN DE CONTRASEÑA-->
-    <TextView
-        android:id="@+id/txtForgotPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginStart="125dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="125dp"
-
-        android:text="¿Olvidaste la contraseña?"
-        android:textColor="@color/blue_let"
-        android:textSize="16sp"
-        android:fontFamily="@font/roboto"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtlayoutpassword" />
-
-    <!--BOTÓN INICIAR SESIÓN-->
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="55dp"
-
-        android:backgroundTint="@color/green_let"
-
-        android:text="Iniciar Sesión"
-        android:textColor="#FFFFFF"
-        android:textColorLink="#0F0E0E"
-        android:fontFamily="@font/roboto"
-
-        app:cornerRadius="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtForgotPassword" />" />
-
-    <!-- ENCUESTAS PARA CLIENTES-->
-    <TextView
-        android:id="@+id/txtClient"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginStart="125dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="125dp"
-
-        android:text="¿Quieres dar tu opinion?"
-        android:textColor="@color/blue_let"
-        android:textSize="16sp"
-        android:fontFamily="@font/roboto"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
 
-    <Button
-        android:id="@+id/btnUsersForms"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
+<!-- RECUPERACIÓN DE CONTRASEÑA-->
+<TextView
+    android:id="@+id/txtForgotPassword"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
 
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="55dp"
+    android:layout_marginStart="125dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginEnd="125dp"
 
-        android:backgroundTint="@color/dark_navy"
+    android:text="¿Olvidaste la contraseña?"
+    android:textColor="@color/blue_let"
+    android:textSize="16sp"
+    android:fontFamily="@font/roboto"
 
-        android:text="Encuesta"
-        android:textColor="#FFFFFF"
-        android:textColorLink="#0F0E0E"
-        android:fontFamily="@font/roboto"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/txtLayoutPassword" />
 
-        app:cornerRadius="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtClient" />
+<!--BOTÓN INICIAR SESIÓN-->
+<Button
+    android:id="@+id/btnLogin"
+    android:layout_width="200dp"
+    android:layout_height="50dp"
+
+    android:layout_marginStart="55dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="55dp"
+
+    android:backgroundTint="@color/green_let"
+
+    android:text="Iniciar Sesión"
+    android:textColor="#FFFFFF"
+    android:textColorLink="#0F0E0E"
+    android:fontFamily="@font/roboto"
+
+    app:cornerRadius="10dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/txtForgotPassword"/>
+
+<!-- ENCUESTAS PARA CLIENTES-->
+<TextView
+    android:id="@+id/txtClient"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+    android:layout_marginStart="125dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="125dp"
+
+    android:text="¿Eres cliente?"
+    android:textColor="@color/blue_let"
+    android:textSize="16sp"
+    android:fontFamily="@font/roboto"
+
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+
+
+<Button
+    android:id="@+id/btnUsersForms"
+    android:layout_width="200dp"
+    android:layout_height="50dp"
+
+    android:layout_marginStart="55dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="55dp"
+
+    android:backgroundTint="@color/dark_navy"
+
+    android:text="Responder encuesta"
+    android:textColor="#FFFFFF"
+    android:textColorLink="#0F0E0E"
+    android:fontFamily="@font/roboto"
+
+    app:cornerRadius="10dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/txtClient" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

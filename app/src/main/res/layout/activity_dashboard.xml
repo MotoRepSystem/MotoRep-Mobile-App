@@ -482,7 +482,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/LinearLayoutNotificaciones"
+                android:id="@+id/LinearLayoutConfiguracion"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"

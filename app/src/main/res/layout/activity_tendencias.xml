@@ -457,7 +457,7 @@
                                         <ImageView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            app:srcCompat="@drawable/img"/>
+                                            android:visibility="gone" />
 
                                     </LinearLayout>
 
@@ -513,7 +513,7 @@
                                     <ImageView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        app:srcCompat="@drawable/img_2"/>
+                                        android:visibility="gone" />
 
                                 </LinearLayout>
 
@@ -568,7 +568,7 @@
                                     <ImageView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        app:srcCompat="@drawable/img_3" />
+                                        android:visibility="gone" />
 
                                 </LinearLayout>
 

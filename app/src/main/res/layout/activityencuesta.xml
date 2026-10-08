@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Título de la encuesta -->
+        <TextView
+            android:id="@+id/txtTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Queremos conocer tu experiencia"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp" />
+
+        <TextView
+            android:id="@+id/txtDescripcionEncuesta"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:text="Tu opinión ayuda a mejorar nuestro servicio"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <!-- CONTENEDOR DE LAS PREGUNTAS                            -->
+
+        <LinearLayout
+            android:id="@+id/contenedorPreguntas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Pregunta 1 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="¿Cómo calificarías tu experiencia de compra?"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <RadioGroup
+                android:id="@+id/radioExperiencia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp">
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Excelente" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Buena" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Regular" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mala" />
+
+            </RadioGroup>
+
+
+            <!-- Pregunta 2 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="¿Cómo fue la atención recibida?"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <RadioGroup
+                android:id="@+id/radioAtencion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp">
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Excelente" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Buena" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Regular" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mala" />
+
+            </RadioGroup>
+
+
+            <!-- Pregunta 3 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="¿Qué productos compras con mayor frecuencia?"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <CheckBox
+                android:id="@+id/checkBujias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bujías" />
+
+            <CheckBox
+                android:id="@+id/checkPastillas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pastillas de freno" />
+
+            <CheckBox
+                android:id="@+id/checkAceite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Aceite" />
+
+            <CheckBox
+                android:id="@+id/checkFiltros"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Filtros"
+                android:layout_marginBottom="20dp" />
+
+
+            <!-- Pregunta 4 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comentarios o sugerencias"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/txtComentario"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:gravity="top"
+                android:hint="Escribe aquí tu comentario..."
+                android:inputType="textMultiLine"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Botón para revisar -->
+            <Button
+                android:id="@+id/btnRevisar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Revisar respuestas" />
+
+        </LinearLayout>
+
+
+        <!-- ====================================================== -->
+        <!-- CONTENEDOR DE REVISIÓN                                 -->
+        <!-- ====================================================== -->
+
+        <LinearLayout
+            android:id="@+id/contenedorRevision"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Revisión de tus respuestas"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Experiencia -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Experiencia de compra:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtRevisionExperiencia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sin respuesta"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Atención -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Atención recibida:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtRevisionAtencion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sin respuesta"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Productos -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Productos seleccionados:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtRevisionProductos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sin selección"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Comentario -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comentario:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtRevisionComentario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sin comentario"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Editar -->
+            <Button
+                android:id="@+id/btnEditar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Editar" />
+
+            <!-- Enviar -->
+            <Button
+                android:id="@+id/btnEnviar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enviar"
+                android:layout_marginTop="8dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
