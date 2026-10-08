@@ -1,4 +1,4 @@
-package com.example.motorep_mobile_app
+package com.example.motorep_mobile_app.ui.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,8 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
+import com.example.motorep_mobile_app.R
+import com.example.motorep_mobile_app.ui.encuesta.activity_loginencuesta
+import com.example.motorep_mobile_app.ui.dashboard.activity_dashboard
 
 class activity_login : AppCompatActivity() {
 

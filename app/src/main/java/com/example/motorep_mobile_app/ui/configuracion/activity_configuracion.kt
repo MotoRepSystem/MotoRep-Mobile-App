@@ -1,10 +1,9 @@
-package com.example.motorep_mobile_app
+package com.example.motorep_mobile_app.ui.configuracion
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.motorep_mobile_app.R
 
 class activity_configuracion : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -7,8 +7,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context=".activity_loginencuesta">
+    android:background="@color/white"
+    tools:context=".ui.encuesta.activity_loginencuesta">
 
     <!-- LOGO DE MOTO REP ENMANUEL -->
     <ImageView
@@ -30,7 +30,7 @@
         android:layout_marginTop="15dp"
         android:fontFamily="@font/roboto"
         android:text="Encuesta de cliente"
-        android:textColor="#022D36"
+        android:textColor="@color/green_let"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

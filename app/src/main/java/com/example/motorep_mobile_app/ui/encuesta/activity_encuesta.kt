@@ -1,9 +1,10 @@
-package com.example.motorep_mobile_app
+package com.example.motorep_mobile_app.ui.encuesta
 
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.example.motorep_mobile_app.R
 
 class EncuestaActivity : AppCompatActivity() {
 
