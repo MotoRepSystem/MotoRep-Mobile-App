@@ -5,8 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/white"
-    tools:context=".activity_login">
+    android:background="@color/white"
+    tools:context=".ui.login.activity_login">
 
 
 <!--LOGO DE LA APLICACIÓN-->

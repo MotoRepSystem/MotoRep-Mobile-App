@@ -1,4 +1,4 @@
-package com.example.motorep_mobile_app
+package com.example.motorep_mobile_app.ui.encuesta
 
 data class Pregunta(
     val id: String? = null,

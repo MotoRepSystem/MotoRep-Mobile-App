@@ -1,4 +1,4 @@
-package com.example.motorep_mobile_app
+package com.example.motorep_mobile_app.ui.reportes
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,9 +11,18 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.example.motorep_mobile_app.MainActivity
+import com.example.motorep_mobile_app.R
+import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_inventario
+import com.example.motorep_mobile_app.ui.dashboard.activity_dashboard
+import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_clientes
+import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_empleados
+import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_caja
+import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_compras
+import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_facturacion
 import com.google.android.material.navigation.NavigationView
 
-class activity_caja : AppCompatActivity() {
+class activity_incidencias : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navViews: NavigationView
@@ -21,12 +30,8 @@ class activity_caja : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_caja)
-        /*ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }*/
+        setContentView(R.layout.activity_incidencias)
+
 
 
         drawerLayout = findViewById(R.id.DrawerLayout)
