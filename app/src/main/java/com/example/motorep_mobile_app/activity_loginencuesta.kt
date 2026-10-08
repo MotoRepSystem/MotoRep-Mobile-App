@@ -11,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
-class LoginEncuestaActivity : AppCompatActivity() {
+class activity_loginencuesta : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +85,7 @@ class LoginEncuestaActivity : AppCompatActivity() {
             // Abrir la pantalla de encuesta
             val intent =
                 Intent(
-                    this@LoginEncuestaActivity,
+                    this@activity_loginencuesta,
                     EncuestaActivity::class.java
                 )
 

@@ -33,7 +33,7 @@ class EncuestaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // Cargamos el diseño XML de la encuesta
-        setContentView(R.layout.activityencuesta)
+        setContentView(R.layout.activity_encuesta)
 
         // Inicializamos los componentes de la pantalla
         inicializarVistas()

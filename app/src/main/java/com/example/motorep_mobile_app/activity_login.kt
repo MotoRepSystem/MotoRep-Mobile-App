@@ -34,5 +34,19 @@ class activity_login : AppCompatActivity() {
             insets
         }
 
+        val btnEncuesta = findViewById<Button>(R.id.btnEncuesta)
+        btnEncuesta.setOnClickListener {
+            val intent = Intent(this, activity_loginencuesta::class.java)
+            startActivity(intent)
+        }
+
+        val btnLogin = findViewById<Button>(R.id.btnLogin)
+        btnLogin.setOnClickListener {
+            val intent = Intent(this, activity_dashboard::class.java)
+            startActivity(intent)
+        }
+
+
+
     }
 }
