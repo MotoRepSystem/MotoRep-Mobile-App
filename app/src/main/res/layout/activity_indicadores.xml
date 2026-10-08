@@ -28,8 +28,7 @@
             <ImageView
                 android:id="@+id/imgmenu"
                 android:layout_width="32dp"
-                android:layout_height="32dp"
-                app:srcCompat="@drawable/menublack_icon" />
+                android:layout_height="32dp" />
 
             <TextView
                 android:id="@+id/txtdashboard"
@@ -46,7 +45,8 @@
                 android:id="@+id/imgnotificacion"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                app:srcCompat="@drawable/notificacion" />
+                 />
+            <!--app:srcCompat="@drawable/notificacion"-->
 
         </LinearLayout>
 
@@ -802,7 +802,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/LinearLayoutNotificaciones"
+                android:id="@+id/LinearLayoutConfiguracion"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"
@@ -818,7 +818,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:text="Notificaciones"
+                    android:text="Configuración"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
