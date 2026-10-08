@@ -29,7 +29,8 @@
                 android:id="@+id/imgmenu"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                app:srcCompat="@drawable/menublack_icon" />
+                 />
+            <!--app:srcCompat="@drawable/menublack_icon"-->
 
             <TextView
                 android:id="@+id/txtdashboard"
@@ -45,8 +46,7 @@
             <ImageView
                 android:id="@+id/imgnotificacion"
                 android:layout_width="28dp"
-                android:layout_height="28dp"
-                app:srcCompat="@drawable/notificacion" />
+                android:layout_height="28dp"/>
 
         </LinearLayout>
 
@@ -456,8 +456,7 @@
 
                                         <ImageView
                                             android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            app:srcCompat="@drawable/img"/>
+                                            android:layout_height="wrap_content"/>
 
                                     </LinearLayout>
 
@@ -512,8 +511,7 @@
 
                                     <ImageView
                                         android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        app:srcCompat="@drawable/img_2"/>
+                                        android:layout_height="wrap_content"/>
 
                                 </LinearLayout>
 
@@ -567,8 +565,7 @@
 
                                     <ImageView
                                         android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        app:srcCompat="@drawable/img_3" />
+                                        android:layout_height="wrap_content"/>
 
                                 </LinearLayout>
 
@@ -963,7 +960,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/LinearLayoutNotificaciones"
+                android:id="@+id/LinearLayoutConfiguracion"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"
@@ -979,7 +976,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:text="Notificaciones"
+                    android:text="Configuración"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />

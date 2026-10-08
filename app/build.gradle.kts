@@ -5,7 +5,7 @@ plugins {
 android {
     namespace = "com.example.motorep_mobile_app"
     compileSdk {
-        version = release(36) {
+        version = release(37) {
             minorApiLevel = 1
         }
     }
