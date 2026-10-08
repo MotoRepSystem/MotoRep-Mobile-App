@@ -11,6 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MotoRepMobileApp">
+
+        <!-- Pantalla principal -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -20,15 +22,31 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
+        <activity
+            android:name=".LoginEncuestaActivity"
+            android:exported="false" />
+
+        <!-- Pantalla de encuesta -->
+        <activity
+            android:name=".EncuestaActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Pantalla de Login -->
         <activity
             android:name=".activity_login"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
+        <!-- Dashboard -->
         <activity
             android:name=".activity_dashboard"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".activity_clientes"
             android:exported="false"
@@ -73,6 +91,7 @@
             android:name=".activity_notificaciones"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>
