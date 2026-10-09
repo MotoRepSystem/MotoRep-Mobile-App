@@ -8,137 +8,98 @@
     android:background="@color/white"
     tools:context=".ui.login.activity_login">
 
-
 <!--LOGO DE LA APLICACIÓN-->
 <ImageView
     android:id="@+id/imgLogo"
     android:layout_width="180dp"
     android:layout_height="180dp"
-
     android:layout_marginStart="93dp"
     android:layout_marginTop="50dp"
     android:layout_marginEnd="93dp"
-
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-
     app:srcCompat="@drawable/logo_motorep_enmanuel" />
 
-
 <!-- NOMBRE DE LA APLICACIÓN
-
     TextView se utiliza para mostrar el nombre principal de la aplicación.-->
 <TextView
     android:id="@+id/txttitle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-
     android:layout_marginTop="10dp"
-
     android:text="MotoRep Enmanuel"
     android:textColor="#022D36"
     android:textSize="22sp"
     android:fontFamily="@font/roboto"
-
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/imgLogo" />
 
 
 <!--DESCRIPCIÓN DE LA APLICACIÓN, TextView utilizado para indicar que la aplicación corresponde al control de inventario.-->
-<TextView
-    android:id="@+id/txtdescription"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-
-    android:layout_marginTop="0dp"
-
-    android:text="Facturación, Control de Inventario y Reportes"
-    android:textColor="@color/green_let"
-    android:textSize="15sp"
-    android:fontFamily="@font/roboto"
-
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/txttitle" />
-
-
-<!--CAMPO DE USUARIO-->
-<com.google.android.material.textfield.TextInputLayout
-    android:id="@+id/txtLayoutUser"
-    android:layout_width="350dp"
-    android:layout_height="wrap_content"
-
-
-    android:layout_marginTop="25dp"
-
-    android:hint="Usuario"
-    android:textColorHint="#000000"
-    android:fontFamily="@font/roboto"
-
-    app:boxStrokeColor="#000000"
-    app:boxStrokeWidth="1dp"
-    app:boxStrokeWidthFocused="2dp"
-    app:expandedHintEnabled="false"
-    app:hintTextColor="#000000"
-
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/txtdescription">
-
-
-    <!-- ENTRADA DEL USUARIO-->
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/tieUser"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        android:textColor="#000000"
-        android:textColorLink="#000000"
-        android:textSize="16sp" />
-
-</com.google.android.material.textfield.TextInputLayout>
-
-
-<!--CAMPO DE CONTRASEÑA-->
-<com.google.android.material.textfield.TextInputLayout
-    android:id="@+id/txtLayoutPassword"
-    android:layout_width="350dp"
-    android:layout_height="wrap_content"
-
-    android:layout_marginTop="25dp"
-
-    android:hint="Contraseña"
-    android:textColorHint="#000000"
-    android:fontFamily="@font/roboto"
-
-    app:boxStrokeColor="#000000"
-    app:boxStrokeWidth="1dp"
-    app:boxStrokeWidthFocused="2dp"
-    app:expandedHintEnabled="false"
-    app:hintTextColor="#000000"
-
+    <!--CAMPO DE USUARIO-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtLayoutUser"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="30dp"
+        android:fontFamily="@font/roboto"
+        android:hint="Usuario"
+        android:textColorHint="#000000"
+        app:boxStrokeColor="#000000"
+        app:boxStrokeWidth="1dp"
+        app:boxStrokeWidthFocused="2dp"
+        app:expandedHintEnabled="false"
+        app:hintTextColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtLayoutUser">
+        app:layout_constraintTop_toBottomOf="@id/txttitle">
 
-    <!--ENTRADA DE CONTRASEÑA-->
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/tiePassword"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        <!-- ENTRADA DEL USUARIO-->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tieUser"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#000000"
+            android:textColorLink="#000000"
+            android:textSize="16sp" />
 
-        android:inputType="textPassword"
-        android:textColor="#000000"
-        android:textColorLink="#000000"
-        android:textSize="16sp" />
-
-</com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
 
+    <!-- CAMPO DE CONTRASEÑA -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtLayoutPassword"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="30dp"
+        android:hint="Contraseña"
+        android:textColorHint="#000000"
+        android:fontFamily="@font/roboto"
+        app:boxStrokeColor="#000000"
+        app:boxStrokeWidth="1dp"
+        app:boxStrokeWidthFocused="2dp"
+        app:expandedHintEnabled="false"
+        app:hintTextColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtLayoutUser">
 
+        <!-- ENTRADA DE CONTRASEÑA -->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:textColor="#000000"
+            android:textSize="16sp" />
 
+    </com.google.android.material.textfield.TextInputLayout>
 
 <!-- RECUPERACIÓN DE CONTRASEÑA-->
     <TextView
@@ -196,7 +157,6 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
-
 
 <Button
     android:id="@+id/btnEncuesta"

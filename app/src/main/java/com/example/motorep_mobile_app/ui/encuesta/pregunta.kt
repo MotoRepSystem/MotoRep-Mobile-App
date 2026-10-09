@@ -1,32 +1,29 @@
 package com.example.motorep_mobile_app.ui.encuesta
 
+// Representa una pregunta de la encuesta.
 data class Pregunta(
     val id: String? = null,
 
+    // Texto que verá el cliente.
     val texto: String = "",
 
-    // Puede ser: "opcion_unica", "opcion_multiple" o "texto"
+    // Tipos: opcion_unica, opcion_multiple o texto.
     val tipo: String = "",
 
-    // Ejemplo:
-    // "satisfaccion_servicio.experiencia_compra"
+    // Campo de MongoDB al que corresponde la respuesta.
     val campoDestino: String? = null,
 
+    // Opciones disponibles para responder.
     val opciones: List<Opcion> = emptyList()
 ) {
 
-    /**
-     * Representa una opción de respuesta.
-     */
+    // Representa una opción de respuesta.
     data class Opcion(
         val texto: String = "",
         val valor: Int = 0
     )
 
-    /**
-     * Determina si todas las opciones tienen
-     * un valor numérico válido.
-     */
+    // Comprueba que existan opciones con valores numéricos positivos.
     fun esNumerica(): Boolean {
 
         if (opciones.isEmpty()) {

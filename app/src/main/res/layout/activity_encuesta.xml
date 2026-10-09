@@ -1,43 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollEncuesta"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="#F5F7F8">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="20dp">
 
-        <!-- Título de la encuesta -->
-        <TextView
-            android:id="@+id/txtTitulo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Queremos conocer tu experiencia"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="20dp" />
-
-
-        <!-- CONTENEDOR DE LAS PREGUNTAS                            -->
-
+        <!-- FORMULARIO -->
         <LinearLayout
             android:id="@+id/contenedorPreguntas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Pregunta 1 -->
+            <!-- Título principal -->
+            <TextView
+                android:id="@+id/txtTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Encuesta"
+                android:textColor="#022D36"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:cardBackgroundColor="#022D36"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Queremos conocer tu experiencia."
+                        android:textColor="#ffffff"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tu opinión ayuda a mejorar nuestro servicio."
+                        android:textColor="#ffffff"
+                        android:textSize="14sp"
+                        android:gravity="center" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 1. Experiencia de compra -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="¿Cómo calificarías tu experiencia de compra?"
+                android:text="1. ¿Cómo fue tu experiencia de compra?"
+                android:textColor="#000000"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp" />
+                android:textStyle="bold" />
 
             <RadioGroup
                 android:id="@+id/radioExperiencia"
@@ -49,34 +85,42 @@
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Excelente" />
+                    android:textColor="#000000"
+                    android:text="Muy buena" />
 
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="#000000"
                     android:text="Buena" />
 
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="#000000"
                     android:text="Regular" />
 
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="#000000"
                     android:text="Mala" />
 
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Muy mala" />
             </RadioGroup>
 
-
-            <!-- Pregunta 2 -->
+            <!-- 2. Atención del personal -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="¿Cómo fue la atención recibida?"
+                android:text="2. ¿Cómo calificas la atención recibida?"
+                android:textColor="#000000"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp" />
+                android:textStyle="bold" />
 
             <RadioGroup
                 android:id="@+id/radioAtencion"
@@ -88,94 +132,343 @@
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Excelente" />
+                    android:textColor="#000000"
+                    android:text="Muy buena" />
 
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="#000000"
                     android:text="Buena" />
 
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="#000000"
                     android:text="Regular" />
 
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="#000000"
                     android:text="Mala" />
 
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Muy mala" />
             </RadioGroup>
 
-
-            <!-- Pregunta 3 -->
+            <!-- 3. Satisfacción general -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="¿Qué productos compras con mayor frecuencia?"
+                android:text="3. ¿Qué tan satisfecho estás con nuestro servicio?"
+                android:textColor="#000000"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp" />
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/radioSatisfaccionGeneral"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp">
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="⭐ 1 - Muy insatisfecho" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="⭐ 2 - Insatisfecho" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="⭐ 3 - Neutral" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="⭐ 4 - Satisfecho" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="⭐ 5 - Muy satisfecho" />
+            </RadioGroup>
+
+            <!-- 4. Facilidad para encontrar productos -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="4. ¿Qué tan fácil fue encontrar el producto que buscabas?"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/radioFacilidadProducto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp">
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Muy fácil" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Fácil" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Regular" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Difícil" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Muy difícil" />
+            </RadioGroup>
+
+            <!-- 5. Variedad de productos -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="5. ¿Cómo calificas la variedad de productos?"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/radioVariedadProductos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp">
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Excelente" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Buena" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Regular" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Baja" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Muy baja" />
+            </RadioGroup>
+
+            <!-- 6. Marca preferida -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="6. ¿Qué marca prefieres?"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/radioMarcaPreferida"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="NGK" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Motul" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Genesis" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Yamaha" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Otra" />
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/txtOtraMarca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Escribe el nombre de la marca"
+                android:textColor="#B0B0B0"
+                android:inputType="textCapWords"
+                android:padding="12dp"
+                android:layout_marginBottom="20dp" />
+
+            <!-- 7. Productos frecuentes -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="7. ¿Qué productos compras con mayor frecuencia?"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <CheckBox
                 android:id="@+id/checkBujias"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="#000000"
                 android:text="Bujías" />
 
             <CheckBox
                 android:id="@+id/checkPastillas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="#000000"
                 android:text="Pastillas de freno" />
 
             <CheckBox
                 android:id="@+id/checkAceite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="#000000"
                 android:text="Aceite" />
 
             <CheckBox
                 android:id="@+id/checkFiltros"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Filtros"
+                android:textColor="#000000"
+                android:text="Filtros" />
+
+            <CheckBox
+                android:id="@+id/checkOtrosProductos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:text="Otros" />
+
+            <EditText
+                android:id="@+id/txtOtrosProductos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Especifica otros productos"
+                android:inputType="textCapSentences"
+                android:padding="12dp"
+                android:textColor="#BDBDBD"
                 android:layout_marginBottom="20dp" />
 
-
-            <!-- Pregunta 4 -->
+            <!-- 8. Comentario del servicio -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Comentarios o sugerencias"
+                android:text="8. ¿Qué opinas del servicio recibido?"
+                android:textColor="#000000"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp" />
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/txtComentario"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:gravity="top"
-                android:hint="Escribe aquí tu comentario..."
-                android:inputType="textMultiLine"
+                android:layout_height="110dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/fondo_comentario"
+                android:gravity="top|start"
+                android:hint="Escribe tu comentario..."
+                android:inputType="textMultiLine|textCapSentences"
                 android:padding="12dp"
-                android:layout_marginBottom="16dp" />
+                android:textColor="#000000"
+                android:textColorHint="#757575" />
 
-            <!-- Botón para revisar -->
+            <!-- 9. Sugerencias de mejora -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="9. ¿Qué podríamos mejorar?"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/txtComentarioMejora"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/fondo_comentario"
+                android:gravity="top|start"
+                android:hint="Escribe tus sugerencias..."
+                android:inputType="textMultiLine|textCapSentences"
+                android:padding="12dp"
+                android:textColor="#000000"
+                android:textColorHint="#757575" />
+
+            <!-- Avanzar a revisión -->
             <Button
                 android:id="@+id/btnRevisar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Revisar respuestas" />
+                android:text="Revisar respuestas"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#022D36" />
 
         </LinearLayout>
 
-
-        <!-- ====================================================== -->
-        <!-- CONTENEDOR DE REVISIÓN                                 -->
-        <!-- ====================================================== -->
-
+        <!-- REVISIÓN DE RESPUESTAS -->
         <LinearLayout
             android:id="@+id/contenedorRevision"
             android:layout_width="match_parent"
@@ -186,16 +479,18 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Revisión de tus respuestas"
-                android:textSize="20sp"
+                android:text="Revisa tus respuestas"
+                android:textColor="#000000"
+                android:textSize="22sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="20dp" />
 
-            <!-- Experiencia -->
+            <!-- Resumen de cada respuesta -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Experiencia de compra:"
+                android:text="Experiencia de compra"
+                android:textColor="#000000"
                 android:textStyle="bold" />
 
             <TextView
@@ -203,13 +498,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sin respuesta"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="12dp" />
 
-            <!-- Atención -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Atención recibida:"
+                android:text="Atención del personal"
+                android:textColor="#000000"
                 android:textStyle="bold" />
 
             <TextView
@@ -217,13 +512,69 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sin respuesta"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="12dp" />
 
-            <!-- Productos -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Productos seleccionados:"
+                android:text="Satisfacción general"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtRevisionSatisfaccionGeneral"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sin respuesta"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Facilidad para encontrar productos"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtRevisionFacilidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sin respuesta"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Variedad de productos"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtRevisionVariedad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sin respuesta"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Marca preferida"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtRevisionMarca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sin respuesta"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Productos frecuentes"
+                android:textColor="#000000"
                 android:textStyle="bold" />
 
             <TextView
@@ -231,13 +582,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sin selección"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="12dp" />
 
-            <!-- Comentario -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Comentario:"
+                android:text="Comentario del servicio"
+                android:textColor="#000000"
                 android:textStyle="bold" />
 
             <TextView
@@ -245,25 +596,124 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sin comentario"
-                android:layout_marginBottom="20dp" />
+                android:layout_marginBottom="12dp" />
 
-            <!-- Editar -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sugerencias de mejora"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtRevisionMejora"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sin sugerencias"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Volver al formulario -->
             <Button
                 android:id="@+id/btnEditar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Editar" />
+                android:text="Editar respuestas"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#52666B" />
 
-            <!-- Enviar -->
+            <!-- Envío visual -->
             <Button
                 android:id="@+id/btnEnviar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Enviar"
+                android:text="Confirmar envío"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#022D36"
                 android:layout_marginTop="8dp" />
 
         </LinearLayout>
 
-    </LinearLayout>
+        <!-- CONFIRMACIÓN VISUAL -->
+        <LinearLayout
+            android:id="@+id/contenedorConfirmacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="16dp"
+            android:visibility="gone">
 
-</ScrollView>
+            <!-- CUADRO DE CONFIRMACIÓN -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <!-- CONTENIDO DENTRO DEL CUADRO -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="✓"
+                        android:textColor="#16845B"
+                        android:textSize="64sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="¡Muchas gracias!"
+                        android:textColor="#022D36"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tu opinión ha sido registrada correctamente."
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:layout_marginBottom="16dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tus comentarios ayudan a mejorar nuestro servicio."
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        android:gravity="center" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- BOTÓN FUERA DEL CUADRO -->
+            <Button
+                android:id="@+id/btnFinalizar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="140dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:text="Finalizar"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#022D36"
+                android:textAllCaps="false" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
