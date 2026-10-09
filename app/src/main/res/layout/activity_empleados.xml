@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/roboto"
-                    android:text="Resumen de Clientes"
+                    android:text="¡Empleados!"
                     android:textColor="#000000"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -84,10 +84,8 @@
 
 
 
-
-
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/floatingActionButtonAgregar"
+                    android:id="@+id/FloatingActionButtonAgregar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="331dp"
@@ -205,7 +203,7 @@
             <LinearLayout
                 android:id="@+id/drawerLayoutInicio"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp">
 
@@ -237,7 +235,7 @@
             <LinearLayout
                 android:id="@+id/drawerLayoutFacturas"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp">
 
@@ -260,7 +258,7 @@
             <LinearLayout
                 android:id="@+id/drawerLayoutCompras"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp">
 
@@ -306,7 +304,7 @@
             <LinearLayout
                 android:id="@+id/drawerLayoutInventario"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp">
 
@@ -329,7 +327,7 @@
             <LinearLayout
                 android:id="@+id/drawerLayoutClientes"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp">
 
@@ -352,7 +350,7 @@
             <LinearLayout
                 android:id="@+id/drawerLayoutEmpleados"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp">
 
@@ -383,9 +381,9 @@
 
 
             <LinearLayout
-                android:id="@+id/drawerLayoutIndicadores"
+                android:id="@+id/LinearLayoutIndicadores"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp">
 
@@ -406,9 +404,9 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/drawerLayoutTendencias"
+                android:id="@+id/LinearLayoutTendencias"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp">
 
@@ -429,9 +427,9 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/drawerLayoutIncidencias"
+                android:id="@+id/LinearLayoutIncidencias"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp">
 
@@ -461,9 +459,9 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:id="@+id/drawerLayoutNotificaciones"
+                android:id="@+id/LinearLayoutNotificaciones"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="14dp">
 
@@ -484,15 +482,15 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/drawerLayoutConfiguracion"
+                android:id="@+id/LinearLayoutConfiguracion"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="14dp">
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     app:srcCompat="@drawable/icon_setting"
                     app:tint="@color/green_let"/>
 
@@ -500,7 +498,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:text="Configuracion"
+                    android:text="Notificaciones"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -512,7 +510,7 @@
                 android:layout_weight="1" />
 
             <LinearLayout
-                android:id="@+id/drawerLayoutCerrarSesion"
+                android:id="@+id/linearLayoutCerrarSesion"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"

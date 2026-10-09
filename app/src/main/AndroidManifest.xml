@@ -26,69 +26,69 @@
         </activity>
 
         <activity
-            android:name=".LoginEncuestaActivity"
+            android:name=".ui.encuesta.activity_loginencuesta"
             android:exported="false" />
 
         <!-- Pantalla de encuesta -->
         <activity
-            android:name=".EncuestaActivity"
+            android:name=".ui.encuesta.EncuestaActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
         <!-- Pantalla de Login -->
         <activity
-            android:name=".activity_login"
+            android:name=".ui.login.activity_login"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
         <!-- Dashboard -->
         <activity
-            android:name=".activity_dashboard"
+            android:name=".ui.dashboard.activity_dashboard"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".activity_clientes"
+            android:name=".ui.operacional.catalogos.activity_clientes"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activity_empleados"
+            android:name=".ui.operacional.catalogos.activity_empleados"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activity_compras"
+            android:name=".ui.operacional.movimientos.activity_compras"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activity_facturacion"
+            android:name=".ui.operacional.movimientos.activity_facturacion"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activity_inventario"
+            android:name=".ui.operacional.catalogos.activity_inventario"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activity_caja"
+            android:name=".ui.operacional.movimientos.activity_caja"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activity_incidencias"
+            android:name=".ui.reportes.activity_incidencias"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activity_tendencias"
+            android:name=".ui.reportes.activity_tendencias"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activity_indicadores"
+            android:name=".ui.reportes.activity_indicadores"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activity_configuracion"
+            android:name=".ui.configuracion.activity_configuracion"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activity_notificaciones"
+            android:name=".ui.miscelanea.activity_notificaciones"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 

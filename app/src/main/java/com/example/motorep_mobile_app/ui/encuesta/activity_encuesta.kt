@@ -1,9 +1,10 @@
-package com.example.motorep_mobile_app
+package com.example.motorep_mobile_app.ui.encuesta
 
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.example.motorep_mobile_app.R
 
 class EncuestaActivity : AppCompatActivity() {
 
@@ -33,7 +34,7 @@ class EncuestaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // Cargamos el diseño XML de la encuesta
-        setContentView(R.layout.activityencuesta)
+        setContentView(R.layout.activity_encuesta)
 
         // Inicializamos los componentes de la pantalla
         inicializarVistas()

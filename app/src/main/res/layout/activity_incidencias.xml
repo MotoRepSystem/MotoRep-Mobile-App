@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/linearLayoutMainTitle"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:background="#FFFFFF"
@@ -26,19 +26,19 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/imgmenu"
+                android:id="@+id/imgMenu"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                app:srcCompat="@drawable/menublack_icon" />
+                app:srcCompat="@drawable/icon_menuacces" />
 
             <TextView
-                android:id="@+id/txtdashboard"
+                android:id="@+id/txtDashboard"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Incidencias del mes"
+                android:text="Incidencias"
                 android:textAlignment="center"
-                android:textColor="@color/green_let"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -46,10 +46,12 @@
                 android:id="@+id/imgnotificacion"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                app:srcCompat="@drawable/notificacion" />
+                app:srcCompat="@drawable/icon_notificacion"
+                />
 
         </LinearLayout>
 
+        <!-- CONTENIDO DESPLAZABLE RESPONSIVO -->
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nestedScrollView"
             android:layout_width="0dp"
@@ -58,21 +60,21 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutMainTitle">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:paddingBottom="24dp">
+                android:paddingBottom="24dp"
+                android:background="@color/white">
 
                 <TextView
-                    android:id="@+id/txtadmin"
+                    android:id="@+id/txtWelcome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/roboto"
-                    android:text="Administrador"
+                    android:text="¡Bienvenido - Resumen General!"
                     android:textColor="#000000"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -80,339 +82,25 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
-                    android:id="@+id/linearcontent"
-                    android:layout_width="match_parent"
+
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/FloatingActionButtonAgregar"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp"
+                    android:layout_marginStart="331dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="10dp"
+                    android:clickable="true"
+                    android:contentDescription="Boton para agregar"
+                    android:focusable="true"
+                    app:backgroundTint="#022D36"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txtadmin">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Productos"
-                        android:textColor="@color/green_let"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <!-- INCIDENCIA 1 -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/CardInci1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        app:cardBackgroundColor="@color/white"
-                        app:cardCornerRadius="10dp"
-                        app:cardElevation="2dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:padding="16dp">
-
-                            <!-- Imagen temporalmente oculta -->
-                            <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:visibility="gone" />
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="12 agosto 2025 - 10:25 AM"
-                                    android:textSize="15sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Empleado: Jeferson Madrigal"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Llanta con codigo 12566, agrietada de un lado"
-                                    android:textColor="@color/gray_text"
-                                    android:textSize="12sp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <!-- INCIDENCIA 2 -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        app:cardBackgroundColor="@color/white"
-                        app:cardCornerRadius="10dp"
-                        app:cardElevation="2dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:padding="16dp">
-
-                            <!-- Imagen temporalmente oculta -->
-                            <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:visibility="gone" />
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="18 agosto 2025 - 3:15 PM"
-                                    android:textSize="15sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Empleado: Maria Rojas"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Aceite Akron con codigo 12771, marcado con precio no concistente"
-                                    android:textColor="@color/gray_text"
-                                    android:textSize="12sp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <!-- INCIDENCIA 3 -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        app:cardBackgroundColor="@color/white"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="2dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:padding="16dp">
-
-                            <!-- Imagen temporalmente oculta -->
-                            <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:visibility="gone" />
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="25 agosto 2025 - 9:31 AM"
-                                    android:textSize="15sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Empleado: Maria Rojas"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Pide via codigo 44123, del par solo uno funciona"
-                                    android:textColor="@color/gray_text"
-                                    android:textSize="12sp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sistema"
-                        android:textColor="@color/green_let"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <!-- INCIDENCIA DEL SISTEMA 1 -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        app:cardBackgroundColor="@color/white"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="2dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:padding="16dp">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="7 agosto 2025 - 10:11 AM"
-                                    android:textSize="15sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Empleado: Jeferson Madrigal"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="El sistema sufrio una caida en el modulo de compras, no se podia realizar acciones, desde 8:12 a 9:55 AM"
-                                    android:textColor="@color/gray_text"
-                                    android:textSize="12sp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <!-- INCIDENCIA DEL SISTEMA 2 -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        app:cardBackgroundColor="@color/white"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="2dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:padding="16dp">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="13 agosto 2025 - 3:51 PM"
-                                    android:textSize="15sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Empleado: Maria Rojas"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="El sistema tubo un error en la factura 17433, cantidad de productos Bujia T009 incorrecta, se cobro la cantidad de 3"
-                                    android:textColor="@color/gray_text"
-                                    android:textSize="12sp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <!-- INCIDENCIA DEL SISTEMA 3 -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="0dp"
-                        app:cardBackgroundColor="@color/white"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="2dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:padding="16dp">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="22 agosto 2025 - 12:19 PM"
-                                    android:textSize="15sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Empleado: Jeferson Madrigal"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Un cliente que queria un producto que no teniamos, buscaba Aceite 4T Buster"
-                                    android:textColor="@color/gray_text"
-                                    android:textSize="12sp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                </LinearLayout>
+                    app:srcCompat="@android:drawable/ic_input_add"
+                    app:tint="#FFFFFF" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
@@ -425,8 +113,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="false"
-        android:background="@color/dark_navy"
-        app:elevation="16dp">
+        app:elevation="16dp"
+        android:background="@color/dark_navy">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -445,9 +133,9 @@
                     app:cardBackgroundColor="@color/dark_navy"
                     app:cardCornerRadius="0dp"
                     app:cardElevation="4dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintEnd_toEndOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -470,8 +158,7 @@
                                 android:layout_height="match_parent"
                                 android:background="@color/dark_navy"
                                 app:srcCompat="@drawable/icon_bag"
-                                app:tint="@color/green_let" />
-
+                                app:tint="@color/green_let"/>
                         </androidx.cardview.widget.CardView>
 
                         <TextView
@@ -503,14 +190,20 @@
                             app:layout_constraintTop_toBottomOf="@id/txtInv" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </androidx.cardview.widget.CardView>
 
+
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
             <LinearLayout
                 android:id="@+id/drawerLayoutInicio"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp">
 
@@ -518,7 +211,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     app:srcCompat="@drawable/icon_menu"
-                    app:tint="@color/green_let" />
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -528,7 +221,6 @@
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
             <TextView
@@ -543,7 +235,7 @@
             <LinearLayout
                 android:id="@+id/drawerLayoutFacturas"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp">
 
@@ -551,7 +243,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     app:srcCompat="@drawable/icon_fact"
-                    app:tint="@color/green_let" />
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -561,13 +253,12 @@
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/drawerLayoutCompras"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp">
 
@@ -575,7 +266,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     app:srcCompat="@drawable/icon_cart"
-                    app:tint="@color/green_let" />
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -585,7 +276,6 @@
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -599,7 +289,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     app:srcCompat="@drawable/icon_box"
-                    app:tint="@color/green_let" />
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -609,13 +299,12 @@
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/drawerLayoutInventario"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp">
 
@@ -623,7 +312,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     app:srcCompat="@drawable/icon_list"
-                    app:tint="@color/green_let" />
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -633,13 +322,12 @@
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/drawerLayoutClientes"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp">
 
@@ -647,7 +335,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     app:srcCompat="@drawable/icon_user"
-                    app:tint="@color/green_let" />
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -657,13 +345,12 @@
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/drawerLayoutEmpleados"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp">
 
@@ -671,7 +358,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     app:srcCompat="@drawable/icon_people"
-                    app:tint="@color/green_let" />
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -681,7 +368,6 @@
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
             <TextView
@@ -693,10 +379,11 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
+
             <LinearLayout
                 android:id="@+id/LinearLayoutIndicadores"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp">
 
@@ -704,7 +391,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     app:srcCompat="@drawable/icon_star"
-                    app:tint="@color/green_let" />
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -714,13 +401,12 @@
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/LinearLayoutTendencias"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp">
 
@@ -728,7 +414,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     app:srcCompat="@drawable/icon_stats"
-                    app:tint="@color/green_let" />
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -738,13 +424,12 @@
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/LinearLayoutIncidencias"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp">
 
@@ -752,7 +437,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     app:srcCompat="@drawable/icon_alert"
-                    app:tint="@color/green_let" />
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -762,7 +447,6 @@
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
             <TextView
@@ -777,7 +461,7 @@
             <LinearLayout
                 android:id="@+id/LinearLayoutNotificaciones"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="14dp">
 
@@ -785,7 +469,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     app:srcCompat="@drawable/icon_notificacion"
-                    app:tint="@color/green_let" />
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -795,31 +479,29 @@
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/LinearLayoutConfiguracion"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="14dp">
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     app:srcCompat="@drawable/icon_setting"
-                    app:tint="@color/green_let" />
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:text="Configuración"
+                    android:text="Notificaciones"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
             <View
@@ -828,7 +510,7 @@
                 android:layout_weight="1" />
 
             <LinearLayout
-                android:id="@+id/LinearLayoutCerrarSesion"
+                android:id="@+id/linearLayoutCerrarSesion"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"
@@ -847,7 +529,6 @@
                     android:textColor="@color/red_let"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
         </LinearLayout>

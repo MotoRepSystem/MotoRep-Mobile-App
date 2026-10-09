@@ -1,4 +1,4 @@
-package com.example.motorep_mobile_app
+package com.example.motorep_mobile_app.ui.encuesta
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,10 +8,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.motorep_mobile_app.R
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
-class LoginEncuestaActivity : AppCompatActivity() {
+class activity_loginencuesta : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +86,7 @@ class LoginEncuestaActivity : AppCompatActivity() {
             // Abrir la pantalla de encuesta
             val intent =
                 Intent(
-                    this@LoginEncuestaActivity,
+                    this@activity_loginencuesta,
                     EncuestaActivity::class.java
                 )
 

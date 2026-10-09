@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.example.motorep_mobile_app.ui.login.activity_login
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,5 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         // Cerrar MainActivity para que no quede en la pila
         finish()
+
+
     }
 }

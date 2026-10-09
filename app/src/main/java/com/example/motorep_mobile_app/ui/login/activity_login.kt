@@ -1,0 +1,53 @@
+package com.example.motorep_mobile_app.ui.login
+
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Button
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.example.motorep_mobile_app.R
+import com.example.motorep_mobile_app.ui.encuesta.activity_loginencuesta
+import com.example.motorep_mobile_app.ui.dashboard.activity_dashboard
+
+class activity_login : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        enableEdgeToEdge()
+
+        setContentView(R.layout.activity_login)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+
+            val systemBars =
+                insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            v.setPadding(
+                systemBars.left,
+                systemBars.top,
+                systemBars.right,
+                systemBars.bottom
+            )
+
+            insets
+        }
+
+        val btnEncuesta = findViewById<Button>(R.id.btnEncuesta)
+        btnEncuesta.setOnClickListener {
+            val intent = Intent(this, activity_loginencuesta::class.java)
+            startActivity(intent)
+        }
+
+        val btnLogin = findViewById<Button>(R.id.btnLogin)
+        btnLogin.setOnClickListener {
+            val intent = Intent(this, activity_dashboard::class.java)
+            startActivity(intent)
+        }
+
+
+
+    }
+}
