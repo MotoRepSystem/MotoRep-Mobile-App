@@ -22,9 +22,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".ui.encuesta.activity_loginencuesta"
             android:exported="false" />
@@ -46,7 +44,6 @@
             android:name=".ui.dashboard.activity_dashboard"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
-
         <activity
             android:name=".ui.operacional.catalogos.activity_clientes"
             android:exported="false"
@@ -91,7 +88,14 @@
             android:name=".ui.miscelanea.activity_notificaciones"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
-
+        <activity
+            android:name=".activity_detalleproducto"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity_detallecliente"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
