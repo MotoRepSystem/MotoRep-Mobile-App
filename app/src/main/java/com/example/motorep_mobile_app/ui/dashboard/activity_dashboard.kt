@@ -23,6 +23,8 @@ import com.example.motorep_mobile_app.ui.reportes.activity_indicadores
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_inventario
 import com.example.motorep_mobile_app.ui.reportes.activity_tendencias
 import com.google.android.material.navigation.NavigationView
+import com.example.motorep_mobile_app.ui.configuracion.activity_configuracion
+import com.example.motorep_mobile_app.ui.miscelanea.activity_notificaciones
 
 class activity_dashboard : AppCompatActivity() {
 
@@ -136,6 +138,25 @@ class activity_dashboard : AppCompatActivity() {
             val intent = Intent(this, activity_dashboard::class.java)
             startActivity(intent)
         }
+
+        // Abrir la pantalla de Notificaciones.
+        val btnNotificaciones =
+            findViewById<LinearLayout>(R.id.LinearLayoutNotificaciones)
+
+        btnNotificaciones.setOnClickListener {
+            val intent = Intent(this, activity_notificaciones::class.java)
+            startActivity(intent)
+        }
+
+        // Abrir la pantalla de Configuración.
+        val btnConfiguracion =
+            findViewById<LinearLayout>(R.id.LinearLayoutConfiguracion)
+
+        btnConfiguracion.setOnClickListener {
+            val intent = Intent(this, activity_configuracion::class.java)
+            startActivity(intent)
+        }
+
         val btnSalir = findViewById<LinearLayout>(R.id.linearLayoutCerrarSesion)
         btnSalir.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
