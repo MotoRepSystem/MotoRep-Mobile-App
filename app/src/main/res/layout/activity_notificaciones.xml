@@ -405,7 +405,12 @@
 
                 </androidx.cardview.widget.CardView>
 
+
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
             <LinearLayout
                 android:id="@+id/drawerLayoutInicio"
@@ -673,16 +678,16 @@
                 android:paddingHorizontal="14dp">
 
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     app:srcCompat="@drawable/icon_notificacion"
-                    app:tint="@color/green_let" />
+                    app:tint="@color/green_let"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:text="Notificaciones"
+                    android:text="Notificaciónes"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />

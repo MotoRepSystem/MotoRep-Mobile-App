@@ -13,8 +13,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.motorep_mobile_app.MainActivity
 import com.example.motorep_mobile_app.R
+import com.example.motorep_mobile_app.ui.configuracion.activity_configuracion
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_inventario
 import com.example.motorep_mobile_app.ui.dashboard.activity_dashboard
+import com.example.motorep_mobile_app.ui.miscelanea.activity_notificaciones
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_clientes
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_empleados
 import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_caja
@@ -138,6 +140,15 @@ class activity_tendencias : AppCompatActivity() {
         btnSalir.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+        }
+        val btnConfiguracion = findViewById<LinearLayout>(R.id.LinearLayoutConfiguracion)
+        btnConfiguracion.setOnClickListener {
+            val intent = Intent(this, activity_configuracion::class.java)
+            startActivity(intent)
+        }
+        val btnNotificacion = findViewById<LinearLayout>(R.id.LinearLayoutNotificaciones)
+        btnNotificacion.setOnClickListener {
+            val intent = Intent(this, activity_notificaciones::class.java)
         }
 
     }
