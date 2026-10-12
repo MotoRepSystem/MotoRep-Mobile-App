@@ -149,6 +149,7 @@ class activity_incidencias : AppCompatActivity() {
         val btnNotificacion = findViewById<LinearLayout>(R.id.LinearLayoutNotificaciones)
         btnNotificacion.setOnClickListener {
             val intent = Intent(this, activity_notificaciones::class.java)
+            startActivity(intent)
         }
     }
 }
