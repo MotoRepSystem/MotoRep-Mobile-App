@@ -72,53 +72,39 @@
                 app:queryHint="Buscar cliente..."
                 app:iconifiedByDefault="false" />
 
-
-
         </LinearLayout>
 
 
-
-
-
-
-        <!-- CONTENIDO DESPLAZABLE RESPONSIVO -->
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nestedScrollView"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reciclerviewClientes"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:fillViewport="true"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            android:paddingBottom="90dp"
+            android:backgroundTint="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/linearLayoutToolsbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/FloatingActionButtonAgregar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="331dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="10dp"
+            android:clickable="true"
+            android:contentDescription="Boton para agregar"
+            android:focusable="true"
+            app:backgroundTint="#022D36"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutToolsbar">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="24dp"
-                android:background="@color/white">
-
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/FloatingActionButtonAgregar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="331dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="10dp"
-                    android:clickable="true"
-                    android:contentDescription="Boton para agregar"
-                    android:focusable="true"
-                    app:backgroundTint="#022D36"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:srcCompat="@android:drawable/ic_input_add"
-                    app:tint="#FFFFFF" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
+            app:srcCompat="@android:drawable/ic_input_add"
+            app:tint="#FFFFFF" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

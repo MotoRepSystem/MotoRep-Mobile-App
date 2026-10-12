@@ -51,235 +51,211 @@
 
         </LinearLayout>
 
-        <!-- CONTENIDO DESPLAZABLE RESPONSIVO -->
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nestedScrollView"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardProducto"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:fillViewport="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="30dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="3dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutMainTitle">
+            app:layout_constraintTop_toBottomOf="@id/linearLayoutMainTitle">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <!-- Contenedor vertical de toda la información del producto.-->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="24dp"
-                android:background="@color/white">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <!--IMAGEN DEL PRODUCTO: Representa visualmente el producto. Por ahora utilizamos un recurso drawable. -->
+                <ImageView
+                    android:id="@+id/imgProducto"
+                    android:layout_width="match_parent"
+                    android:layout_height="210dp"
+                    android:layout_marginBottom="10dp"
+                    android:contentDescription="Imagen del producto"
+                    android:scaleType="fitCenter" />
+
+                <!--CONTENEDOR DEL NOMBRE Y ESTADO: Permite colocar el nombre a la izquierda y el estado del producto a la derecha. -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <!-- Nombre del producto -->
+                    <TextView
+                        android:id="@+id/tvNombreProducto"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Laptop del inspiro 15"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <!-- Estado del producto -->
+                    <TextView
+                        android:id="@+id/tvEstadoProducto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/fondo_estado"
+                        android:paddingStart="12dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="12dp"
+                        android:paddingBottom="5dp"
+                        android:text="Activo"
+                        android:textColor="#5ccb5f"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
 
 
-                <!-- TARJETA -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/mCVProducto"
-                    android:layout_width="0dp"
-                    android:layout_height="580dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginEnd="20dp"
-                    app:cardBackgroundColor="@android:color/white"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="5dp"
-                    app:strokeWidth="0dp"
-                    app:layout_constraintTop_toBottomOf="@id/linearLayoutMainTitle"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
+                <!-- INFORMACIÓN DEL PRODUCTO: Cada fila contiene el nombre del dato y su respectivo valor. -->
+                <!-- Código -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:orientation="horizontal">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="12dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Código:"
+                        android:textColor="#000000"
+                        android:textSize="14sp" />
 
-                        <!-- NOMBRE -->
+                    <TextView
+                        android:id="@+id/tvCodigoProducto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="LAP001"
+                        android:textColor="#000000"
+                        android:textSize="14sp" />
 
-                        <TextView
-                            android:id="@+id/lblNombreProducto"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Nombre Producto"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <EditText
-                            android:id="@+id/edtNombreProducto"
-                            android:layout_width="0dp"
-                            android:layout_height="48dp"
-                            android:layout_marginTop="8dp"
-                            android:hint="Ej: Bujia"
-                            android:inputType="textCapSentences"
-                            android:importantForAutofill="yes"
-                            android:autofillHints="name"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
-                            android:textSize="12sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/lblNombreProducto" />
-
-                        <!-- CÓDIGO -->
-
-                        <TextView
-                            android:id="@+id/lblCodigo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:text="Codigo"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/edtNombreProducto" />
-
-                        <EditText
-                            android:id="@+id/edtCodigo"
-                            android:layout_width="0dp"
-                            android:layout_height="48dp"
-                            android:layout_marginTop="8dp"
-                            android:hint="Ej_100000f"
-                            android:inputType="textCapCharacters"
-                            android:importantForAutofill="no"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
-                            android:textSize="12sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/lblCodigo" />
-
-                        <!-- CATEGORÍA -->
-
-                        <TextView
-                            android:id="@+id/lblCategoria"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:text="Categoria"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/edtCodigo" />
-
-                        <AutoCompleteTextView
-                            android:id="@+id/edtCategoria"
-                            android:layout_width="0dp"
-                            android:layout_height="48dp"
-                            android:layout_marginTop="8dp"
-                            android:hint="Selecciona la Categoría"
-                            android:inputType="none"
-                            android:importantForAutofill="no"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
-                            android:textSize="12sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/lblCategoria" />
-
-                        <!-- PRECIO -->
-
-                        <TextView
-                            android:id="@+id/lblPrecio"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:text="Precio"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/edtCategoria" />
-
-                        <EditText
-                            android:id="@+id/edtPrecio"
-                            android:layout_width="0dp"
-                            android:layout_height="48dp"
-                            android:layout_marginTop="8dp"
-                            android:hint="0.00"
-                            android:inputType="numberDecimal"
-                            android:importantForAutofill="no"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
-                            android:textSize="12sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/lblPrecio" />
-
-                        <!-- CANTIDAD -->
-
-                        <TextView
-                            android:id="@+id/lblCantidad"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:text="Cantidad"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/edtPrecio" />
-
-                        <EditText
-                            android:id="@+id/edtCantidad"
-                            android:layout_width="0dp"
-                            android:layout_height="48dp"
-                            android:layout_marginTop="8dp"
-                            android:hint="0"
-                            android:inputType="number"
-                            android:importantForAutofill="no"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
-                            android:textSize="12sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/lblCantidad" />
-
-                        <!-- BOTÓN GUARDAR -->
-
-                        <Button
-                            android:id="@+id/btnGuardarProducto"
-                            android:layout_width="0dp"
-                            android:layout_height="48dp"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginEnd="2dp"
-                            android:layout_marginBottom="3dp"
-                            android:backgroundTint="@color/green_let"
-                            android:text="Guardar Producto"
-                            android:textColor="@android:color/white"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent" />
-
-                        <TextView
-                            android:id="@+id/txtimagen"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="31dp"
-                            android:fontFamily="@font/roboto"
-                            android:text="Seleccionar imagen"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/edtCantidad" />
-
-                        <ImageView
-                            android:id="@+id/imgSubir"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginStart="48dp"
-                            android:layout_marginEnd="149dp"
-                            android:layout_marginBottom="16dp"
-                            app:layout_constraintBottom_toTopOf="@+id/btnGuardarProducto"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/txtimagen"
-                            app:srcCompat="@drawable/icon_upload" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
+                <!-- Categoría -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Categoría"
+                        android:textColor="#000000"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvCategoriaProducto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="computadora"
+                        android:textColor="#000000"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+
+                <!-- Precio -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Precio:"
+                        android:textColor="#000000"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvPrecioProducto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$550.00"
+                        android:textColor="#000000"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+
+                <!-- Stock actual -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Cantidad"
+                        android:textColor="#000000"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvCantidad"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="15 unidades"
+                        android:textColor="#000000"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginBottom="20dp">
+
+                    <Button
+                        android:id="@+id/btnEditar"
+                        android:layout_width="280dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:text="Editar"
+                        android:textColor="@android:color/white"
+                        android:backgroundTint="#6750A4" />
+
+                    <Button
+                        android:id="@+id/btnEliminar"
+                        android:layout_width="280dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="16dp"
+                        android:text="Eliminar"
+                        android:textColor="@android:color/white"
+                        android:backgroundTint="#D32F2F" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
