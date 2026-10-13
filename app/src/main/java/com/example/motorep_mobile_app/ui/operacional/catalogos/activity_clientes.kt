@@ -11,8 +11,14 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.motorep_mobile_app.Cliente_Adapter
 import com.example.motorep_mobile_app.MainActivity
 import com.example.motorep_mobile_app.R
+import com.example.motorep_mobile_app.activity_agregarcliente
 import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_caja
 import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_compras
 import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_facturacion
@@ -21,11 +27,16 @@ import com.example.motorep_mobile_app.ui.reportes.activity_indicadores
 import com.example.motorep_mobile_app.ui.reportes.activity_tendencias
 import com.example.motorep_mobile_app.ui.dashboard.activity_dashboard
 import com.google.android.material.navigation.NavigationView
+import com.example.motorep_mobile_app.data.database.MotorepDatabase
+import com.example.motorep_mobile_app.data.repository.Cliente_Repository
+import com.example.motorep_mobile_app.viewmodel.Cliente_Viewmodel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class activity_clientes : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navViews: NavigationView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -138,5 +149,43 @@ class activity_clientes : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+
+
+        val database = MotorepDatabase.getDatabase(this)
+        val dao = database.clienteDao()
+        val repository = Cliente_Repository(dao)
+
+        val factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+               if (modelClass.isAssignableFrom(Cliente_Viewmodel::class.java)) {
+                   return Cliente_Viewmodel(repository) as T
+               }
+                throw IllegalArgumentException("Unknown ViewModel class")
+            }
+        }
+
+        val viewModel = ViewModelProvider(this, factory)[Cliente_Viewmodel::class.java]
+
+
+        //accedemos al recicler view
+        val reciclerViewCliente = findViewById<RecyclerView>(R.id.reciclerviewClientes)
+        reciclerViewCliente.layoutManager = LinearLayoutManager(this)
+
+        //cramos el adapter y usarlo en el recicler
+        val adapter = Cliente_Adapter()
+        reciclerViewCliente.adapter = adapter
+
+        //observamos los cambios en la lista de clientes y actualizamos el adapter
+        viewModel.cliente.observe(this) {
+            cliente -> adapter.submitList(cliente)
+        }
+
+        //boton flotante para agregar cliente
+        val btnAgregar = findViewById<FloatingActionButton>(R.id.FloatingActionButtonAgregar)
+        btnAgregar.setOnClickListener {
+            val intent = Intent(this, activity_agregarcliente::class.java)
+            startActivity(intent)
+        }
+
     }
 }
