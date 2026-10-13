@@ -171,9 +171,12 @@ class activity_clientes : AppCompatActivity() {
         val reciclerViewCliente = findViewById<RecyclerView>(R.id.reciclerviewClientes)
         reciclerViewCliente.layoutManager = LinearLayoutManager(this)
 
+
+
         //cramos el adapter y usarlo en el recicler
         val adapter = Cliente_Adapter()
         reciclerViewCliente.adapter = adapter
+
 
         //observamos los cambios en la lista de clientes y actualizamos el adapter
         viewModel.cliente.observe(this) {

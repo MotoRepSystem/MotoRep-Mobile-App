@@ -8,14 +8,19 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.motorep_mobile_app.data.entity.Cliente
 import com.example.motorep_mobile_app.databinding.ItemClienteBinding
 
-class Cliente_Adapter : ListAdapter<Cliente, Cliente_Adapter.ViewHolder>(DiffCallback()) {
+class Cliente_Adapter(private val onItemClick: (Cliente) -> Unit) : ListAdapter<Cliente, Cliente_Adapter.ViewHolder>(DiffCallback()) {
 
-    class ViewHolder(private val binding: ItemClienteBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemClienteBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(cliente: Cliente) {
             binding.txtNombre.text = cliente.nombre
             binding.txtCedula.text = cliente.cedula
             binding.txtCorreo.text = cliente.correo
             binding.txtTelefono.text = cliente.telefono
+
+            // Detectar click sobre el Cliente
+            binding.root.setOnClickListener {
+                onItemClick(cliente)
+            }
         }
     }
 
