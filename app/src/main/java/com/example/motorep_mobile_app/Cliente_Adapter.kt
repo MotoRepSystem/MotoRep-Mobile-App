@@ -10,17 +10,16 @@ import com.example.motorep_mobile_app.databinding.ItemClienteBinding
 
 class Cliente_Adapter(private val onItemClick: (Cliente) -> Unit) : ListAdapter<Cliente, Cliente_Adapter.ViewHolder>(DiffCallback()) {
 
-    inner class ViewHolder(private val binding: ItemClienteBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(cliente: Cliente) {
-            binding.txtNombre.text = cliente.nombre
-            binding.txtCedula.text = cliente.cedula
-            binding.txtCorreo.text = cliente.correo
-            binding.txtTelefono.text = cliente.telefono
+    class ViewHolder(private val binding: ItemClienteBinding, private val onClienteClick: (Cliente) -> Unit) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(cliente: Cliente, onClienteClick: (Cliente) -> Unit) {
 
-            // Detectar click sobre el Cliente
-            binding.root.setOnClickListener {
-                onItemClick(cliente)
-            }
+            // Le asignamos al elemento Nombre del recycler el atributo nombre del cliente.
+            // Aquí nos permite unir la entidad con el recycler
+            binding.txtNombre.text = cliente.nombre
+            binding.txtApellido.text = cliente.apellido
+            binding.txtCedula.text = cliente.cedula
+            binding.txtTelefono.text = cliente.telefono
+            binding.root.setOnClickListener { onClienteClick(cliente)}
         }
     }
 
@@ -30,11 +29,13 @@ class Cliente_Adapter(private val onItemClick: (Cliente) -> Unit) : ListAdapter<
             parent,
             false
         )
-        return ViewHolder(binding)
+        // Nos retorna un ViewHolder
+        return ViewHolder(binding, onItemClick)
     }
 
+    // Esta función nos permite colocar los datos que traemos de la entidad y los colocamos en un ViewHolder
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onItemClick)
     }
 
     class DiffCallback : DiffUtil.ItemCallback<Cliente>() {

@@ -29,7 +29,6 @@ class activity_agregarcliente : AppCompatActivity() {
         setContentView(R.layout.activity_agregarcliente)
 
         drawerLayout = findViewById(R.id.DrawerLayout)
-        navViews = findViewById(R.id.navigationView)
 
         val mainConstraint = findViewById<ConstraintLayout>(R.id.mainConstraint)
         val linearLayout = findViewById<LinearLayout>(R.id.linearLayoutMainTitle)
@@ -59,8 +58,8 @@ class activity_agregarcliente : AppCompatActivity() {
 
         val btnGuardar = findViewById<Button>(R.id.btnGuardarCliente)
         val edtNombre = findViewById<EditText>(R.id.edtNombre)
+        val edtApellido = findViewById<EditText>(R.id.edtApellido)
         val edtCedula = findViewById<EditText>(R.id.edtCedula)
-        val edtCorreo = findViewById<EditText>(R.id.edtCorreo)
         val edtTelefono = findViewById<EditText>(R.id.edtTelefono)
 
         val database = MotorepDatabase.getDatabase(this)
@@ -81,19 +80,19 @@ class activity_agregarcliente : AppCompatActivity() {
 
         btnGuardar.setOnClickListener {
             val nombre = edtNombre.text.toString()
+            val apellido = edtApellido.text.toString()
             val cedula = edtCedula.text.toString()
-            val correo = edtCorreo.text.toString()
             val telefono = edtTelefono.text.toString()
 
-            val cliente = Cliente(nombre = nombre, cedula = cedula, correo = correo, telefono = telefono)
+            val cliente = Cliente(nombre = nombre , apellido = apellido, cedula = cedula, telefono = telefono)
 
             viewModel.guardarCliente(cliente)
 
             Toast.makeText(this, "Cliente guardado correctamente", Toast.LENGTH_SHORT).show()
 
             edtNombre.text.clear()
+            edtApellido.text.clear()
             edtCedula.text.clear()
-            edtCorreo.text.clear()
             edtTelefono.text.clear()
         }
 
