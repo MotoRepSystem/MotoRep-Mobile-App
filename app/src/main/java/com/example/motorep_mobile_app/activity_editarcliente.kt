@@ -31,29 +31,23 @@ class activity_editarcliente : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_editarcliente)
 
 
         binding = ActivityEditarclienteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        // Inicializar el ViewModel
-        val database = MotorepDatabase.getDatabase(applicationContext)
-        val dao = database.clienteDao()
-        val repository = Cliente_Repository(dao)
-        val factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                if (modelClass.isAssignableFrom(Cliente_Viewmodel::class.java)) {
-                    return Cliente_Viewmodel(repository) as T
-                }
-                throw IllegalArgumentException("Unknown ViewModel class")
-            }
-        }
-        viewModel = ViewModelProvider(this, factory)[Cliente_Viewmodel::class.java]
+        drawerLayout = findViewById(R.id.DrawerLayout)
+        navViews = findViewById(R.id.navigationView)
 
         val mainConstraint = findViewById<ConstraintLayout>(R.id.mainConstraint)
         val linearLayout = findViewById<LinearLayout>(R.id.linearLayoutMainTitle)
+
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.mainConstraint) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         // Responsividad del Dashboard y del menú lateral
         ViewCompat.setOnApplyWindowInsetsListener(drawerLayout) { _, insets ->
@@ -77,6 +71,24 @@ class activity_editarcliente : AppCompatActivity() {
 
             insets
         }
+
+
+        // Inicializar el ViewModel
+        val database = MotorepDatabase.getDatabase(applicationContext)
+        val dao = database.clienteDao()
+        val repository = Cliente_Repository(dao)
+        val factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if (modelClass.isAssignableFrom(Cliente_Viewmodel::class.java)) {
+                    return Cliente_Viewmodel(repository) as T
+                }
+                throw IllegalArgumentException("Unknown ViewModel class")
+            }
+        }
+        viewModel = ViewModelProvider(this, factory)[Cliente_Viewmodel::class.java]
+
+
+
 
         val id = intent.getIntExtra("id", 0)
         val nombre = intent.getStringExtra("nombre")
