@@ -20,7 +20,7 @@ class Cliente_Viewmodel (private val repository: Cliente_Repository):ViewModel()
 
     val cliente = repository.listaClientes  // Toma la lista que traemos desde el repository()  // Toma la lista que traemos desde el repository
 
-    // Paso EXTRA: Agregamos la función para eliminar un producto desde el ViewModel
+   //función para eliminar un producto desde el ViewModel
     fun eliminarCliente(cliente: Cliente) {
         viewModelScope.launch {
             repository.eliminarCliente(cliente)

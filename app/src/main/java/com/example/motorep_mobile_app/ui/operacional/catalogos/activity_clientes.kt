@@ -19,6 +19,7 @@ import com.example.motorep_mobile_app.Cliente_Adapter
 import com.example.motorep_mobile_app.MainActivity
 import com.example.motorep_mobile_app.R
 import com.example.motorep_mobile_app.activity_agregarcliente
+import com.example.motorep_mobile_app.activity_detallecliente
 import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_caja
 import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_compras
 import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_facturacion
@@ -174,9 +175,17 @@ class activity_clientes : AppCompatActivity() {
 
 
         //cramos el adapter y usarlo en el recicler
-        val adapter = Cliente_Adapter()
-        reciclerViewCliente.adapter = adapter
+        //val adapter = Cliente_Adapter()
+        //reciclerViewCliente.adapter = adapter
 
+        val adapter = Cliente_Adapter{cliente -> val intent = Intent(this, activity_detallecliente::class.java)
+            intent.putExtra("id", cliente.id)
+            intent.putExtra("nombre", cliente.nombre)
+            intent.putExtra("cedula", cliente.cedula)
+            intent.putExtra("telefono", cliente.telefono)
+            startActivity(intent)
+        }
+        reciclerViewCliente.adapter = adapter
 
         //observamos los cambios en la lista de clientes y actualizamos el adapter
         viewModel.cliente.observe(this) {

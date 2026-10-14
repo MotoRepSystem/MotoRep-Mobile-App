@@ -106,12 +106,37 @@
 
                 </LinearLayout>
 
+                   <!-- apellido -->
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="8dp"
+                       android:orientation="horizontal">
+
+                       <TextView
+                           android:layout_width="0dp"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1"
+                           android:text="Apellido"
+                           android:textColor="#000000"
+                           android:textSize="14sp" />
+
+                       <TextView
+                           android:id="@+id/tvApellido"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text=""
+                           android:textColor="#000000"
+                           android:textSize="14sp" />
+
+                   </LinearLayout>
+
 
                 <!-- Cedula -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="22dp"
+                    android:layout_marginTop="8dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -133,30 +158,6 @@
                 </LinearLayout>
 
 
-                <!-- Categoría -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Correo"
-                        android:textColor="#000000"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/tvCategoriaProducto"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="xxx"
-                        android:textColor="#000000"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
 
 
                 <!-- Telefono -->
@@ -175,7 +176,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/tvPrecioProducto"
+                        android:id="@+id/tvTelefono"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="xxxxxx"
@@ -222,6 +223,11 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+    <include
+        android:id="@+id/navigationView"
+        layout="@layout/drawer_layout"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
