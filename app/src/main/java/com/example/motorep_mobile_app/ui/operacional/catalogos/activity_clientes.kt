@@ -30,13 +30,23 @@ import com.example.motorep_mobile_app.ui.dashboard.activity_dashboard
 import com.google.android.material.navigation.NavigationView
 import com.example.motorep_mobile_app.data.database.MotorepDatabase
 import com.example.motorep_mobile_app.data.repository.Cliente_Repository
+import com.example.motorep_mobile_app.data.entity.Cliente
 import com.example.motorep_mobile_app.viewmodel.Cliente_Viewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.example.motorep_mobile_app.data.remote.api.ApiService
+import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
+import com.example.motorep_mobile_app.data.repository.Cliente_ApiRepository
+import com.example.motorep_mobile_app.viewmodel.Cliente_ApiViewModel
 
 class activity_clientes : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navViews: NavigationView
+
+    private lateinit var apiViewModel: Cliente_ApiViewModel
+    private lateinit var apiRepository: Cliente_ApiRepository // NUEVO: necesario para sincronizarPendientes()
+    private lateinit var viewModel: Cliente_Viewmodel
+    private lateinit var adapter: Cliente_Adapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -197,6 +207,25 @@ class activity_clientes : AppCompatActivity() {
         btnAgregar.setOnClickListener {
             val intent = Intent(this, activity_agregarcliente::class.java)
             startActivity(intent)
+        }
+
+
+
+        // GET remoto (API -> SQL Server)
+        apiRepository = Cliente_ApiRepository(RetrofitClient.create(this))
+        apiViewModel = Cliente_ApiViewModel(apiRepository)
+
+        apiViewModel.obtenerClientes { listDto ->
+            val listaClientes = listDto.map { dto ->
+                Cliente(
+                    id = dto.id,
+                    nombre = dto.Nombres ?: "",
+                    apellido = dto.Apellidos?: "",
+                    cedula = dto.NumCedula?: "",
+                    telefono = dto.NumTelefono?: ""
+                )
+            }
+            adapter.submitList(listaClientes)
         }
 
     }
