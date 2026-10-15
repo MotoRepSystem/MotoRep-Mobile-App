@@ -1,28 +1,32 @@
-# Plan de Implementación: Obtener y Mostrar Clientes en RecyclerView
+# Plan de Implementación: Sincronización en `activity_agregarcliente`
 
-Resolver los errores en `activity_clientes.kt` para realizar correctamente la petición GET a la API y mostrar la lista de clientes en el `RecyclerView`.
+Ajustar la lógica de creación y sincronización de clientes en `activity_agregarcliente.kt` y `Cliente_dto.kt` para garantizar que funcione correctamente tanto online como offline.
 
 ## User Review Required
 
 > [!IMPORTANT]
-> Se identificaron tres problemas principales que impiden que los clientes se muestren correctamente:
-> 1. **Declaración errónea del Adapter:** En `activity_clientes.kt`, la propiedad a nivel de clase `adapter` está declarada como `Cliente_ApiViewModel` en lugar de `Cliente_Adapter`.
-> 2. **Función `toEntity()` no existente:** Se intenta llamar a `it.toEntity()` sobre `Cliente_dto`, pero dicha función de extensión no está definida en el proyecto.
-> 3. **Conflicto entre fuentes de datos (Room vs API):** Actualmente se observa el LiveData local de Room y también se llama directamente al ViewModel de la API, lo cual puede generar comportamientos inesperados o duplicados.
+> Se detectaron tres detalles clave en la implementación actual de `activity_agregarcliente.kt` y `Cliente_dto.kt`:
+> 1. **Falta inicializar `apiRepository`:** Se intenta llamar a `apiRepository.guardarCliente(...)` pero no está instanciado en la Activity.
+> 2. **Incompatibilidad en `Cliente_dto` al crear:** Se pasa `id = null` (cuando el DTO espera un `Int`) y `sincronizado` (que no existe en el DTO). Se debe usar el mapper inverso `cliente.toDto()` o ajustar los parámetros.
+> 3. **Manejo de ID del servidor:** Al crear un nuevo cliente en la API, el ID que devuelve el servidor debe actualizarse en Room junto con `sincronizado = true`.
 
 ## Proposed Changes
 
-### Módulo de Clientes (UI & Data)
+### Módulo UI & DTO
 
-#### [MODIFY] [activity_clientes.kt](file:///C:/Users/elkin/OneDrive/Desktop/Proyectos/MotoRep-Mobile-App/app/src/main/java/com/example/motorep_mobile_app/ui/operacional/catalogos/activity_clientes.kt)
-- Corregir la declaración de la variable miembro `adapter` a `Cliente_Adapter`.
-- Definir correctamente la extensión `toEntity()` o mapear los campos de `Cliente_dto` a la entidad `Cliente` al recibir la respuesta de la API.
-- Unificar la carga de datos mediante `apiViewModel.obtenerClientes` o el ViewModel local según la arquitectura elegida.
+#### [MODIFY] [Cliente_dto.kt](file:///C:/Users/elkin/OneDrive/Desktop/Proyectos/MotoRep-Mobile-App/app/src/main/java/com/example/motorep_mobile_app/data/remote/dto/Cliente_dto.kt)
+- Opcionalmente permitir `id: Int? = null` en `Cliente_dto` para cuando se crea un registro nuevo que aún no tiene ID en el servidor.
+
+#### [MODIFY] [activity_agregarcliente.kt](file:///C:/Users/elkin/OneDrive/Desktop/Proyectos/MotoRep-Mobile-App/app/src/main/java/com/example/motorep_mobile_app/activity_agregarcliente.kt)
+- Instanciar `apiRepository` usando `Cliente_ApiRepository(RetrofitClient.create(this))`.
+- Utilizar el mapper `cliente.toDto()` o construir el DTO correctamente para enviarlo a la API.
+- Manejar la respuesta del servidor para actualizar el `serverId` local y marcar el registro como sincronizado.
 
 ## Verification Plan
 
 ### Automated Tests
-- Compilación del proyecto (`gradle_build`) para verificar que no existan errores de tipos ni referencias no resueltas.
+- Compilación del proyecto (`gradle_build`).
 
 ### Manual Verification
-- Ejecutar la aplicación en el dispositivo/emulador, iniciar sesión y navegar a la pantalla de Clientes (`activity_clientes`) para verificar que la lista se cargue y dibuje correctamente en el `RecyclerView`.
+- Probar agregar un cliente con conexión a internet y verificar que se guarde en Room y se sincronice con el API.
+- Probar agregar un cliente sin conexión y verificar que se guarde localmente con `sincronizado = false`.

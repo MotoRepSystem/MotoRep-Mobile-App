@@ -2,6 +2,7 @@ package com.example.motorep_mobile_app.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.motorep_mobile_app.data.entity.Cliente
 import kotlinx.coroutines.launch
 import com.example.motorep_mobile_app.data.repository.Cliente_ApiRepository
 import com.example.motorep_mobile_app.data.remote.dto.Cliente_dto
@@ -84,4 +85,5 @@ class Cliente_ApiViewModel(
             }
         }
     }
+
 }

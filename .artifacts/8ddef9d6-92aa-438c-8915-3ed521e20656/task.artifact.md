@@ -1,5 +1,6 @@
-# Tareas - Obtener y Mostrar Clientes
+# Tareas - Sincronización en Agregar Cliente
 
-- [ ] Corregir declaración del adapter y mapeo de `Cliente_dto` a `Cliente` en `activity_clientes.kt` `[/] Carpeta UI`
-- [ ] Compilar y verificar el proyecto `[ ] Build`
-- [ ] Verificar funcionamiento en la aplicación `[ ] QA`
+- [ ] Ajustar `Cliente_dto` para permitir `id: Int? = null` `[ ] DTO`
+- [ ] Inicializar `apiRepository` y corregir el envío del DTO en `activity_agregarcliente.kt` `[ ] UI`
+- [ ] Compilar y verificar proyecto `[ ] Build`
+- [ ] Pruebas manuales (Online / Offline) `[ ] QA`

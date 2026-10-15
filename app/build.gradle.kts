@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.identity.jvm)
     implementation(libs.material)
     implementation(libs.play.services.cast.framework)
     testImplementation(libs.junit)

@@ -17,9 +17,13 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.motorep_mobile_app.data.database.MotorepDatabase
 import com.example.motorep_mobile_app.data.entity.Cliente
+import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
+import com.example.motorep_mobile_app.data.repository.Cliente_ApiRepository
 import com.example.motorep_mobile_app.data.repository.Cliente_Repository
+import com.example.motorep_mobile_app.data.utils.NetworkUtils
 import com.example.motorep_mobile_app.ui.dashboard.activity_dashboard
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_clientes
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_empleados
@@ -32,6 +36,7 @@ import com.example.motorep_mobile_app.ui.reportes.activity_indicadores
 import com.example.motorep_mobile_app.ui.reportes.activity_tendencias
 import com.example.motorep_mobile_app.viewmodel.Cliente_Viewmodel
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.launch
 
 class activity_detallecliente : AppCompatActivity() {
 
@@ -74,6 +79,8 @@ class activity_detallecliente : AppCompatActivity() {
 
         // Paso 1: Obtenemos los datos enviados desde la pantalla anterior
         val id = intent.getIntExtra("id", -1)
+        val syncId = intent.getStringExtra("syncId") ?: ""
+        val serverId = intent.getIntExtra("serverId", 0)
         val nombre = intent.getStringExtra("nombre") ?: ""
         val apellido = intent.getStringExtra("apellido") ?: ""
         val cedula = intent.getStringExtra("cedula") ?: ""
@@ -119,29 +126,83 @@ class activity_detallecliente : AppCompatActivity() {
         }
         val viewModel = ViewModelProvider(this, factory)[Cliente_Viewmodel::class.java]
 
-        // Paso 5: Programamos el evento click del botón Eliminar
+        // Programamos el evento clic del botón Eliminar
         btnEliminar.setOnClickListener {
-            // Paso 5.1: Creamos un mensaje de alerta para confirmar el borrado
+
             AlertDialog.Builder(this)
                 .setTitle("Eliminar cliente")
                 .setMessage("¿Desea eliminar definitivamente este cliente?")
                 .setPositiveButton("Sí") { _, _ ->
-                    // Paso 5.2: Si confirma, creamos el objeto cliente con su ID
-                    val clienteAEliminar = Cliente(
-                        id = id,
-                        nombre = nombre,
-                        apellido = apellido,
-                        cedula = cedula,
-                        telefono = telefono
-                    )
-                    // Paso 5.3: Llamamos al ViewModel para borrarlo de la base de datos
-                    viewModel.eliminarCliente(clienteAEliminar)
-                    // Mostramos un mensaje de éxito
-                    Toast.makeText(this, "Cliente eliminado correctamente", Toast.LENGTH_SHORT).show()
-                    // Paso 5.4: Cerramos esta pantalla para volver a la lista
-                    finish()
+
+                    lifecycleScope.launch {
+
+                        val hayInternet =
+                            NetworkUtils.hayInternet(this@activity_detallecliente)
+                        if (hayInternet) {
+                            try {
+                                // API
+                                val apiRepository =
+                                    Cliente_ApiRepository(
+                                        RetrofitClient.create(
+                                            this@activity_detallecliente
+                                        )
+                                    )
+                                // Primero eliminamos de api
+                                if (serverId != 0) { apiRepository.eliminarCliente(serverId) }
+
+                                // Si Azure confirmó el borrado,
+                                // eliminamos también de Room.
+                                viewModel.eliminarPorId(id)
+
+                                Toast.makeText(
+                                    this@activity_detallecliente,
+                                    "Cliente eliminado correctamente",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
+                                finish()
+
+                            } catch (e: Exception) {
+
+                                Toast.makeText(
+                                    this@activity_detallecliente,
+                                    "No se pudo eliminar el cliente de Azure.",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+
+                        } else {
+
+                            // Sin Internet:
+                            // lo marcamos como pendiente de eliminación.
+                            val clientePendienteEliminar =
+                                Cliente(
+                                    id = id,
+                                    serverId =
+                                        if (serverId == 0) null
+                                        else serverId,
+                                    nombre = nombre,
+                                    apellido = apellido,
+                                    cedula = cedula,
+                                    telefono = telefono,
+                                    pendienteEliminar = true
+                                )
+
+                            viewModel.actualizarCliente(
+                                clientePendienteEliminar
+                            )
+
+                            Toast.makeText(
+                                this@activity_detallecliente,
+                                "Sin conexión: se eliminará cuando vuelva Internet.",
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            finish()
+                        }
+                    }
                 }
-                .setNegativeButton("No", null) // Si presiona No, no hace nada
+                .setNegativeButton("No", null)
                 .show()
         }
 

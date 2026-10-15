@@ -14,4 +14,47 @@ class Cliente_Repository(private val dao: ClienteDao) {
         dao.Eliminar(cliente)
     }
 
+    // Elimina definitivamente un cliente de la base de datos local (Room). Se llama después de confirmar que el DELETE remoto (hacia la API) se completó con éxito, cerrando el ciclo de eliminación diferida.
+    suspend fun eliminarPorId(id: Int) {
+        dao.eliminarPorId(id)
+    }
+    // Nuevas funciones para sincronización diferida (offline-first)
+    // Obtiene todos los clientes que fueron creados o modificados mientras el dispositivo estaba sin conexión a Internet, y que por lo tanto todavía no se han enviado a la API (SQL Server). Se usan para reintentar la sincronización cuando vuelve la conexión.
+    suspend fun obtenerPendientesCrear(): List<Cliente> {
+        return dao.obtenerPendientesCrear()
+    }
+    // Obtiene todos los clientes que el usuario eliminó mientras no había  conexión. En vez de borrarlos de Room de inmediato, quedan marcados como "pendientes de eliminar" hasta poder confirmar el borrado en la API.
+    suspend fun obtenerPendientesEliminar(): List<Cliente> {
+        return dao.obtenerPendientesEliminar()
+    }
+    // Marca un cliente como sincronizado exitosamente con la API. Se llama después de que el reintento de creación/actualización remota tuvo éxito, para que ese cliente deje de aparecer en la lista de pendientes.
+    suspend fun marcarComoSincronizado(syncId: String, serverId: Int) {
+        dao.marcarComoSincronizado(syncId, serverId)
+    }
+    suspend fun sincronizarDesdeAzure(cliente: Cliente) {
+        val clienteExistente =
+            dao.obtenerPorSyncId(cliente.syncId)
+        if (clienteExistente != null) {
+
+            val clienteActualizado =
+                cliente.copy(
+                    id = clienteExistente.id,
+                    sincronizado = true,
+                    pendienteEliminar = false
+                )
+            dao.Actualizar(clienteActualizado)
+        } else { dao.Insertar(cliente) }
+    }
+
+    suspend fun eliminarClientesQueYaNoExistenEnAzure(
+        clientesAzure: List<Cliente>
+    ) {
+        val clientesLocales = dao.obtenerClientesSincronizados()
+        val syncIdsAzure = clientesAzure.map { it.syncId }.toSet()
+        for (clienteLocal in clientesLocales) {
+
+            if (clienteLocal.syncId !in syncIdsAzure) { dao.eliminarPorId(clienteLocal.id) }
+        }
+    }
+
 }
