@@ -1,0 +1,115 @@
+package com.example.motorep_mobile_app.ui.common
+
+import android.app.Activity
+import android.content.Intent
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.activity.addCallback
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.GravityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.example.motorep_mobile_app.MainActivity
+import com.example.motorep_mobile_app.R
+import com.example.motorep_mobile_app.ui.dashboard.activity_dashboard
+import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_clientes
+import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_empleados
+import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_inventario
+import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_facturacion
+import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_marcas
+import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_proveedores
+import com.example.motorep_mobile_app.ui.reportes.activity_incidencias
+import com.example.motorep_mobile_app.ui.reportes.activity_indicadores
+import com.example.motorep_mobile_app.ui.reportes.activity_tendencias
+import com.google.android.material.navigation.NavigationView
+
+class MenuLateral(private val activity: AppCompatActivity) {
+
+    private val drawerLayout: DrawerLayout = activity.findViewById(R.id.DrawerLayout)
+    private val navView: NavigationView = activity.findViewById(R.id.navigationView)
+
+    // id del botón del menú -> pantalla destino
+    private val destinos: Map<Int, Class<out Activity>> = mapOf(
+        R.id.drawerLayoutInicio to activity_dashboard::class.java,
+        R.id.drawerLayoutFacturas to activity_facturacion::class.java,
+        R.id.drawerLayoutCompras to activity_marcas::class.java,
+        R.id.drawerLayoutClientes to activity_clientes::class.java,
+        R.id.drawerLayoutEmpleados to activity_empleados::class.java,
+        R.id.drawerLayoutInventario to activity_inventario::class.java,
+        R.id.drawerLayoutCaja to activity_proveedores::class.java,
+        R.id.LinearLayoutIndicadores to activity_indicadores::class.java,
+        R.id.LinearLayoutTendencias to activity_tendencias::class.java,
+        R.id.LinearLayoutIncidencias to activity_incidencias::class.java
+    )
+
+    //Funcion que se debe copiar en todas las pantallas
+    fun configurar() {
+        configurarInsets()
+        configurarBotonMenu()
+        configurarNavegacion()
+        configurarCerrarSesion()
+        configurarBotonAtras()
+    }
+
+    //Configura el insets del menu lateral
+    private fun configurarInsets() {
+        val mainConstraint = activity.findViewById<ConstraintLayout>(R.id.mainConstraint)
+        val linearLayout = activity.findViewById<LinearLayout>(R.id.linearLayoutMainTitle)
+
+        ViewCompat.setOnApplyWindowInsetsListener(drawerLayout) { _, insets ->
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            linearLayout.setPadding(
+                linearLayout.paddingLeft, bars.top,
+                linearLayout.paddingRight, linearLayout.paddingBottom
+            )
+            mainConstraint.setPadding(0, 0, 0, bars.bottom)
+            navView.setPadding(0, bars.top, 0, bars.bottom)
+            insets
+        }
+    }
+
+    //configura el menu lateral que se encuentra en  la pantalla
+    private fun configurarBotonMenu() {
+        activity.findViewById<ImageView>(R.id.imgMenu).setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+    }
+
+    //Configura la navegacion entre pantallas
+    private fun configurarNavegacion() {
+        destinos.forEach { (idBoton, destino) ->
+            activity.findViewById<LinearLayout>(idBoton).setOnClickListener {
+                drawerLayout.closeDrawer(GravityCompat.START)
+                // Si ya estás en esa pantalla, solo se cierra el menú
+                if (activity::class.java != destino) {
+                    val intent = Intent(activity, destino).apply {
+                        flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    }
+                    activity.startActivity(intent)
+                }
+            }
+        }
+    }
+    //configura el boton cerrar sesion
+    private fun configurarCerrarSesion() {
+        activity.findViewById<LinearLayout>(R.id.linearLayoutCerrarSesion).setOnClickListener {
+            val intent = Intent(activity, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            activity.startActivity(intent)
+        }
+    }
+    //configura el boton de atras
+    private fun configurarBotonAtras() {
+        activity.onBackPressedDispatcher.addCallback(activity) {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                isEnabled = false
+                activity.onBackPressedDispatcher.onBackPressed()
+            }
+        }
+    }
+}

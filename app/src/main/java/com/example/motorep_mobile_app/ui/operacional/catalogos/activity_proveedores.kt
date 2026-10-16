@@ -1,4 +1,4 @@
-package com.example.motorep_mobile_app.ui.operacional.movimientos
+package com.example.motorep_mobile_app.ui.operacional.catalogos
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,16 +13,14 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.motorep_mobile_app.MainActivity
 import com.example.motorep_mobile_app.R
+import com.example.motorep_mobile_app.ui.dashboard.activity_dashboard
+import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_facturacion
 import com.example.motorep_mobile_app.ui.reportes.activity_incidencias
 import com.example.motorep_mobile_app.ui.reportes.activity_indicadores
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_inventario
 import com.example.motorep_mobile_app.ui.reportes.activity_tendencias
-import com.example.motorep_mobile_app.ui.dashboard.activity_dashboard
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_clientes
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_empleados
 import com.google.android.material.navigation.NavigationView
 
-class activity_compras : AppCompatActivity() {
+class activity_proveedores : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navViews: NavigationView
@@ -30,8 +28,12 @@ class activity_compras : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_compras)
-
+        setContentView(R.layout.activity_proveedores)
+        /*ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }*/
 
 
         drawerLayout = findViewById(R.id.DrawerLayout)
@@ -83,7 +85,7 @@ class activity_compras : AppCompatActivity() {
 
         val btnCompras = findViewById<LinearLayout>(R.id.drawerLayoutCompras)
         btnCompras.setOnClickListener {
-            val intent = Intent(this, activity_compras::class.java)
+            val intent = Intent(this, activity_marcas::class.java)
             startActivity(intent)
         }
 
@@ -107,7 +109,7 @@ class activity_compras : AppCompatActivity() {
 
         val btnCaja = findViewById<LinearLayout>(R.id.drawerLayoutCaja)
         btnCaja.setOnClickListener {
-            val intent = Intent(this, activity_caja::class.java)
+            val intent = Intent(this, activity_proveedores::class.java)
             startActivity(intent)
         }
 
@@ -139,7 +141,6 @@ class activity_compras : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
-
 
     }
 }

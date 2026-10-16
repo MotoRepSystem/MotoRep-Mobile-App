@@ -13,9 +13,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.motorep_mobile_app.MainActivity
 import com.example.motorep_mobile_app.R
-import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_caja
+import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_proveedores
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_clientes
-import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_compras
+import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_marcas
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_empleados
 import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_facturacion
 import com.example.motorep_mobile_app.ui.reportes.activity_incidencias
@@ -87,7 +87,7 @@ class activity_dashboard : AppCompatActivity() {
 
         val btnCompras = findViewById<LinearLayout>(R.id.drawerLayoutCompras)
         btnCompras.setOnClickListener {
-            val intent = Intent(this, activity_compras::class.java)
+            val intent = Intent(this, activity_marcas::class.java)
             startActivity(intent)
         }
 
@@ -111,7 +111,7 @@ class activity_dashboard : AppCompatActivity() {
 
         val btnCaja = findViewById<LinearLayout>(R.id.drawerLayoutCaja)
         btnCaja.setOnClickListener {
-            val intent = Intent(this, activity_caja::class.java)
+            val intent = Intent(this, activity_proveedores::class.java)
             startActivity(intent)
         }
 
