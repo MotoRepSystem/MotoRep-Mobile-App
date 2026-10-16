@@ -53,7 +53,7 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.operacional.movimientos.activity_compras"
+            android:name=".ui.operacional.catalogos.activity_marcas"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
@@ -65,7 +65,7 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.operacional.movimientos.activity_caja"
+            android:name=".ui.operacional.catalogos.activity_proveedores"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
@@ -106,6 +106,14 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activity_editarcliente"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".item_producto"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity_drawerlayout"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
     </application>

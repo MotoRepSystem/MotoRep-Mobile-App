@@ -54,15 +54,14 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardProducto"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="26dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="30dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="10dp"
             app:cardElevation="3dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/linearLayoutMainTitle">
@@ -70,7 +69,7 @@
             <!-- Contenedor vertical de toda la información del producto.-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="14dp">
 
@@ -96,7 +95,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Laptop del inspiro 15"
+                        android:text="Bujia 12v"
                         android:textColor="#000000"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -164,7 +163,7 @@
                         android:id="@+id/tvCategoriaProducto"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="computadora"
+                        android:text="Electrico"
                         android:textColor="#000000"
                         android:textSize="14sp" />
 
@@ -220,35 +219,6 @@
                         android:textColor="#000000"
                         android:textSize="14sp" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="35dp"
-                    android:layout_marginBottom="20dp">
-
-                    <Button
-                        android:id="@+id/btnEditar"
-                        android:layout_width="280dp"
-                        android:layout_height="48dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="8dp"
-                        android:text="Editar"
-                        android:textColor="@android:color/white"
-                        android:backgroundTint="#6750A4" />
-
-                    <Button
-                        android:id="@+id/btnEliminar"
-                        android:layout_width="280dp"
-                        android:layout_height="48dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="16dp"
-                        android:text="Eliminar"
-                        android:textColor="@android:color/white"
-                        android:backgroundTint="#D32F2F" />
                 </LinearLayout>
 
 

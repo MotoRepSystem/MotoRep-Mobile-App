@@ -28,8 +28,8 @@ import com.example.motorep_mobile_app.ui.dashboard.activity_dashboard
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_clientes
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_empleados
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_inventario
-import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_caja
-import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_compras
+import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_proveedores
+import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_marcas
 import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_facturacion
 import com.example.motorep_mobile_app.ui.reportes.activity_incidencias
 import com.example.motorep_mobile_app.ui.reportes.activity_indicadores
@@ -254,7 +254,7 @@ class activity_agregarcliente : AppCompatActivity() {
 
         val btnCompras = findViewById<LinearLayout>(R.id.drawerLayoutCompras)
         btnCompras.setOnClickListener {
-            val intent = Intent(this, activity_compras::class.java)
+            val intent = Intent(this, activity_marcas::class.java)
             startActivity(intent)
         }
 
@@ -278,7 +278,7 @@ class activity_agregarcliente : AppCompatActivity() {
 
         val btnCaja = findViewById<LinearLayout>(R.id.drawerLayoutCaja)
         btnCaja.setOnClickListener {
-            val intent = Intent(this, activity_caja::class.java)
+            val intent = Intent(this, activity_proveedores::class.java)
             startActivity(intent)
         }
 
