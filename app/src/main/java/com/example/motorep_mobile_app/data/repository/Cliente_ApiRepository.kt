@@ -7,7 +7,7 @@ class Cliente_ApiRepository(
 ) {
     suspend fun obtenerClientes() = api.obtenerCliente()
 
-    suspend fun guardarCliente(cliente: Cliente_dto) = api.guardarCliente(cliente)
+    suspend fun guardarClientes(cliente: Cliente_dto) = api.guardarCliente(cliente)
 
     suspend fun actualizarCliente(id: Int, cliente: Cliente_dto) =
         api.actualizarCliente(id, cliente)

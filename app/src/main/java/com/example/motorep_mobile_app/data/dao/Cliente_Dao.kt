@@ -1,24 +1,25 @@
 package com.example.motorep_mobile_app.data.dao
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.motorep_mobile_app.data.entity.Cliente
-import androidx.lifecycle.LiveData
 
 @Dao
-interface  ClienteDao {
-    @Insert
+interface Cliente_Dao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun Insertar(cliente: Cliente)
-    @Update
-    suspend fun Actualizar(cliente: Cliente)
-    @Delete
-    suspend fun Eliminar(cliente: Cliente)
 
-    @Query("SELECT * FROM clientes ORDER BY id DESC")
+    @Update suspend fun Actualizar(cliente: Cliente)
+
+    @Delete suspend fun Eliminar(cliente: Cliente)
+
+    @Query("SELECT * FROM clientes WHERE pendienteEliminar = 0 ORDER BY id DESC")
     fun ObtenerTodos(): LiveData<List<Cliente>>
-
 
     @Query("SELECT * FROM clientes WHERE sincronizado = 0 AND pendienteEliminar = 0")
     suspend fun obtenerPendientesCrear(): List<Cliente>
@@ -31,9 +32,6 @@ interface  ClienteDao {
 
     @Query("SELECT * FROM clientes WHERE syncId = :syncId LIMIT 1")
     suspend fun obtenerPorSyncId(syncId: String): Cliente?
-
-    @Query("SELECT * FROM clientes WHERE serverId = :serverId LIMIT 1")
-    suspend fun obtenerPorServerId(serverId: Int): Cliente?
 
     @Query("UPDATE clientes SET sincronizado = 1, serverId = :serverId WHERE syncId = :syncId")
     suspend fun marcarComoSincronizado(syncId: String, serverId: Int)
