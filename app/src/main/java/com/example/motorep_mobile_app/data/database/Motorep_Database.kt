@@ -8,7 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.motorep_mobile_app.data.dao.ClienteDao
 import com.example.motorep_mobile_app.data.entity.Cliente
 @Database(
-    entities = [Cliente::class], version = 1
+    entities = [Cliente::class], version = 2
 )
 abstract class MotorepDatabase : RoomDatabase() {
     abstract fun clienteDao(): ClienteDao

@@ -29,6 +29,7 @@ import com.example.motorep_mobile_app.ui.reportes.activity_tendencias
 import com.example.motorep_mobile_app.ui.dashboard.activity_dashboard
 import com.google.android.material.navigation.NavigationView
 import com.example.motorep_mobile_app.data.database.MotorepDatabase
+import com.example.motorep_mobile_app.data.entity.Cliente
 import com.example.motorep_mobile_app.data.repository.Cliente_Repository
 import com.example.motorep_mobile_app.viewmodel.Cliente_Viewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -36,13 +37,13 @@ import com.example.motorep_mobile_app.data.remote.dto.toDto
 import com.example.motorep_mobile_app.data.remote.dto.toEntity
 import com.example.motorep_mobile_app.data.repository.Cliente_ApiRepository
 import com.example.motorep_mobile_app.data.utils.NetworkUtils
+import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
+import com.example.motorep_mobile_app.ui.common.MenuLateral
 import com.example.motorep_mobile_app.viewmodel.Cliente_ApiViewModel
 import kotlinx.coroutines.launch
 
 class activity_clientes : AppCompatActivity() {
 
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navViews: NavigationView
 
     private lateinit var apiViewModel: Cliente_ApiViewModel
     private lateinit var apiRepository: Cliente_ApiRepository // NUEVO: necesario para sincronizarPendientes()
@@ -56,111 +57,7 @@ class activity_clientes : AppCompatActivity() {
         setContentView(R.layout.activity_clientes)
 
 
-        drawerLayout = findViewById(R.id.DrawerLayout)
-        navViews = findViewById(R.id.navigationView)
-
-        val mainConstraint = findViewById<ConstraintLayout>(R.id.mainConstraint)
-        val linearLayout = findViewById<LinearLayout>(R.id.linearLayoutMainTitle)
-
-        // Responsividad del Dashboard y del menú lateral
-        ViewCompat.setOnApplyWindowInsetsListener(drawerLayout) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-            linearLayout.setPadding(
-                linearLayout.paddingLeft,
-                systemBars.top,
-                linearLayout.paddingRight,
-                linearLayout.paddingBottom
-            )
-
-            mainConstraint.setPadding(0, 0, 0, systemBars.bottom)
-
-            navViews.setPadding(
-                0,
-                systemBars.top,
-                0,
-                systemBars.bottom
-            )
-
-            insets
-        }
-
-        // Botón abrir menú
-        val btnMenu = findViewById<ImageView>(R.id.imgMenu)
-        btnMenu.setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
-        }
-
-        /*// Botón cerrar menú
-        val btnMenuVolver = findViewById<ImageView>(R.id.imgCerrarMenu)
-        btnMenuVolver.setOnClickListener {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        }*/
-
-        val btnFacturas = findViewById<LinearLayout>(R.id.drawerLayoutFacturas)
-        btnFacturas.setOnClickListener {
-            val intent = Intent(this, activity_facturacion::class.java)
-            startActivity(intent)
-        }
-
-        val btnCompras = findViewById<LinearLayout>(R.id.drawerLayoutCompras)
-        btnCompras.setOnClickListener {
-            val intent = Intent(this, activity_marcas::class.java)
-            startActivity(intent)
-        }
-
-        val btnClientes = findViewById<LinearLayout>(R.id.drawerLayoutClientes)
-        btnClientes.setOnClickListener {
-            val intent = Intent(this, activity_clientes::class.java)
-            startActivity(intent)
-        }
-
-        val btnEmpleados = findViewById<LinearLayout>(R.id.drawerLayoutEmpleados)
-        btnEmpleados.setOnClickListener {
-            val intent = Intent(this, activity_empleados::class.java)
-            startActivity(intent)
-        }
-
-        val btnInventario = findViewById<LinearLayout>(R.id.drawerLayoutInventario)
-        btnInventario.setOnClickListener {
-            val intent = Intent(this, activity_inventario::class.java)
-            startActivity(intent)
-        }
-
-        val btnCaja = findViewById<LinearLayout>(R.id.drawerLayoutCaja)
-        btnCaja.setOnClickListener {
-            val intent = Intent(this, activity_proveedores::class.java)
-            startActivity(intent)
-        }
-
-
-        val btnIndicadores = findViewById<LinearLayout>(R.id.LinearLayoutIndicadores)
-        btnIndicadores.setOnClickListener {
-            val intent = Intent(this, activity_indicadores::class.java)
-            startActivity(intent)
-        }
-
-        val btnTendencias = findViewById<LinearLayout>(R.id.LinearLayoutTendencias)
-        btnTendencias.setOnClickListener {
-            val intent = Intent(this, activity_tendencias::class.java)
-            startActivity(intent)
-        }
-
-        val btnIncidencias = findViewById<LinearLayout>(R.id.LinearLayoutIncidencias)
-        btnIncidencias.setOnClickListener {
-            val intent = Intent(this, activity_incidencias::class.java)
-            startActivity(intent)
-        }
-        val btnInicio = findViewById<LinearLayout>(R.id.drawerLayoutInicio)
-        btnInicio.setOnClickListener {
-            val intent = Intent(this, activity_dashboard::class.java)
-            startActivity(intent)
-        }
-        val btnSalir = findViewById<LinearLayout>(R.id.linearLayoutCerrarSesion)
-        btnSalir.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
+        MenuLateral(this).configurar()
 
 
         val database = MotorepDatabase.getDatabase(this)
@@ -176,7 +73,7 @@ class activity_clientes : AppCompatActivity() {
             }
         }
 
-        val viewModel = ViewModelProvider(this, factory)[Cliente_Viewmodel::class.java]
+        viewModel = ViewModelProvider(this, factory)[Cliente_Viewmodel::class.java]
 
 
         //accedemos al recicler view
@@ -191,7 +88,10 @@ class activity_clientes : AppCompatActivity() {
 
         val adapter = Cliente_Adapter{cliente -> val intent = Intent(this, activity_detallecliente::class.java)
             intent.putExtra("id", cliente.id)
+            intent.putExtra("syncId", cliente.syncId)
+            intent.putExtra("serverId", cliente.serverId ?: 0)
             intent.putExtra("nombre", cliente.nombre)
+            intent.putExtra("apellido", cliente.apellido)
             intent.putExtra("cedula", cliente.cedula)
             intent.putExtra("telefono", cliente.telefono)
             startActivity(intent)
@@ -214,17 +114,17 @@ class activity_clientes : AppCompatActivity() {
 
 
         // GET remoto (API -> SQL Server)
-        /*apiRepository = Cliente_ApiRepository(RetrofitClient.create(this))
+        apiRepository = Cliente_ApiRepository(RetrofitClient.create(this))
         apiViewModel = Cliente_ApiViewModel(apiRepository)
 
-        apiViewModel.obtenerClientes { listDto ->
+        /*apiViewModel.obtenerClientes { listDto ->
             val listaClientes = listDto.map { dto ->
                 Cliente(
-                    id = dto.id ?:"",
+                    id = dto.id,
                     nombre = dto.Nombres ?: "",
-                    apellido = dto.Apellidos?: "",
-                    cedula = dto.NumCedula?: "",
-                    telefono = dto.NumTelefono?: ""
+                    apellido = dto.Apellidos ?: "",
+                    cedula = dto.NumCedula ?: "",
+                    telefono = dto.NumTelefono ?: ""
                 )
             }
             adapter.submitList(listaClientes)

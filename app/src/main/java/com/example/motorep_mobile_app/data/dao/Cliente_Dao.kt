@@ -32,6 +32,9 @@ interface  ClienteDao {
     @Query("SELECT * FROM clientes WHERE syncId = :syncId LIMIT 1")
     suspend fun obtenerPorSyncId(syncId: String): Cliente?
 
+    @Query("SELECT * FROM clientes WHERE serverId = :serverId LIMIT 1")
+    suspend fun obtenerPorServerId(serverId: Int): Cliente?
+
     @Query("UPDATE clientes SET sincronizado = 1, serverId = :serverId WHERE syncId = :syncId")
     suspend fun marcarComoSincronizado(syncId: String, serverId: Int)
 

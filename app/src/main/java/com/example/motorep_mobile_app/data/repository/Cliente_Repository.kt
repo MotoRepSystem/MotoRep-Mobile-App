@@ -32,18 +32,31 @@ class Cliente_Repository(private val dao: ClienteDao) {
         dao.marcarComoSincronizado(syncId, serverId)
     }
     suspend fun sincronizarDesdeAzure(cliente: Cliente) {
-        val clienteExistente =
+        val clienteExistente = if (cliente.serverId != null && cliente.serverId != 0) {
+            dao.obtenerPorServerId(cliente.serverId) ?: dao.obtenerPorSyncId(cliente.syncId)
+        } else {
             dao.obtenerPorSyncId(cliente.syncId)
+        }
+
         if (clienteExistente != null) {
+            // Mantener el syncId local si ya existía para no perderlo aunque Azure devuelva syncId = null
+            val syncIdPreservado = if (clienteExistente.syncId.isNotBlank()) {
+                clienteExistente.syncId
+            } else {
+                cliente.syncId
+            }
 
             val clienteActualizado =
                 cliente.copy(
                     id = clienteExistente.id,
+                    syncId = syncIdPreservado,
                     sincronizado = true,
                     pendienteEliminar = false
                 )
             dao.Actualizar(clienteActualizado)
-        } else { dao.Insertar(cliente) }
+        } else { 
+            dao.Insertar(cliente) 
+        }
     }
 
     suspend fun eliminarClientesQueYaNoExistenEnAzure(
@@ -51,9 +64,15 @@ class Cliente_Repository(private val dao: ClienteDao) {
     ) {
         val clientesLocales = dao.obtenerClientesSincronizados()
         val syncIdsAzure = clientesAzure.map { it.syncId }.toSet()
-        for (clienteLocal in clientesLocales) {
+        val serverIdsAzure = clientesAzure.mapNotNull { it.serverId }.toSet()
 
-            if (clienteLocal.syncId !in syncIdsAzure) { dao.eliminarPorId(clienteLocal.id) }
+        for (clienteLocal in clientesLocales) {
+            val existeEnAzure = clienteLocal.syncId in syncIdsAzure ||
+                    (clienteLocal.serverId != null && clienteLocal.serverId in serverIdsAzure)
+
+            if (!existeEnAzure) { 
+                dao.eliminarPorId(clienteLocal.id) 
+            }
         }
     }
 

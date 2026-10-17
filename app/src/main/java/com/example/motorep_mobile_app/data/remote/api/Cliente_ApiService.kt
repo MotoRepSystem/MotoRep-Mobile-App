@@ -5,10 +5,10 @@ import com.example.motorep_mobile_app.data.remote.dto.LoginResponse
 import retrofit2.http.*
 
 interface ApiService {
-    @GET("catalogos/clientes")
+    @GET("catalogos/clientes/")
     suspend fun obtenerCliente(): List<Cliente_dto>
 
-    @POST("catalogos/clientes")
+    @POST("catalogos/clientes/")
     suspend fun guardarCliente(@Body cliente: Cliente_dto): Cliente_dto
 
     @PUT("catalogos/clientes/{id}")
