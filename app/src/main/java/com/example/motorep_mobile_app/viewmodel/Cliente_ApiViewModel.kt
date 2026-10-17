@@ -33,7 +33,7 @@ class Cliente_ApiViewModel(
     ) {
         viewModelScope.launch {
             try {
-                val respuesta = repository.guardarCliente(cliente)
+                val respuesta = repository.guardarClientes(cliente)
                 onResult(respuesta)
             } catch (e: Exception) {
                 Log.e(

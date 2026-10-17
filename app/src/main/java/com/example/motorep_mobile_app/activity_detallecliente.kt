@@ -1,20 +1,13 @@
 package com.example.motorep_mobile_app
 
-import android.content.Intent
+import  android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -25,18 +18,7 @@ import com.example.motorep_mobile_app.data.repository.Cliente_ApiRepository
 import com.example.motorep_mobile_app.data.repository.Cliente_Repository
 import com.example.motorep_mobile_app.data.utils.NetworkUtils
 import com.example.motorep_mobile_app.ui.common.MenuLateral
-import com.example.motorep_mobile_app.ui.dashboard.activity_dashboard
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_clientes
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_empleados
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_inventario
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_proveedores
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_marcas
-import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_facturacion
-import com.example.motorep_mobile_app.ui.reportes.activity_incidencias
-import com.example.motorep_mobile_app.ui.reportes.activity_indicadores
-import com.example.motorep_mobile_app.ui.reportes.activity_tendencias
 import com.example.motorep_mobile_app.viewmodel.Cliente_Viewmodel
-import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.launch
 
 class activity_detallecliente : AppCompatActivity() {
@@ -51,8 +33,7 @@ class activity_detallecliente : AppCompatActivity() {
 
         MenuLateral(this).configurar()
 
-
-        // Paso 1: Obtenemos los datos enviados desde la pantalla anterior
+        // Obtenemos los datos enviados desde la pantalla anterior
         val id = intent.getIntExtra("id", -1)
         val syncId = intent.getStringExtra("syncId") ?: ""
         val serverId = intent.getIntExtra("serverId", 0)
@@ -61,15 +42,14 @@ class activity_detallecliente : AppCompatActivity() {
         val cedula = intent.getStringExtra("cedula") ?: ""
         val telefono = intent.getStringExtra("telefono") ?: ""
 
-        // Paso 2: Vinculamos los elementos del diseño (XML) con el código
+        // Vinculamos los elementos del diseño (XML) con el código
         val txtNombre = findViewById<TextView>(R.id.tvNombreCliente)
         val txtApellido = findViewById<TextView>(R.id.tvApellido)
         val txtCedula = findViewById<TextView>(R.id.tvCedula)
         val txtTelefono = findViewById<TextView>(R.id.tvTelefono)
         val btnEliminar = findViewById<Button>(R.id.btnEliminar)
 
-
-        // Paso 3: Mostramos los datos en pantalla
+        //Mostramos los datos en pantalla
         txtNombre.text = nombre
         txtApellido.text = apellido
         txtCedula.text = cedula
@@ -79,8 +59,8 @@ class activity_detallecliente : AppCompatActivity() {
         btnEditar.setOnClickListener {
             val intent = Intent(this, activity_editarcliente::class.java)
             intent.putExtra("id", id)
-            intent.putExtra("serverId", serverId)
             intent.putExtra("syncId", syncId)
+            intent.putExtra("serverId", serverId)
             intent.putExtra("nombre", nombre)
             intent.putExtra("apellido", apellido)
             intent.putExtra("cedula", cedula)
@@ -89,7 +69,7 @@ class activity_detallecliente : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Paso 4: Configuramos el ViewModel para acceder a la base de datos
+        // Configuramos el ViewModel para acceder a la base de datos
         val database = MotorepDatabase.getDatabase(applicationContext)
         val dao = database.clienteDao()
         val repository = Cliente_Repository(dao)
@@ -115,17 +95,25 @@ class activity_detallecliente : AppCompatActivity() {
 
                         val hayInternet =
                             NetworkUtils.hayInternet(this@activity_detallecliente)
+
                         if (hayInternet) {
+
                             try {
-                                // API
+
+                                // API de Azure
                                 val apiRepository =
                                     Cliente_ApiRepository(
                                         RetrofitClient.create(
                                             this@activity_detallecliente
                                         )
                                     )
-                                // Primero eliminamos de api
-                                if (serverId != 0) { apiRepository.eliminarCliente(serverId) }
+
+                                // Primero eliminamos de Azure
+                                if (serverId != 0) {
+
+                                    apiRepository.eliminarCliente(serverId)
+
+                                }
 
                                 // Si Azure confirmó el borrado,
                                 // eliminamos también de Room.
