@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.motorep_mobile_app.MainActivity
 import com.example.motorep_mobile_app.R
+import com.example.motorep_mobile_app.ui.common.MenuLateral
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_proveedores
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_clientes
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_marcas
@@ -38,7 +39,9 @@ class activity_dashboard : AppCompatActivity() {
 
         setContentView(R.layout.activity_dashboard)
 
-        drawerLayout = findViewById(R.id.DrawerLayout)
+        MenuLateral(this).configurar()
+
+        /*drawerLayout = findViewById(R.id.DrawerLayout)
         navViews = findViewById(R.id.navigationView)
 
         val mainConstraint = findViewById<ConstraintLayout>(R.id.mainConstraint)
@@ -80,61 +83,61 @@ class activity_dashboard : AppCompatActivity() {
         }*/
 
         val btnFacturas = findViewById<LinearLayout>(R.id.drawerLayoutFacturas)
-        btnFacturas.setOnClickListener {
+        btnFacturas?.setOnClickListener {
             val intent = Intent(this, activity_facturacion::class.java)
             startActivity(intent)
         }
 
         val btnCompras = findViewById<LinearLayout>(R.id.drawerLayoutCompras)
-        btnCompras.setOnClickListener {
+        btnCompras?.setOnClickListener {
             val intent = Intent(this, activity_marcas::class.java)
             startActivity(intent)
         }
 
         val btnClientes = findViewById<LinearLayout>(R.id.drawerLayoutClientes)
-        btnClientes.setOnClickListener {
+        btnClientes?.setOnClickListener {
             val intent = Intent(this, activity_clientes::class.java)
             startActivity(intent)
         }
 
         val btnEmpleados = findViewById<LinearLayout>(R.id.drawerLayoutEmpleados)
-        btnEmpleados.setOnClickListener {
+        btnEmpleados?.setOnClickListener {
             val intent = Intent(this, activity_empleados::class.java)
             startActivity(intent)
         }
 
         val btnInventario = findViewById<LinearLayout>(R.id.drawerLayoutInventario)
-        btnInventario.setOnClickListener {
+        btnInventario?.setOnClickListener {
             val intent = Intent(this, activity_inventario::class.java)
             startActivity(intent)
         }
 
         val btnCaja = findViewById<LinearLayout>(R.id.drawerLayoutCaja)
-        btnCaja.setOnClickListener {
+        btnCaja?.setOnClickListener {
             val intent = Intent(this, activity_proveedores::class.java)
             startActivity(intent)
         }
 
 
         val btnIndicadores = findViewById<LinearLayout>(R.id.LinearLayoutIndicadores)
-        btnIndicadores.setOnClickListener {
+        btnIndicadores?.setOnClickListener {
             val intent = Intent(this, activity_indicadores::class.java)
             startActivity(intent)
         }
 
         val btnTendencias = findViewById<LinearLayout>(R.id.LinearLayoutTendencias)
-        btnTendencias.setOnClickListener {
+        btnTendencias?.setOnClickListener {
             val intent = Intent(this, activity_tendencias::class.java)
             startActivity(intent)
         }
 
         val btnIncidencias = findViewById<LinearLayout>(R.id.LinearLayoutIncidencias)
-        btnIncidencias.setOnClickListener {
+        btnIncidencias?.setOnClickListener {
             val intent = Intent(this, activity_incidencias::class.java)
             startActivity(intent)
         }
         val btnInicio = findViewById<LinearLayout>(R.id.drawerLayoutInicio)
-        btnInicio.setOnClickListener {
+        btnInicio?.setOnClickListener {
             val intent = Intent(this, activity_dashboard::class.java)
             startActivity(intent)
         }
@@ -143,7 +146,7 @@ class activity_dashboard : AppCompatActivity() {
         val btnNotificaciones =
             findViewById<LinearLayout>(R.id.LinearLayoutNotificaciones)
 
-        btnNotificaciones.setOnClickListener {
+        btnNotificaciones?.setOnClickListener {
             val intent = Intent(this, activity_notificaciones::class.java)
             startActivity(intent)
         }
@@ -152,15 +155,15 @@ class activity_dashboard : AppCompatActivity() {
         val btnConfiguracion =
             findViewById<LinearLayout>(R.id.LinearLayoutConfiguracion)
 
-        btnConfiguracion.setOnClickListener {
+        btnConfiguracion?.setOnClickListener {
             val intent = Intent(this, activity_configuracion::class.java)
             startActivity(intent)
         }
 
         val btnSalir = findViewById<LinearLayout>(R.id.linearLayoutCerrarSesion)
-        btnSalir.setOnClickListener {
+        btnSalir?.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
-        }
+        }*/
     }
 }

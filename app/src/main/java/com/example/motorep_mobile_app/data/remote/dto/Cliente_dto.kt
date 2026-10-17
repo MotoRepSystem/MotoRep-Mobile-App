@@ -4,11 +4,11 @@ import com.example.motorep_mobile_app.data.entity.Cliente
 
 data class Cliente_dto (
     val id: Int?,
-    val syncId: String?,
     val Nombres: String?,
     val Apellidos: String?,
     val NumCedula: String?,
-    val NumTelefono: String?
+    val NumTelefono: String?,
+    val syncId: String?
 )
 
 // Mapper: convierte lo que llega de la API (DTO) en un Cliente de Room

@@ -33,12 +33,11 @@ class MenuLateral(private val activity: AppCompatActivity) {
     // id del botón del menú -> pantalla destino
     private val destinos: Map<Int, Class<out Activity>> = mapOf(
         R.id.drawerLayoutInicio to activity_dashboard::class.java,
-        R.id.drawerLayoutFacturas to activity_facturacion::class.java,
-        R.id.drawerLayoutCompras to activity_marcas::class.java,
+        R.id.drawerLayoutProveedores to activity_proveedores::class.java,
+        R.id.drawerLayoutMarcas to activity_marcas::class.java,
         R.id.drawerLayoutClientes to activity_clientes::class.java,
         R.id.drawerLayoutEmpleados to activity_empleados::class.java,
         R.id.drawerLayoutInventario to activity_inventario::class.java,
-        R.id.drawerLayoutCaja to activity_proveedores::class.java,
         R.id.LinearLayoutIndicadores to activity_indicadores::class.java,
         R.id.LinearLayoutTendencias to activity_tendencias::class.java,
         R.id.LinearLayoutIncidencias to activity_incidencias::class.java

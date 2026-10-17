@@ -17,13 +17,13 @@ import com.example.motorep_mobile_app.data.entity.Cliente
 import com.example.motorep_mobile_app.data.repository.Cliente_Repository
 import com.example.motorep_mobile_app.viewmodel.Cliente_Viewmodel
 import com.example.motorep_mobile_app.databinding.ActivityEditarclienteBinding
+import com.example.motorep_mobile_app.ui.common.MenuLateral
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_clientes
 import com.google.android.material.navigation.NavigationView
 
 class activity_editarcliente : AppCompatActivity() {
 
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navViews: NavigationView
+
 
     private lateinit var binding: ActivityEditarclienteBinding
     private lateinit var viewModel: Cliente_Viewmodel
@@ -36,42 +36,7 @@ class activity_editarcliente : AppCompatActivity() {
         binding = ActivityEditarclienteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        drawerLayout = findViewById(R.id.DrawerLayout)
-        navViews = findViewById(R.id.navigationView)
-
-        val mainConstraint = findViewById<ConstraintLayout>(R.id.mainConstraint)
-        val linearLayout = findViewById<LinearLayout>(R.id.linearLayoutMainTitle)
-
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.mainConstraint) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
-        // Responsividad del Dashboard y del menú lateral
-        ViewCompat.setOnApplyWindowInsetsListener(drawerLayout) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-            linearLayout.setPadding(
-                linearLayout.paddingLeft,
-                systemBars.top,
-                linearLayout.paddingRight,
-                linearLayout.paddingBottom
-            )
-
-            mainConstraint.setPadding(0, 0, 0, systemBars.bottom)
-
-            navViews.setPadding(
-                0,
-                systemBars.top,
-                0,
-                systemBars.bottom
-            )
-
-            insets
-        }
-
+        MenuLateral(this).configurar()
 
         // Inicializar el ViewModel
         val database = MotorepDatabase.getDatabase(applicationContext)

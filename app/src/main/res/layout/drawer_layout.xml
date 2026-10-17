@@ -126,7 +126,7 @@
             android:textStyle="bold" />
 
         <LinearLayout
-            android:id="@+id/drawerLayoutFacturas"
+            android:id="@+id/drawerLayoutMarcas"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_vertical"
@@ -149,7 +149,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/drawerLayoutCompras"
+            android:id="@+id/drawerLayoutProveedores"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_vertical"
