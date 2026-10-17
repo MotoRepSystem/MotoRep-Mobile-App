@@ -1,5 +1,6 @@
 package com.example.motorep_mobile_app.data.remote.api
 import com.example.motorep_mobile_app.data.remote.dto.Cliente_dto
+import com.example.motorep_mobile_app.data.remote.dto.Empleado_dto
 import com.example.motorep_mobile_app.data.remote.dto.LoginRequest
 import com.example.motorep_mobile_app.data.remote.dto.LoginResponse
 import retrofit2.http.*
@@ -19,4 +20,17 @@ interface ApiService {
 
     @POST("api/token/")
     suspend fun login(@Body request: LoginRequest): LoginResponse
+
+    //Apis de
+    @GET("catalogos/empleados")
+    suspend fun obtenerEmpleado(): List<Empleado_dto>
+
+    @POST("catalogos/empleados")
+    suspend fun guardarEmpleado(@Body empleado: Empleado_dto): List<Empleado_dto>
+
+    @PUT("catalogos/empleados/{id}")
+    suspend fun actualizarEmpleado(@Path("id") id: Int, @Body empleado: Empleado_dto): List<Empleado_dto>
+
+    @DELETE("catalogos/empleados/{id}")
+    suspend fun eliminarEmpleado(@Path("id") id: Int)
 }
