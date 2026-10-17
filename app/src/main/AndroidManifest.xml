@@ -111,14 +111,6 @@
             android:name=".activity_editarcliente"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
-        <activity
-<<<<<<< Updated upstream
-            android:name=".activity_drawerlayout"
-=======
-            android:name=".activity_agregarempleado"
->>>>>>> Stashed changes
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

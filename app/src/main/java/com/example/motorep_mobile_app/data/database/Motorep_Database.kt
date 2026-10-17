@@ -7,7 +7,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.motorep_mobile_app.data.dao.ClienteDao
+import com.example.motorep_mobile_app.data.dao.Cliente_Dao
 import com.example.motorep_mobile_app.data.dao.EmpleadoDao
 import com.example.motorep_mobile_app.data.entity.Cliente
 import com.example.motorep_mobile_app.data.entity.Empleado
@@ -18,7 +18,7 @@ import com.example.motorep_mobile_app.data.entity.Empleado
 )
 abstract class MotorepDatabase : RoomDatabase() {
 
-    abstract fun clienteDao(): ClienteDao
+    abstract fun clienteDao(): Cliente_Dao
 
     abstract fun empleado_Dao(): EmpleadoDao
 
