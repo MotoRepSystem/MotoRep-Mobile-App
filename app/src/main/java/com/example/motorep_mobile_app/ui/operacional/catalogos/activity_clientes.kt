@@ -88,7 +88,10 @@ class activity_clientes : AppCompatActivity() {
 
         val adapter = Cliente_Adapter{cliente -> val intent = Intent(this, activity_detallecliente::class.java)
             intent.putExtra("id", cliente.id)
+            intent.putExtra("syncId", cliente.syncId)
+            intent.putExtra("serverId", cliente.serverId ?: 0)
             intent.putExtra("nombre", cliente.nombre)
+            intent.putExtra("apellido", cliente.apellido)
             intent.putExtra("cedula", cliente.cedula)
             intent.putExtra("telefono", cliente.telefono)
             startActivity(intent)

@@ -79,6 +79,8 @@ class activity_detallecliente : AppCompatActivity() {
         btnEditar.setOnClickListener {
             val intent = Intent(this, activity_editarcliente::class.java)
             intent.putExtra("id", id)
+            intent.putExtra("serverId", serverId)
+            intent.putExtra("syncId", syncId)
             intent.putExtra("nombre", nombre)
             intent.putExtra("apellido", apellido)
             intent.putExtra("cedula", cedula)
