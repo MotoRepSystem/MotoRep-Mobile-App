@@ -48,7 +48,7 @@ class activity_login : AppCompatActivity() {
             startActivity(intent)
         }
 
-        /*val btnLogin = findViewById<Button>(R.id.btnLogin)
+            /*val btnLogin = findViewById<Button>(R.id.btnLogin)
         btnLogin.setOnClickListener {
             val intent = Intent(this, activity_dashboard::class.java)
             startActivity(intent)
