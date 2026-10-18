@@ -14,7 +14,7 @@ import com.example.motorep_mobile_app.Cliente_Adapter
 import com.example.motorep_mobile_app.R
 import com.example.motorep_mobile_app.activity_agregarcliente
 import com.example.motorep_mobile_app.activity_detallecliente
-import com.example.motorep_mobile_app.data.database.MotorepDatabase
+import com.example.motorep_mobile_app.data.database.Motorep_Database
 import com.example.motorep_mobile_app.data.repository.Cliente_Repository
 import com.example.motorep_mobile_app.viewmodel.Cliente_Viewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -48,7 +48,7 @@ class activity_clientes : AppCompatActivity() {
 
 
         // Nos permite recrear y traer el flujo de la base de datos para poder utilizarlo aquí
-        val database = MotorepDatabase.getDatabase(applicationContext)
+        val database = Motorep_Database.getDatabase(applicationContext)
         val dao = database.clienteDao()
         val repository = Cliente_Repository(dao)
 
@@ -84,6 +84,8 @@ class activity_clientes : AppCompatActivity() {
             intent.putExtra("syncId", cliente.syncId)
             intent.putExtra("serverId", cliente.serverId ?: 0)
             intent.putExtra("nombre", cliente.nombre)
+            intent.putExtra("apellido", cliente.apellido)
+            intent.putExtra("cedula", cliente.cedula)
             intent.putExtra("telefono", cliente.telefono)
 
             startActivity(intent)
@@ -115,25 +117,16 @@ class activity_clientes : AppCompatActivity() {
     private fun cargarClientesRemotos() {
 
         if (NetworkUtils.hayInternet(this)) {
+            apiViewModel.obtenerClientes { listaDto ->
+                val listaCliente = listaDto.map { it.toEntity() }
 
-            sincronizarPendientes {
-
-                apiViewModel.obtenerClientes { listaDto ->
-
-                    val listaCliente =
-                        listaDto.map { it.toEntity() }
-
-                    lifecycleScope.launch {
-
-                        listaCliente.forEach { cliente ->
-
-                            viewModel.sincronizarDesdeAzure(cliente)
-                        }
-
-                        viewModel.eliminarClientesQueYaNoExistenEnAzure(
-                            listaCliente
-                        )
+                lifecycleScope.launch {
+                    listaCliente.forEach { cliente ->
+                        viewModel.sincronizarDesdeAzure(cliente)
                     }
+
+                    viewModel.eliminarClientesQueYaNoExistenEnAzure(listaCliente)
+                    sincronizarPendientes {}
                 }
             }
 
@@ -163,21 +156,15 @@ class activity_clientes : AppCompatActivity() {
             for (cliente in pendientesCrear) {
 
                 try {
-
-                    val respuesta =
-                        apiRepository.guardarClientes(
-                            cliente.toDto()
-                        )
-
-                    val serverId = respuesta.id
-
-                    if (serverId == null) {
-                        throw Exception(
-                            "Azure no devolvió el ID del cliente."
-                        )
+                    val serverId = if (cliente.serverId == null) {
+                        val respuesta = apiRepository.guardarCliente(cliente.toDto())
+                        respuesta.id
+                            ?: throw IllegalStateException("La API no devolvió el ID del cliente.")
+                    } else {
+                        apiRepository.actualizarCliente(cliente.serverId, cliente.toDto())
+                        cliente.serverId
                     }
 
-                    // Guardamos el ID de Azure y marcamos como sincronizado
                     viewModel.marcarComoSincronizado(
                         cliente.syncId,
                         serverId
@@ -192,7 +179,8 @@ class activity_clientes : AppCompatActivity() {
 
                     android.util.Log.e(
                         "SYNC_DEBUG",
-                        "Error al sincronizar ${cliente.nombre}: ${e.message}"
+                        "Error al sincronizar ${cliente.nombre}: ${e.message}",
+                        e
                     )
                 }
             }
@@ -240,7 +228,8 @@ class activity_clientes : AppCompatActivity() {
 
                     android.util.Log.e(
                         "SYNC_DEBUG",
-                        "Error al eliminar ${cliente.nombre}: ${e.message}"
+                        "Error al eliminar ${cliente.nombre}: ${e.message}",
+                        e
                     )
                 }
             }

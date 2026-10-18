@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.motorep_mobile_app.data.database.MotorepDatabase
+import com.example.motorep_mobile_app.data.database.Motorep_Database
 import com.example.motorep_mobile_app.data.entity.Cliente
 import com.example.motorep_mobile_app.data.remote.dto.Cliente_dto
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
@@ -17,6 +17,7 @@ import com.example.motorep_mobile_app.viewmodel.Cliente_Viewmodel
 import com.example.motorep_mobile_app.databinding.ActivityEditarclienteBinding
 import com.example.motorep_mobile_app.ui.common.MenuLateral
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_clientes
+import com.example.motorep_mobile_app.data.utils.NetworkUtils
 import kotlinx.coroutines.launch
 
 class activity_editarcliente : AppCompatActivity() {
@@ -38,7 +39,7 @@ class activity_editarcliente : AppCompatActivity() {
         MenuLateral(this).configurar()
 
         // Inicializar Room
-        val database = MotorepDatabase.getDatabase(applicationContext)
+        val database = Motorep_Database.getDatabase(applicationContext)
 
         val dao = database.clienteDao()
 
@@ -156,78 +157,62 @@ class activity_editarcliente : AppCompatActivity() {
                     sincronizado = false
                 )
 
-            // Primero actualizamos localmente
-            viewModel.actualizarCliente(
-                clienteActualizado
-            )
-
-            // Si el cliente ya existe en Azure,
-            // actualizamos mediante PUT.
-            if (serverId != 0) {
-
-                lifecycleScope.launch {
-
-                    try {
-
-                        val api =
-                            RetrofitClient.create(
-                                this@activity_editarcliente
-                            )
-
-                        val clienteDto =
-                            Cliente_dto(
-                                id = serverId,
-                                syncId = syncId,
-                                nombre = nuevoNombre,
-                                apellido = nuevaApellido,
-                                cedula = nuevoCedula,
-                                telefono = nuevoTelefono
-                            )
-
-                        // Esperamos realmente la respuesta de Azure
-                        api.actualizarCliente(
-                            serverId,
-                            clienteDto
-                        )
-
-                        // Azure confirmó la actualización.
-                        // Ahora marcamos Room como sincronizado.
-                        viewModel.marcarComoSincronizado(
-                            syncId,
-                            serverId
-                        )
-
-                        Toast.makeText(
-                            this@activity_editarcliente,
-                            "Cliente actualizado correctamente",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                        regresarAClientes()
-
-                    } catch (e: Exception) {
-
-                        // Si falla Azure, el cliente queda
-                        // como pendiente de sincronización.
-                        Toast.makeText(
-                            this@activity_editarcliente,
-                            "Actualizado localmente. Se sincronizará cuando haya conexión.",
-                            Toast.LENGTH_LONG
-                        ).show()
-
-                        regresarAClientes()
-                    }
+            lifecycleScope.launch {
+                try {
+                    viewModel.actualizarCliente(clienteActualizado)
+                } catch (e: Exception) {
+                    android.util.Log.e("ClienteUpdate", "No se pudo actualizar el cliente en Room", e)
+                    Toast.makeText(
+                        this@activity_editarcliente,
+                        "No se pudo guardar la actualización.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@launch
                 }
 
-            } else {
+                if (serverId != 0 && NetworkUtils.hayInternet(this@activity_editarcliente)) {
+                    try {
+                        val api = RetrofitClient.create(this@activity_editarcliente)
+                        val clienteDto = Cliente_dto(
+                            id = serverId,
+                            syncId = syncId,
+                            nombre = nuevoNombre,
+                            apellido = nuevaApellido,
+                            cedula = nuevoCedula,
+                            telefono = nuevoTelefono
+                        )
 
-                // Cliente que todavía no tiene ID de Azure.
-                // Se queda pendiente para sincronización.
-                Toast.makeText(
-                    this,
-                    "Cliente actualizado localmente. Se sincronizará después.",
-                    Toast.LENGTH_SHORT
-                ).show()
+                        api.actualizarCliente(serverId, clienteDto)
+                        viewModel.marcarComoSincronizado(syncId, serverId)
+                        Toast.makeText(
+                            this@activity_editarcliente,
+                            "Cliente actualizado correctamente.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } catch (e: Exception) {
+                        if (e is retrofit2.HttpException) {
+                            val body = e.response()?.errorBody()?.string()
+                            android.util.Log.e(
+                                "ClienteUpdate",
+                                "API rechazó la actualización (HTTP ${e.code()}): $body",
+                                e
+                            )
+                        } else {
+                            android.util.Log.e("ClienteUpdate", "No se pudo sincronizar la actualización con la API", e)
+                        }
+                        Toast.makeText(
+                            this@activity_editarcliente,
+                            "Actualizado localmente. La sincronización con la API quedó pendiente.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                } else {
+                    Toast.makeText(
+                        this@activity_editarcliente,
+                        "Actualizado localmente. Se sincronizará cuando haya conexión.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
 
                 regresarAClientes()
             }

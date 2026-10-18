@@ -11,10 +11,8 @@ class Cliente_Viewmodel(private val repository: Cliente_Repository):ViewModel(){
         viewModelScope.launch{repository.insertar(cliente)}    // accedemos a la función insertar del repository
     }
 
-    fun actualizarCliente(cliente: Cliente) {
-        viewModelScope.launch {
-            repository.actualizar(cliente)
-        }
+    suspend fun actualizarCliente(cliente: Cliente) {
+        repository.actualizar(cliente)
     }// accedemos a la función actualizar del repository
 
     val clientes = repository.listaCliente  // Toma la lista que traemos desde el repository
@@ -39,17 +37,13 @@ class Cliente_Viewmodel(private val repository: Cliente_Repository):ViewModel(){
     }
 
     // Marca un cliente como sincronizado exitosamente con la API
-    fun marcarComoSincronizado(syncId: String, serverId: Int) {
-        viewModelScope.launch {
-            repository.marcarComoSincronizado(syncId, serverId)
-        }
+    suspend fun marcarComoSincronizado(syncId: String, serverId: Int) {
+        repository.marcarComoSincronizado(syncId, serverId)
     }
 
     // Elimina definitivamente un cliente de Room, tras confirmar el borrado en la API
-    fun eliminarPorId(id: Int) {
-        viewModelScope.launch {
-            repository.eliminarPorId(id)
-        }
+    suspend fun eliminarPorId(id: Int) {
+        repository.eliminarPorId(id)
     }
 
     suspend fun sincronizarDesdeAzure(cliente: Cliente) {

@@ -46,18 +46,27 @@ class Cliente_Repository(   // Creamos una clase
 
     suspend fun sincronizarDesdeAzure(cliente: Cliente) {
 
-        val clienteExistente =
-            dao.obtenerPorSyncId(cliente.syncId)
+        val clienteExistente = cliente.serverId?.let {
+            dao.obtenerPorServerId(it)
+        } ?: dao.obtenerPorSyncId(cliente.syncId)
+            ?: cliente.cedula.takeIf { it.isNotBlank() }?.let {
+                dao.obtenerPendientePorCedula(it)
+            }
 
         if (clienteExistente != null) {
 
-            val clienteActualizado =
+            val clienteActualizado = if (clienteExistente.sincronizado) {
                 cliente.copy(
                     id = clienteExistente.id,
+                    syncId = clienteExistente.syncId,
                     sincronizado = true,
                     pendienteEliminar = false
                 )
-
+            } else {
+                clienteExistente.copy(
+                    serverId = clienteExistente.serverId ?: cliente.serverId
+                )
+            }
             dao.Actualizar(clienteActualizado)
 
         } else {
@@ -72,15 +81,16 @@ class Cliente_Repository(   // Creamos una clase
 
         val clientesLocales = dao.obtenerClientesSincronizados()
 
-        val syncIdsAzure = clientesAzure.map { it.syncId }.toSet()
+        if (clientesAzure.any { it.serverId == null }) return
+
+        val serverIdsAzure = clientesAzure.mapNotNull { it.serverId }.toSet()
 
         for (clienteLocal in clientesLocales) {
 
-            if (clienteLocal.syncId !in syncIdsAzure) {
+            if (clienteLocal.serverId !in serverIdsAzure) {
 
                 dao.eliminarPorId(clienteLocal.id)
             }
         }
     }
 }
-
