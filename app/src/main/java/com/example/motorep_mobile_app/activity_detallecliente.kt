@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.motorep_mobile_app.data.database.MotorepDatabase
+import com.example.motorep_mobile_app.data.database.Motorep_Database
 import com.example.motorep_mobile_app.data.entity.Cliente
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
 import com.example.motorep_mobile_app.data.repository.Cliente_ApiRepository
@@ -70,7 +70,7 @@ class activity_detallecliente : AppCompatActivity() {
         }
 
         // Configuramos el ViewModel para acceder a la base de datos
-        val database = MotorepDatabase.getDatabase(applicationContext)
+        val database = Motorep_Database.getDatabase(applicationContext)
         val dao = database.clienteDao()
         val repository = Cliente_Repository(dao)
         val factory = object : ViewModelProvider.Factory {
@@ -128,7 +128,20 @@ class activity_detallecliente : AppCompatActivity() {
                                 finish()
 
                             } catch (e: Exception) {
-
+                                if (e is retrofit2.HttpException) {
+                                    val body = e.response()?.errorBody()?.string()
+                                    android.util.Log.e(
+                                        "ClienteDelete",
+                                        "API rechazó la eliminación (HTTP ${e.code()}): $body",
+                                        e
+                                    )
+                                } else {
+                                    android.util.Log.e(
+                                        "ClienteDelete",
+                                        "No se pudo eliminar el cliente de la API",
+                                        e
+                                    )
+                                }
                                 Toast.makeText(
                                     this@activity_detallecliente,
                                     "No se pudo eliminar el cliente de Azure.",
@@ -143,6 +156,7 @@ class activity_detallecliente : AppCompatActivity() {
                             val clientePendienteEliminar =
                                 Cliente(
                                     id = id,
+                                    syncId = syncId,
                                     serverId =
                                         if (serverId == 0) null
                                         else serverId,

@@ -2,7 +2,7 @@ package com.example.motorep_mobile_app.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.android.identity.util.UUID
+import java.util.UUID
 
 @Entity(tableName = "clientes")
 data class Cliente(

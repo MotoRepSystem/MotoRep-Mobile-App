@@ -19,10 +19,19 @@ class Cliente_ApiViewModel(
                 clientes = repository.obtenerClientes()
                 onResult(clientes)
             } catch (e: Exception) {
-                Log.e(
-                    "ClienteApiViewModel",
-                    "Error al obtener clientes: ${e.message}"
-                )
+                if (e is retrofit2.HttpException) {
+                    val errorBody = e.response()?.errorBody()?.string()
+                    Log.e(
+                        "ClienteApiViewModel",
+                        "HTTP Error ${e.code()}: $errorBody"
+                    )
+                } else {
+                    Log.e(
+                        "ClienteApiViewModel",
+                        "Error al obtener clientes: ${e.message}",
+                        e
+                    )
+                }
             }
         }
     }
@@ -33,13 +42,22 @@ class Cliente_ApiViewModel(
     ) {
         viewModelScope.launch {
             try {
-                val respuesta = repository.guardarClientes(cliente)
+                val respuesta = repository.guardarCliente(cliente)
                 onResult(respuesta)
             } catch (e: Exception) {
-                Log.e(
-                    "ClienteApiViewModel",
-                    "Error al guardar cliente: ${e.message}"
-                )
+                if (e is retrofit2.HttpException) {
+                    val errorBody = e.response()?.errorBody()?.string()
+                    Log.e(
+                        "ClienteApiViewModel",
+                        "HTTP Error ${e.code()}: $errorBody"
+                    )
+                } else {
+                    Log.e(
+                        "ClienteApiViewModel",
+                        "Error al guardar cliente: ${e.message}",
+                        e
+                    )
+                }
 
                 onResult(null)
             }

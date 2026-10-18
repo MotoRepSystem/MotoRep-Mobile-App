@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.motorep_mobile_app.data.entity.Cliente
 import com.example.motorep_mobile_app.data.repository.Cliente_Repository
-import com.example.motorep_mobile_app.data.database.MotorepDatabase
+import com.example.motorep_mobile_app.data.database.Motorep_Database
 import com.example.motorep_mobile_app.data.remote.dto.Cliente_dto
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
 import com.example.motorep_mobile_app.data.repository.Cliente_ApiRepository
@@ -49,7 +49,7 @@ class activity_agregarcliente : AppCompatActivity() {
 
         // Base de datos local Room
         val database =
-            MotorepDatabase.getDatabase(applicationContext)
+            Motorep_Database.getDatabase(applicationContext)
 
         val dao = database.clienteDao()
 
@@ -63,6 +63,7 @@ class activity_agregarcliente : AppCompatActivity() {
             )
 
         btnguardar.setOnClickListener {
+            btnguardar.isEnabled = false
 
             val nombre =
                 edtNombre.text.toString().trim()
@@ -90,6 +91,7 @@ class activity_agregarcliente : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
 
+                btnguardar.isEnabled = true
                 return@setOnClickListener
             }
 
@@ -110,101 +112,62 @@ class activity_agregarcliente : AppCompatActivity() {
             )
 
             lifecycleScope.launch {
-
                 try {
-
-                    // Guardar primero en Room
                     repository.insertar(cliente)
-
-                    if (hayInternet) {
-
-                        // Preparamos el DTO utilizando syncId como identificador
-                        val clienteDto = Cliente_dto(
-                            id = null,
-                            syncId = cliente.syncId,
-                            nombre = cliente.nombre,
-                            apellido = cliente.apellido,
-                            cedula = cliente.cedula,
-                            telefono = cliente.telefono
-                        )
-
-                        // Enviar a Azure
-                        val respuesta =
-                            apiRepository.guardarClientes(
-                                clienteDto
-                            )
-
-                        // Verificar que Azure devolvió el ID
-                        val serverId = respuesta.id
-
-                        if (serverId == null) {
-                            throw Exception("Azure no devolvió el ID del producto.")
-                        }
-
-                        // Guardar el ID de Azure y marcar como sincronizado
-                        repository.marcarComoSincronizado(
-                            cliente.syncId,
-                            serverId
-                        )
-
-                        Toast.makeText(
-                            this@activity_agregarcliente,
-                            "Producto guardado y sincronizado correctamente.",
-                            Toast.LENGTH_LONG
-                        ).show()
-
-                    } else {
-
-                        Toast.makeText(
-                            this@activity_agregarcliente,
-                            "Sin conexión: el producto se guardó localmente y quedará pendiente de sincronización.",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-
-                    // Limpiar campos
-                    edtNombre.text.clear()
-                    edtApellido.text.clear()
-                    edtCedula.text.clear()
-                    edtTelefono.text.clear()
-
-                    // Regresar al módulo de productos
-                    val intent =
-                        Intent(
-                            this@activity_agregarcliente,
-                            activity_clientes::class.java
-                        )
-
-                    intent.flags =
-                        Intent.FLAG_ACTIVITY_CLEAR_TOP
-
-                    startActivity(intent)
-                    finish()
-
                 } catch (e: Exception) {
-
-
-                    // Si Azure falla, el producto YA está en Room con sincronizado = false, por lo tanto NO se pierde.
-                    //Posteriormente WorkManager podrá enviarlo.
-
+                    android.util.Log.e("ClienteCreate", "No se pudo guardar el cliente en Room", e)
                     Toast.makeText(
                         this@activity_agregarcliente,
-                        "Cliente guardado localmente. Pendiente de sincronización.",
+                        "No se pudo guardar el cliente.",
                         Toast.LENGTH_LONG
                     ).show()
-
-                    val intent =
-                        Intent(
-                            this@activity_agregarcliente,
-                            activity_clientes::class.java
-                        )
-
-                    intent.flags =
-                        Intent.FLAG_ACTIVITY_CLEAR_TOP
-
-                    startActivity(intent)
-                    finish()
+                    btnguardar.isEnabled = true
+                    return@launch
                 }
+
+                var sincronizado = false
+                if (hayInternet) {
+                    try {
+                        val respuesta = apiRepository.guardarCliente(
+                            Cliente_dto(
+                                id = null,
+                                syncId = cliente.syncId,
+                                nombre = cliente.nombre,
+                                apellido = cliente.apellido,
+                                cedula = cliente.cedula,
+                                telefono = cliente.telefono
+                            )
+                        )
+                        val serverId = respuesta.id
+                            ?: throw IllegalStateException("La API no devolvió el ID del cliente creado.")
+
+                        repository.marcarComoSincronizado(cliente.syncId, serverId)
+                        sincronizado = true
+                    } catch (e: Exception) {
+                        if (e is retrofit2.HttpException) {
+                            val body = e.response()?.errorBody()?.string()
+                            android.util.Log.e(
+                                "ClienteCreate",
+                                "API rechazó la creación (HTTP ${e.code()}): $body",
+                                e
+                            )
+                        } else {
+                            android.util.Log.e("ClienteCreate", "No se pudo sincronizar el cliente con la API", e)
+                        }
+                    }
+                }
+
+                val mensaje = when {
+                    sincronizado -> "Cliente guardado y sincronizado correctamente."
+                    hayInternet -> "Cliente guardado localmente. La sincronización con la API quedó pendiente."
+                    else -> "Sin conexión: cliente guardado localmente y pendiente de sincronización."
+                }
+                Toast.makeText(this@activity_agregarcliente, mensaje, Toast.LENGTH_LONG).show()
+
+                val intent = Intent(this@activity_agregarcliente, activity_clientes::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                startActivity(intent)
+                finish()
             }
         }
     }

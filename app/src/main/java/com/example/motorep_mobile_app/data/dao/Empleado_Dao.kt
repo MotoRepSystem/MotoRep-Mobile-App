@@ -5,22 +5,43 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.example.motorep_mobile_app.data.entity.Cliente
 import com.example.motorep_mobile_app.data.entity.Empleado
 
 @Dao
-interface EmpleadoDao {
+interface Empleado_Dao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun Insertar(empleado: Empleado)
 
-    @Update
-    suspend fun Actualizar(empleado: Empleado)
+    @Update suspend fun Actualizar(empleado: Empleado)
 
-    @Delete
-    suspend fun Eliminar(empleado: Empleado)
+    @Delete suspend fun Eliminar(empleado: Empleado)
 
-    @Query("SELECT * FROM empleados ORDER BY id DESC")
+    @Query("SELECT * FROM Empleados WHERE pendienteEliminar = 0 ORDER BY id DESC")
     fun ObtenerTodos(): LiveData<List<Empleado>>
+
+    @Query("SELECT * FROM Empleados WHERE sincronizado = 0 AND pendienteEliminar = 0")
+    suspend fun obtenerPendientesCrear(): List<Empleado>
+
+    @Query("SELECT * FROM Empleados WHERE pendienteEliminar = 1")
+    suspend fun obtenerPendientesEliminar(): List<Empleado>
+
+    @Query("SELECT * FROM Empleados WHERE sincronizado = 0 AND pendienteEliminar = 0")
+    suspend fun obtenerPendientesSincronizacion(): List<Empleado>
+
+    @Query("SELECT * FROM Empleados WHERE syncId = :syncId LIMIT 1")
+    suspend fun obtenerPorSyncId(syncId: String): Empleado?
+
+    @Query("UPDATE Empleados SET sincronizado = 1, serverId = :serverId WHERE syncId = :syncId")
+    suspend fun marcarComoSincronizado(syncId: String, serverId: Int)
+
+    @Query("DELETE FROM Empleados WHERE id = :id")
+    suspend fun eliminarPorId(id: Int)
+
+    @Query("SELECT * FROM Empleados WHERE sincronizado = 1 AND pendienteEliminar = 0")
+    suspend fun obtenerEmpleadosSincronizados(): List<Empleado>
 }
