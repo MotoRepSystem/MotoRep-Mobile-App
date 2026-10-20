@@ -1,7 +1,8 @@
-package com.example.motorep_mobile_app
+package com.example.motorep_mobile_app.ui.operacional.catalogos.clientes
 
-import  android.content.Intent
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.motorep_mobile_app.R
 import com.example.motorep_mobile_app.data.database.Motorep_Database
 import com.example.motorep_mobile_app.data.entity.Cliente
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
@@ -20,6 +22,7 @@ import com.example.motorep_mobile_app.data.utils.NetworkUtils
 import com.example.motorep_mobile_app.ui.common.MenuLateral
 import com.example.motorep_mobile_app.viewmodel.Cliente_Viewmodel
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class activity_detallecliente : AppCompatActivity() {
 
@@ -128,15 +131,15 @@ class activity_detallecliente : AppCompatActivity() {
                                 finish()
 
                             } catch (e: Exception) {
-                                if (e is retrofit2.HttpException) {
+                                if (e is HttpException) {
                                     val body = e.response()?.errorBody()?.string()
-                                    android.util.Log.e(
+                                    Log.e(
                                         "ClienteDelete",
                                         "API rechazó la eliminación (HTTP ${e.code()}): $body",
                                         e
                                     )
                                 } else {
-                                    android.util.Log.e(
+                                    Log.e(
                                         "ClienteDelete",
                                         "No se pudo eliminar el cliente de la API",
                                         e

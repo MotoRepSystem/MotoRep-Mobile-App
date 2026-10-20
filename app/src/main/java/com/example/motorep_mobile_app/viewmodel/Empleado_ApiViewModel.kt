@@ -6,20 +6,32 @@ import kotlinx.coroutines.launch
 import com.example.motorep_mobile_app.data.repository.Empleado_ApiRepository
 import com.example.motorep_mobile_app.data.remote.dto.Empleado_dto
 
-class Empleado_ApiViewModel (private val repository: Empleado_ApiRepository): ViewModel(){
-    var empleado: List<Empleado_dto> = emptyList()
+class Empleado_ApiViewModel(
+    private val repository: Empleado_ApiRepository
+) : ViewModel() {
+
+    var empleados: List<Empleado_dto> = emptyList()
         private set
 
-    fun obtenerEmpleado(onResult: (List<Empleado_dto>) -> Unit) {
+    fun obtenerEmpleados(onResult: (List<Empleado_dto>) -> Unit) {
         viewModelScope.launch {
             try {
-                empleado = repository.obtenerEmpleado()
-                onResult(empleado)
+                empleados = repository.obtenerEmpleados()
+                onResult(empleados)
             } catch (e: Exception) {
-                Log.e(
-                    "EmpleadoApiViewModel",
-                    "Error al obtener Empleado: ${e.message}"
-                )
+                if (e is retrofit2.HttpException) {
+                    val errorBody = e.response()?.errorBody()?.string()
+                    Log.e(
+                        "EmpleadoApiViewModel",
+                        "HTTP Error ${e.code()}: $errorBody"
+                    )
+                } else {
+                    Log.e(
+                        "EmpleadoApiViewModel",
+                        "Error al obtener empleados: ${e.message}",
+                        e
+                    )
+                }
             }
         }
     }
@@ -42,7 +54,7 @@ class Empleado_ApiViewModel (private val repository: Empleado_ApiRepository): Vi
                 } else {
                     Log.e(
                         "EmpleadoApiViewModel",
-                        "Error al guardar Empleado: ${e.message}",
+                        "Error al guardar empleado: ${e.message}",
                         e
                     )
                 }
@@ -90,4 +102,5 @@ class Empleado_ApiViewModel (private val repository: Empleado_ApiRepository): Vi
             }
         }
     }
+
 }

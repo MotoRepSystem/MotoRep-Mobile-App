@@ -17,8 +17,8 @@ import com.example.motorep_mobile_app.ui.configuracion.activity_configuracion
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_inventario
 import com.example.motorep_mobile_app.ui.dashboard.activity_dashboard
 import com.example.motorep_mobile_app.ui.miscelanea.activity_notificaciones
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_clientes
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_empleados
+import com.example.motorep_mobile_app.ui.operacional.catalogos.clientes.activity_clientes
+import com.example.motorep_mobile_app.ui.operacional.catalogos.empleados.activity_empleados
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_proveedores
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_marcas
 import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_facturacion

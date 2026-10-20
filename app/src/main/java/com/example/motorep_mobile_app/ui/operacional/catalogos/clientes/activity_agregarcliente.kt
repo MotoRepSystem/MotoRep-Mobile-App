@@ -1,23 +1,25 @@
-package com.example.motorep_mobile_app
+package com.example.motorep_mobile_app.ui.operacional.catalogos.clientes
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.motorep_mobile_app.data.entity.Cliente
-import com.example.motorep_mobile_app.data.repository.Cliente_Repository
+import com.example.motorep_mobile_app.R
 import com.example.motorep_mobile_app.data.database.Motorep_Database
+import com.example.motorep_mobile_app.data.entity.Cliente
 import com.example.motorep_mobile_app.data.remote.dto.Cliente_dto
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
 import com.example.motorep_mobile_app.data.repository.Cliente_ApiRepository
+import com.example.motorep_mobile_app.data.repository.Cliente_Repository
 import com.example.motorep_mobile_app.data.utils.NetworkUtils
 import com.example.motorep_mobile_app.ui.common.MenuLateral
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_clientes
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class activity_agregarcliente : AppCompatActivity() {
 
@@ -115,7 +117,7 @@ class activity_agregarcliente : AppCompatActivity() {
                 try {
                     repository.insertar(cliente)
                 } catch (e: Exception) {
-                    android.util.Log.e("ClienteCreate", "No se pudo guardar el cliente en Room", e)
+                    Log.e("ClienteCreate", "No se pudo guardar el cliente en Room", e)
                     Toast.makeText(
                         this@activity_agregarcliente,
                         "No se pudo guardar el cliente.",
@@ -144,15 +146,15 @@ class activity_agregarcliente : AppCompatActivity() {
                         repository.marcarComoSincronizado(cliente.syncId, serverId)
                         sincronizado = true
                     } catch (e: Exception) {
-                        if (e is retrofit2.HttpException) {
+                        if (e is HttpException) {
                             val body = e.response()?.errorBody()?.string()
-                            android.util.Log.e(
+                            Log.e(
                                 "ClienteCreate",
                                 "API rechazó la creación (HTTP ${e.code()}): $body",
                                 e
                             )
                         } else {
-                            android.util.Log.e("ClienteCreate", "No se pudo sincronizar el cliente con la API", e)
+                            Log.e("ClienteCreate", "No se pudo sincronizar el cliente con la API", e)
                         }
                     }
                 }

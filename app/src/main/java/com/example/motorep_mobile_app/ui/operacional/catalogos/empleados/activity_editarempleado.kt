@@ -1,7 +1,8 @@
-package com.example.motorep_mobile_app
+package com.example.motorep_mobile_app.ui.operacional.catalogos.empleados
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -9,31 +10,29 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.motorep_mobile_app.data.database.Motorep_Database
-import com.example.motorep_mobile_app.data.entity.Cliente
-import com.example.motorep_mobile_app.data.remote.dto.Cliente_dto
+import com.example.motorep_mobile_app.data.entity.Empleado
+import com.example.motorep_mobile_app.data.remote.dto.Empleado_dto
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
-import com.example.motorep_mobile_app.data.repository.Cliente_Repository
-import com.example.motorep_mobile_app.viewmodel.Cliente_Viewmodel
-import com.example.motorep_mobile_app.databinding.ActivityEditarclienteBinding
-import com.example.motorep_mobile_app.ui.common.MenuLateral
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_clientes
+import com.example.motorep_mobile_app.data.repository.Empleado_Repository
 import com.example.motorep_mobile_app.data.utils.NetworkUtils
+import com.example.motorep_mobile_app.databinding.ActivityEditarempleadoBinding
+import com.example.motorep_mobile_app.ui.common.MenuLateral
+import com.example.motorep_mobile_app.viewmodel.Empleado_ViewModel
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
-class activity_editarcliente : AppCompatActivity() {
+class activity_editarempleado : AppCompatActivity() {
 
 
-
-
-    private lateinit var binding: ActivityEditarclienteBinding
-    private lateinit var viewModel: Cliente_Viewmodel
+    private lateinit var binding: ActivityEditarempleadoBinding
+    private lateinit var viewModel: Empleado_ViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
 
-        binding = ActivityEditarclienteBinding.inflate(layoutInflater)
+        binding = ActivityEditarempleadoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         MenuLateral(this).configurar()
@@ -41,9 +40,9 @@ class activity_editarcliente : AppCompatActivity() {
         // Inicializar Room
         val database = Motorep_Database.getDatabase(applicationContext)
 
-        val dao = database.clienteDao()
+        val dao = database.empleadoDao()
 
-        val repository = Cliente_Repository(dao)
+        val repository = Empleado_Repository(dao)
 
         val factory =
             object : ViewModelProvider.Factory {
@@ -54,10 +53,10 @@ class activity_editarcliente : AppCompatActivity() {
 
                     if (
                         modelClass.isAssignableFrom(
-                            Cliente_Viewmodel::class.java
+                            Empleado_ViewModel::class.java
                         )
                     ) {
-                        return Cliente_Viewmodel(repository) as T
+                        return Empleado_ViewModel(repository) as T
                     }
 
                     throw IllegalArgumentException(
@@ -66,7 +65,7 @@ class activity_editarcliente : AppCompatActivity() {
                 }
             }
 
-        viewModel = ViewModelProvider(this, factory) [Cliente_Viewmodel::class.java]
+        viewModel = ViewModelProvider(this, factory)[Empleado_ViewModel::class.java]
 
         // Recuperar información del producto
         val id =
@@ -80,7 +79,7 @@ class activity_editarcliente : AppCompatActivity() {
 
         val serverId =
             intent.getIntExtra("serverId", 0)
-        android.util.Log.d(
+        Log.d(
             "EDITAR_DEBUG",
             "id=$id | syncId='$syncId' | serverId=$serverId | nombre=$nombre")
 
@@ -143,8 +142,8 @@ class activity_editarcliente : AppCompatActivity() {
 
 
             // Crear producto actualizado para Room
-            val clienteActualizado =
-                Cliente(
+            val empleadoActualizado =
+                Empleado(
                     id = id,
                     syncId = syncId,
                     serverId =
@@ -159,21 +158,21 @@ class activity_editarcliente : AppCompatActivity() {
 
             lifecycleScope.launch {
                 try {
-                    viewModel.actualizarCliente(clienteActualizado)
+                    viewModel.actualizarEmpleado(empleadoActualizado)
                 } catch (e: Exception) {
-                    android.util.Log.e("ClienteUpdate", "No se pudo actualizar el cliente en Room", e)
+                    Log.e("EmpleadoUpdate", "No se pudo actualizar el empleado en Room", e)
                     Toast.makeText(
-                        this@activity_editarcliente,
+                        this@activity_editarempleado,
                         "No se pudo guardar la actualización.",
                         Toast.LENGTH_LONG
                     ).show()
                     return@launch
                 }
 
-                if (serverId != 0 && NetworkUtils.hayInternet(this@activity_editarcliente)) {
+                if (serverId != 0 && NetworkUtils.hayInternet(this@activity_editarempleado)) {
                     try {
-                        val api = RetrofitClient.create(this@activity_editarcliente)
-                        val clienteDto = Cliente_dto(
+                        val api = RetrofitClient.create(this@activity_editarempleado)
+                        val empleadoDto = Empleado_dto(
                             id = serverId,
                             syncId = syncId,
                             nombre = nuevoNombre,
@@ -182,49 +181,49 @@ class activity_editarcliente : AppCompatActivity() {
                             telefono = nuevoTelefono
                         )
 
-                        api.actualizarCliente(serverId, clienteDto)
+                        api.actualizarEmpleado(serverId, empleadoDto)
                         viewModel.marcarComoSincronizado(syncId, serverId)
                         Toast.makeText(
-                            this@activity_editarcliente,
-                            "Cliente actualizado correctamente.",
+                            this@activity_editarempleado,
+                            "Empleado actualizado correctamente.",
                             Toast.LENGTH_SHORT
                         ).show()
                     } catch (e: Exception) {
-                        if (e is retrofit2.HttpException) {
+                        if (e is HttpException) {
                             val body = e.response()?.errorBody()?.string()
-                            android.util.Log.e(
-                                "ClienteUpdate",
+                            Log.e(
+                                "EmpleadoUpdate",
                                 "API rechazó la actualización (HTTP ${e.code()}): $body",
                                 e
                             )
                         } else {
-                            android.util.Log.e("ClienteUpdate", "No se pudo sincronizar la actualización con la API", e)
+                            Log.e("EmpleadoUpdate", "No se pudo sincronizar la actualización con la API", e)
                         }
                         Toast.makeText(
-                            this@activity_editarcliente,
+                            this@activity_editarempleado,
                             "Actualizado localmente. La sincronización con la API quedó pendiente.",
                             Toast.LENGTH_LONG
                         ).show()
                     }
                 } else {
                     Toast.makeText(
-                        this@activity_editarcliente,
+                        this@activity_editarempleado,
                         "Actualizado localmente. Se sincronizará cuando haya conexión.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
 
-                regresarAClientes()
+                regresarAEmpleados()
             }
         }
     }
 
-    private fun regresarAClientes() {
+    private fun regresarAEmpleados() {
 
         val intent =
             Intent(
                 this,
-                activity_clientes::class.java
+                activity_empleados::class.java
             )
 
         intent.flags =

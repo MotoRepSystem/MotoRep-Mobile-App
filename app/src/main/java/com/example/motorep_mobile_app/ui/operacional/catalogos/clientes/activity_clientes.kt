@@ -1,7 +1,8 @@
-package com.example.motorep_mobile_app.ui.operacional.catalogos
+package com.example.motorep_mobile_app.ui.operacional.catalogos.clientes
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -12,19 +13,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.motorep_mobile_app.Cliente_Adapter
 import com.example.motorep_mobile_app.R
-import com.example.motorep_mobile_app.activity_agregarcliente
-import com.example.motorep_mobile_app.activity_detallecliente
 import com.example.motorep_mobile_app.data.database.Motorep_Database
-import com.example.motorep_mobile_app.data.repository.Cliente_Repository
-import com.example.motorep_mobile_app.viewmodel.Cliente_Viewmodel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.example.motorep_mobile_app.data.remote.dto.toDto
 import com.example.motorep_mobile_app.data.remote.dto.toEntity
-import com.example.motorep_mobile_app.data.repository.Cliente_ApiRepository
-import com.example.motorep_mobile_app.data.utils.NetworkUtils
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
+import com.example.motorep_mobile_app.data.repository.Cliente_ApiRepository
+import com.example.motorep_mobile_app.data.repository.Cliente_Repository
+import com.example.motorep_mobile_app.data.utils.NetworkUtils
 import com.example.motorep_mobile_app.ui.common.MenuLateral
 import com.example.motorep_mobile_app.viewmodel.Cliente_ApiViewModel
+import com.example.motorep_mobile_app.viewmodel.Cliente_Viewmodel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 
 class activity_clientes : AppCompatActivity() {
@@ -148,7 +147,7 @@ class activity_clientes : AppCompatActivity() {
             val pendientesCrear =
                 viewModel.obtenerPendientesCrear()
 
-            android.util.Log.d(
+            Log.d(
                 "SYNC_DEBUG",
                 "Pendientes a crear: ${pendientesCrear.size}"
             )
@@ -170,14 +169,14 @@ class activity_clientes : AppCompatActivity() {
                         serverId
                     )
 
-                    android.util.Log.d(
+                    Log.d(
                         "SYNC_DEBUG",
                         "Sincronizado con éxito: ${cliente.nombre}"
                     )
 
                 } catch (e: Exception) {
 
-                    android.util.Log.e(
+                    Log.e(
                         "SYNC_DEBUG",
                         "Error al sincronizar ${cliente.nombre}: ${e.message}",
                         e
@@ -190,7 +189,7 @@ class activity_clientes : AppCompatActivity() {
             val pendientesEliminar =
                 viewModel.obtenerPendientesEliminar()
 
-            android.util.Log.d(
+            Log.d(
                 "SYNC_DEBUG",
                 "Pendientes a eliminar: ${pendientesEliminar.size}"
             )
@@ -205,7 +204,7 @@ class activity_clientes : AppCompatActivity() {
                         // Nunca llegó a Azure, solamente se elimina localmente
                         viewModel.eliminarPorId(cliente.id)
 
-                        android.util.Log.d(
+                        Log.d(
                             "SYNC_DEBUG",
                             "Eliminado solamente de Room: ${cliente.nombre}"
                         )
@@ -219,14 +218,14 @@ class activity_clientes : AppCompatActivity() {
                     // Después de confirmar el borrado remoto, eliminamos el registro local
                     viewModel.eliminarPorId(cliente.id)
 
-                    android.util.Log.d(
+                    Log.d(
                         "SYNC_DEBUG",
                         "Eliminado con éxito: ${cliente.nombre}"
                     )
 
                 } catch (e: Exception) {
 
-                    android.util.Log.e(
+                    Log.e(
                         "SYNC_DEBUG",
                         "Error al eliminar ${cliente.nombre}: ${e.message}",
                         e
