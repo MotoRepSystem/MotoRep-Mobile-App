@@ -28,7 +28,7 @@ interface ApiService {
     @GET("catalogos/empleados")
     suspend fun obtenerEmpleado(): List<Empleado_dto>
 
-    @POST("catalogos/empleados")
+    @POST("catalogos/empleados/")
     suspend fun guardarEmpleado(@Body empleado: Empleado_dto): Empleado_dto
 
     @PATCH("catalogos/empleados/{id}")

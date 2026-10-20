@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.motorep_mobile_app.R
 import com.example.motorep_mobile_app.data.database.Motorep_Database
 import com.example.motorep_mobile_app.data.entity.Empleado
-import com.example.motorep_mobile_app.data.remote.dto.Empleado_dto
+import com.example.motorep_mobile_app.data.remote.dto.toDto
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
 import com.example.motorep_mobile_app.data.repository.Empleado_ApiRepository
 import com.example.motorep_mobile_app.data.repository.Empleado_Repository
@@ -130,18 +130,10 @@ class activity_agregarempleado : AppCompatActivity() {
                 var sincronizado = false
                 if (hayInternet) {
                     try {
-                        val respuesta = apiRepository.guardarEmpleado(
-                            Empleado_dto(
-                                id = null,
-                                syncId = empleado.syncId,
-                                nombre = empleado.nombre,
-                                apellido = empleado.apellido,
-                                cedula = empleado.cedula,
-                                telefono = empleado.telefono
-                            )
-                        )
+                        val respuesta = apiRepository.guardarEmpleado(empleado.toDto())
+                        Log.d("EmpleadoCreate", "Respuesta API guardarEmpleado: $respuesta")
                         val serverId = respuesta.id
-                            ?: throw IllegalStateException("La API no devolvió el ID del empleado creado.")
+                            ?: throw IllegalStateException("La API no devolvió el ID del empleado creado ($respuesta).")
 
                         repository.marcarComoSincronizado(empleado.syncId, serverId)
                         sincronizado = true

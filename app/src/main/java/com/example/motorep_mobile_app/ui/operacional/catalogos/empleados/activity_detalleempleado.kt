@@ -141,13 +141,13 @@ class activity_detalleempleado : AppCompatActivity() {
                                 } else {
                                     Log.e(
                                         "EmpleadoDelete",
-                                        "No se pudo eliminar el cliente de la API",
+                                        "No se pudo eliminar el empleado de la API",
                                         e
                                     )
                                 }
                                 Toast.makeText(
                                     this@activity_detalleempleado,
-                                    "No se pudo eliminar el cliente de Azure.",
+                                    "No se pudo eliminar el empleado de Azure.",
                                     Toast.LENGTH_LONG
                                 ).show()
                             }

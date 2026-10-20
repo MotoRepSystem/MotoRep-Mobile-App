@@ -15,7 +15,7 @@ import com.example.motorep_mobile_app.data.entity.Empleado
 
 @Database(
     entities = [Cliente::class, Empleado::class],
-    version = 6
+    version = 8
 )
 abstract class Motorep_Database :
     RoomDatabase() {
@@ -33,37 +33,25 @@ abstract class Motorep_Database :
         // sin borrar los datos existentes.
         val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(db: SupportSQLiteDatabase) {
-                db.execSQL(
-                    "ALTER TABLE cliente ADD COLUMN sincronizado INTEGER NOT NULL DEFAULT 1" +
-                            "ALTER TABLE empleado ADD COLUMN sincronizado INTEGER NOT NULL DEFAULT 1"
-                )
-                db.execSQL(
-                    "ALTER TABLE cliente ADD COLUMN pendienteEliminar INTEGER NOT NULL DEFAULT 0" +
-                            "ALTER TABLE empleado ADD COLUMN pendienteEliminar INTEGER NOT NULL DEFAULT 0"
-                )
+                db.execSQL("ALTER TABLE cliente ADD COLUMN sincronizado INTEGER NOT NULL DEFAULT 1")
+                db.execSQL("ALTER TABLE cliente ADD COLUMN pendienteEliminar INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE cliente ADD COLUMN serverId INTEGER")
+                db.execSQL("ALTER TABLE cliente ADD COLUMN syncId TEXT NOT NULL DEFAULT ''")
+                db.execSQL("UPDATE cliente SET syncId = lower(hex(randomblob(16)))")
+
+                db.execSQL("ALTER TABLE empleado ADD COLUMN sincronizado INTEGER NOT NULL DEFAULT 1")
+                db.execSQL("ALTER TABLE empleado ADD COLUMN pendienteEliminar INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE empleado ADD COLUMN serverId INTEGER")
+                db.execSQL("ALTER TABLE empleado ADD COLUMN syncId TEXT NOT NULL DEFAULT ''")
+                db.execSQL("UPDATE empleado SET syncId = lower(hex(randomblob(16)))")
             }
         }
 
-        val MIGRATION_2_3 = object : Migration(2, 3) {
+        /*val MIGRATION_2_3 = object : Migration(2, 3) {
             override fun migrate(db: SupportSQLiteDatabase) {
 
-                db.execSQL(
-                    "ALTER TABLE cliente ADD COLUMN syncId TEXT NOT NULL DEFAULT ''"
-                )
-
-                db.execSQL(
-                    "ALTER TABLE cliente ADD COLUMN serverId INTEGER"
-                )
-
-                db.execSQL(
-                    "ALTER TABLE empleado ADD COLUMN syncId TEXT NOT NULL DEFAULT ''"
-                )
-
-                db.execSQL(
-                    "ALTER TABLE empleado ADD COLUMN serverId INTEGER"
-                )
             }
-        }
+        }*/
 
         fun getDatabase(
             context: Context
@@ -75,7 +63,7 @@ abstract class Motorep_Database :
                         Motorep_Database::class.java,
                         "motorepdatabase"
                     )
-                        .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                        .addMigrations(MIGRATION_1_2)
                         .fallbackToDestructiveMigration(true)
                         .build()
                 INSTANCE = instance

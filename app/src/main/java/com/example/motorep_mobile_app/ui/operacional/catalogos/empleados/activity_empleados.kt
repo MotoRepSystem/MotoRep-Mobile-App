@@ -167,13 +167,9 @@ class activity_empleados : AppCompatActivity() {
                         "Sincronizado con éxito: ${empleado.nombre}"
                     )
 
-                } catch (e: Exception) {
-
-                    Log.e(
-                        "SYNC_DEBUG",
-                        "Error al sincronizar ${empleado.nombre}: ${e.message}",
-                        e
-                    )
+                } catch (e: retrofit2.HttpException) {
+                    val cuerpo = e.response()?.errorBody()?.string()
+                    Log.e("SYNC", "HTTP ${e.code()} -> $cuerpo")
                 }
             }
 
