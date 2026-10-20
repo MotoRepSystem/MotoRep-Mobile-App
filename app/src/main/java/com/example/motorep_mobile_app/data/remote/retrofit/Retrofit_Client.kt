@@ -16,13 +16,13 @@ object RetrofitClient {
 
         val loggingInterceptor = Interceptor { chain ->
             val request = chain.request()
-            Log.d("RetrofitClient", "Peticion: ${request.method()} ${request.url()}")
+            Log.d("RetrofitClient", "Peticion: ${request.method} ${request.url}")
             val response = chain.proceed(request)
-            Log.d("RetrofitClient", "Respuesta HTTP: ${response.code()} para ${request.url()}")
+            Log.d("RetrofitClient", "Respuesta HTTP: ${response.code} para ${request.url}")
             response
         }
 
-        // Crea el cliente HTTP que utilizará Retrofit.
+        // Crea el cliente HTTP que utilizarÃ¡ Retrofit.
         val client = OkHttpClient.Builder()
             .addInterceptor(AuthInterceptor(context))
             .addInterceptor(loggingInterceptor)

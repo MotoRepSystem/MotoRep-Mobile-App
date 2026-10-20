@@ -44,13 +44,10 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.identity.jvm)
     implementation(libs.material)
-<<<<<<< HEAD
     implementation(libs.play.services.cast.framework)
-=======
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
->>>>>>> origin/integrar-encuesta
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
