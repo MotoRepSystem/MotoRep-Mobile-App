@@ -19,10 +19,10 @@ class Empleado_Adpter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(empleado: Empleado) {
-            binding.txtNombre.text = empleado.Nombres
-            binding.txtApellido.text = empleado.Apellidos
-            binding.txtCedula.text = empleado.NumCedula
-            binding.txtTelefono.text = empleado.Telefono
+            binding.txtNombre.text = empleado.nombre
+            binding.txtApellido.text = empleado.apellido
+            binding.txtCedula.text = empleado.cedula
+            binding.txtTelefono.text = empleado.telefono
 
             // Detecta cuando el usuario selecciona un empleado.
             binding.root.setOnClickListener {

@@ -15,7 +15,7 @@ import com.example.motorep_mobile_app.data.entity.Empleado
 
 @Database(
     entities = [Cliente::class, Empleado::class],
-    version = 5
+    version = 6
 )
 abstract class Motorep_Database :
     RoomDatabase() {

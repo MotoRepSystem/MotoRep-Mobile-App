@@ -1,34 +1,12 @@
 package com.example.motorep_mobile_app.ui.miscelanea
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.motorep_mobile_app.MainActivity
 import com.example.motorep_mobile_app.R
-import com.example.motorep_mobile_app.ui.configuracion.activity_configuracion
-import com.example.motorep_mobile_app.ui.dashboard.activity_dashboard
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_clientes
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_empleados
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_inventario
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_proveedores
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_marcas
-import com.example.motorep_mobile_app.ui.operacional.movimientos.activity_facturacion
-import com.example.motorep_mobile_app.ui.reportes.activity_incidencias
-import com.example.motorep_mobile_app.ui.reportes.activity_indicadores
-import com.example.motorep_mobile_app.ui.reportes.activity_tendencias
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
-
+import com.example.motorep_mobile_app.ui.common.MenuLateral
 class activity_notificaciones : AppCompatActivity() {
 
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navViews: NavigationView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,111 +18,6 @@ class activity_notificaciones : AppCompatActivity() {
         // Carga el diseño XML de las notificaciones.
         setContentView(R.layout.activity_notificaciones)
 
-
-        drawerLayout = findViewById(R.id.DrawerLayout)
-        navViews = findViewById(R.id.navigationView)
-
-        // Ajusta el contenido a las barras del sistema.
-        // El ID correcto es mainConstraint, según tu XML.
-        ViewCompat.setOnApplyWindowInsetsListener(
-            findViewById(R.id.mainConstraint)
-        ) { v, insets ->
-
-            val systemBars =
-                insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-            v.setPadding(
-                systemBars.left,
-                systemBars.top,
-                systemBars.right,
-                systemBars.bottom
-            )
-
-            insets
-        }
-
-        // Botón abrir menú
-        val btnMenu = findViewById<ImageView>(R.id.imgMenu)
-        btnMenu.setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
-        }
-
-        /*// Botón cerrar menú
-        val btnMenuVolver = findViewById<ImageView>(R.id.imgCerrarMenu)
-        btnMenuVolver.setOnClickListener {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        }*/
-
-        val btnFacturas = findViewById<LinearLayout>(R.id.drawerLayoutFacturas)
-        btnFacturas.setOnClickListener {
-            val intent = Intent(this, activity_facturacion::class.java)
-            startActivity(intent)
-        }
-
-        val btnCompras = findViewById<LinearLayout>(R.id.drawerLayoutCompras)
-        btnCompras.setOnClickListener {
-            val intent = Intent(this, activity_marcas::class.java)
-            startActivity(intent)
-        }
-
-        val btnClientes = findViewById<LinearLayout>(R.id.drawerLayoutClientes)
-        btnClientes.setOnClickListener {
-            val intent = Intent(this, activity_clientes::class.java)
-            startActivity(intent)
-        }
-
-        val btnEmpleados = findViewById<LinearLayout>(R.id.drawerLayoutEmpleados)
-        btnEmpleados.setOnClickListener {
-            val intent = Intent(this, activity_empleados::class.java)
-            startActivity(intent)
-        }
-
-        val btnInventario = findViewById<LinearLayout>(R.id.drawerLayoutInventario)
-        btnInventario.setOnClickListener {
-            val intent = Intent(this, activity_inventario::class.java)
-            startActivity(intent)
-        }
-
-        val btnCaja = findViewById<LinearLayout>(R.id.drawerLayoutCaja)
-        btnCaja.setOnClickListener {
-            val intent = Intent(this, activity_proveedores::class.java)
-            startActivity(intent)
-        }
-
-
-        val btnIndicadores = findViewById<LinearLayout>(R.id.LinearLayoutIndicadores)
-        btnIndicadores.setOnClickListener {
-            val intent = Intent(this, activity_indicadores::class.java)
-            startActivity(intent)
-        }
-
-        val btnTendencias = findViewById<LinearLayout>(R.id.LinearLayoutTendencias)
-        btnTendencias.setOnClickListener {
-            val intent = Intent(this, activity_tendencias::class.java)
-            startActivity(intent)
-        }
-
-        val btnIncidencias = findViewById<LinearLayout>(R.id.LinearLayoutIncidencias)
-        btnIncidencias.setOnClickListener {
-            val intent = Intent(this, activity_incidencias::class.java)
-            startActivity(intent)
-        }
-        val btnInicio = findViewById<LinearLayout>(R.id.drawerLayoutInicio)
-        btnInicio.setOnClickListener {
-            val intent = Intent(this, activity_dashboard::class.java)
-            startActivity(intent)
-        }
-        val btnSalir = findViewById<LinearLayout>(R.id.linearLayoutCerrarSesion)
-        btnSalir.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
-        val btnConfiguracion = findViewById<LinearLayout>(R.id.LinearLayoutConfiguracion)
-        btnConfiguracion.setOnClickListener {
-            val intent = Intent(this, activity_configuracion::class.java)
-            startActivity(intent)
-        }
-
-
+        MenuLateral(this).configurar()
     }
 }
