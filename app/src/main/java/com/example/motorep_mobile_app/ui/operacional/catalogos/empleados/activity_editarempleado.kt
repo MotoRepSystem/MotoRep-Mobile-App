@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.motorep_mobile_app.data.database.Motorep_Database
 import com.example.motorep_mobile_app.data.entity.Empleado
-import com.example.motorep_mobile_app.data.remote.dto.Empleado_dto
+import com.example.motorep_mobile_app.data.remote.dto.toDto
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
 import com.example.motorep_mobile_app.data.repository.Empleado_Repository
 import com.example.motorep_mobile_app.data.utils.NetworkUtils
@@ -172,14 +172,7 @@ class activity_editarempleado : AppCompatActivity() {
                 if (serverId != 0 && NetworkUtils.hayInternet(this@activity_editarempleado)) {
                     try {
                         val api = RetrofitClient.create(this@activity_editarempleado)
-                        val empleadoDto = Empleado_dto(
-                            id = serverId,
-                            syncId = syncId,
-                            nombre = nuevoNombre,
-                            apellido = nuevaApellido,
-                            cedula = nuevoCedula,
-                            telefono = nuevoTelefono
-                        )
+                        val empleadoDto = empleadoActualizado.toDto()
 
                         api.actualizarEmpleado(serverId, empleadoDto)
                         viewModel.marcarComoSincronizado(syncId, serverId)
