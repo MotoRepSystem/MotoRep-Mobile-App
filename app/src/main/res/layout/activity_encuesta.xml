@@ -66,6 +66,27 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+
+            <!-- Selección de la factura que el cliente desea evaluar -->
+            <TextView
+                android:id="@+id/txtTituloFactura"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Selecciona la factura de tu compra"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp" />
+
+            <Spinner
+                android:id="@+id/spinnerFacturas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#022D36"
+                android:padding="12dp"
+                android:layout_marginBottom="20dp" />
+
             <!-- 1. Experiencia de compra -->
             <TextView
                 android:layout_width="match_parent"
