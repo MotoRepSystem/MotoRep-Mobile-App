@@ -85,22 +85,9 @@ class activity_clientes : AppCompatActivity() {
             drawerLayout.closeDrawer(GravityCompat.START)
         }*/
 
-        val btnFacturas = findViewById<LinearLayout>(R.id.drawerLayoutFacturas)
-        btnFacturas.setOnClickListener {
-            val intent = Intent(this, activity_facturacion::class.java)
-            startActivity(intent)
-        }
-
-        val btnCompras = findViewById<LinearLayout>(R.id.drawerLayoutCompras)
-        btnCompras.setOnClickListener {
-            val intent = Intent(this, activity_compras::class.java)
-            startActivity(intent)
-        }
-
         val btnClientes = findViewById<LinearLayout>(R.id.drawerLayoutClientes)
         btnClientes.setOnClickListener {
-            val intent = Intent(this, activity_clientes::class.java)
-            startActivity(intent)
+            drawerLayout.closeDrawer(GravityCompat.START)
         }
 
         val btnEmpleados = findViewById<LinearLayout>(R.id.drawerLayoutEmpleados)
@@ -114,13 +101,6 @@ class activity_clientes : AppCompatActivity() {
             val intent = Intent(this, activity_inventario::class.java)
             startActivity(intent)
         }
-
-        val btnCaja = findViewById<LinearLayout>(R.id.drawerLayoutCaja)
-        btnCaja.setOnClickListener {
-            val intent = Intent(this, activity_caja::class.java)
-            startActivity(intent)
-        }
-
 
         val btnIndicadores = findViewById<LinearLayout>(R.id.LinearLayoutIndicadores)
         btnIndicadores.setOnClickListener {
@@ -150,7 +130,6 @@ class activity_clientes : AppCompatActivity() {
             startActivity(intent)
         }
 
-
         val database = MotorepDatabase.getDatabase(this)
         val dao = database.clienteDao()
         val repository = Cliente_Repository(dao)
@@ -172,9 +151,10 @@ class activity_clientes : AppCompatActivity() {
         reciclerViewCliente.layoutManager = LinearLayoutManager(this)
 
 
+        //creamos el adapter y definimos la acción al seleccionar un cliente.
+        val adapter = Cliente_Adapter { cliente -> }
 
-        //cramos el adapter y usarlo en el recicler
-        val adapter = Cliente_Adapter()
+        // Asignamos el adaptador al RecyclerView.
         reciclerViewCliente.adapter = adapter
 
 

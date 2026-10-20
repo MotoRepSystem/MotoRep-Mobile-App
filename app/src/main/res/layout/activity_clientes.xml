@@ -109,11 +109,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--Primera prueba de incluir drawer layout personalizado, este drawer viene desde drawer_layout.xml y debe personalizarse segun el rol-->
-    <!--<include
+    <include
         android:id="@+id/navigationView"
         layout="@layout/drawer_layout"
         android:layout_width="280dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start" /-->
+        android:layout_gravity="start" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

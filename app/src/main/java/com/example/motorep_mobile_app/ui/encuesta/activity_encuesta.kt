@@ -1,4 +1,3 @@
-
 // Paquete donde se encuentra la pantalla de encuesta.
 package com.example.motorep_mobile_app.ui.encuesta
 
@@ -13,6 +12,16 @@ import android.widget.RadioButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.motorep_mobile_app.R
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.Toast
+import android.util.Log
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.IOException
 
 class EncuestaActivity : AppCompatActivity() {
 
@@ -20,6 +29,13 @@ class EncuestaActivity : AppCompatActivity() {
     private lateinit var contenedorPreguntas: LinearLayout
     private lateinit var contenedorRevision: LinearLayout
     private lateinit var contenedorConfirmacion: LinearLayout
+    // Selector de facturas del cliente.
+    private lateinit var spinnerFacturas: Spinner
+    // Identificador de la factura que seleccionó el cliente.
+    private var facturaIdSeleccionada: Int = -1
+
+    // Identificador del cliente que inició sesión en la encuesta.
+    private var clienteId: Int = -1
 
     // Botones de navegación.
     private lateinit var btnRevisar: Button
@@ -54,8 +70,13 @@ class EncuestaActivity : AppCompatActivity() {
         // Carga el diseño XML de la encuesta.
         setContentView(R.layout.activity_encuesta)
 
+        clienteId = intent.getIntExtra("cliente_id", -1)
+
         // Busca e inicializa los controles del XML.
         inicializarVistas()
+
+        // Carga las facturas recibidas desde la pantalla anterior.
+        cargarFacturas()
 
         // Configura los botones y las opciones condicionales.
         configurarEventos()
@@ -94,6 +115,73 @@ class EncuestaActivity : AppCompatActivity() {
         txtOtrosProductos = findViewById(R.id.txtOtrosProductos)
         txtComentario = findViewById(R.id.txtComentario)
         txtComentarioMejora = findViewById(R.id.txtComentarioMejora)
+
+        // Busca el Spinner de facturas definido en el XML.
+        spinnerFacturas = findViewById(R.id.spinnerFacturas)
+    }
+
+    // Carga las facturas que recibió la pantalla desde el login de encuesta.
+    private fun cargarFacturas() {
+
+        // Recupera los identificadores de las facturas.
+        val facturaIds = intent.getIntegerArrayListExtra("factura_ids")
+
+        // Recupera las etiquetas que se mostrarán en el Spinner.
+        val facturaLabels = intent.getStringArrayListExtra("factura_labels")
+
+        // Comprueba que existan facturas y que ambas listas coincidan.
+        if (facturaIds.isNullOrEmpty() ||
+            facturaLabels.isNullOrEmpty() ||
+            facturaIds.size != facturaLabels.size
+        ) {
+            Toast.makeText(
+                this,
+                "No se encontraron facturas para este cliente",
+                Toast.LENGTH_LONG
+            ).show()
+
+            // No permite seleccionar una factura inexistente.
+            btnRevisar.isEnabled = false
+            return
+        }
+
+        // Crea el adaptador que mostrará las facturas en el Spinner.
+        val adaptador = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            facturaLabels
+        )
+
+        // Define el diseño de las opciones desplegables.
+        adaptador.setDropDownViewResource(
+            android.R.layout.simple_spinner_dropdown_item
+        )
+
+        // Asigna el adaptador al Spinner.
+        spinnerFacturas.adapter = adaptador
+
+        // Guarda el ID de la primera factura seleccionada.
+        facturaIdSeleccionada = facturaIds[0]
+
+        // Actualiza el ID cada vez que el cliente elija otra factura.
+        spinnerFacturas.onItemSelectedListener =
+            object : android.widget.AdapterView.OnItemSelectedListener {
+
+                override fun onItemSelected(
+                    parent: android.widget.AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    facturaIdSeleccionada = facturaIds[position]
+                }
+
+                override fun onNothingSelected(
+                    parent: android.widget.AdapterView<*>
+                ) {
+                    facturaIdSeleccionada = -1
+                }
+            }
     }
 
     // Configura los eventos de navegación y los campos opcionales.
@@ -109,9 +197,9 @@ class EncuestaActivity : AppCompatActivity() {
             mostrarEncuesta()
         }
 
-        // Muestra la confirmación visual, sin conexión con el servidor.
+        // Envía la encuesta a la API y confirma solo si se guardó.
         btnEnviar.setOnClickListener {
-            mostrarConfirmacion()
+            enviarEncuesta()
         }
 
         // Finaliza el recorrido de la encuesta.
@@ -295,8 +383,7 @@ class EncuestaActivity : AppCompatActivity() {
         ).smoothScrollTo(0, 0)
     }
 
-    // Presenta la pantalla final de confirmación.
-    // Esta acción es solamente visual: no guarda datos en MongoDB.
+    // muestra la confirmacion
     private fun mostrarConfirmacion() {
 
         contenedorPreguntas.visibility = View.GONE
@@ -307,5 +394,89 @@ class EncuestaActivity : AppCompatActivity() {
         findViewById<android.widget.ScrollView>(
             R.id.scrollEncuesta
         ).smoothScrollTo(0, 0)
+    }
+
+    //Url
+    private val urlEncuestas = "http://127.0.0.1:8000/encuestas/crear/"
+
+    // Lista de productos para guardarla como arreglo en Mongo.
+    private fun obtenerProductosLista(): JSONArray {
+        val lista = JSONArray()
+        if (checkBujias.isChecked) lista.put("Bujías")
+        if (checkPastillas.isChecked) lista.put("Pastillas de freno")
+        if (checkAceite.isChecked) lista.put("Aceite")
+        if (checkFiltros.isChecked) lista.put("Filtros")
+        if (checkOtrosProductos.isChecked) {
+            val otros = txtOtrosProductos.text.toString().trim()
+            lista.put(if (otros.isNotEmpty()) "Otros: $otros" else "Otros")
+        }
+        return lista
+    }
+
+    // Arma el JSON con la estructura de la colección y lo envía a la API.
+    private fun enviarEncuesta() {
+
+        if (clienteId == -1 || facturaIdSeleccionada == -1) {
+            Toast.makeText(this, "Faltan datos del cliente o la factura", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        val json = JSONObject().apply {
+            put("cliente_id", clienteId)
+            put("factura_id", facturaIdSeleccionada)
+
+            put("satisfaccion_servicio", JSONObject().apply {
+                put("satisfaccion_general", obtenerRespuestaRadio(radioSatisfaccionGeneral))
+                put("atencion_personal", obtenerRespuestaRadio(radioAtencion))
+                put("experiencia_compra", obtenerRespuestaRadio(radioExperiencia))
+            })
+
+            put("preferencias_uso", JSONObject().apply {
+                put("facilidad_encontrar_producto", obtenerRespuestaRadio(radioFacilidadProducto))
+                put("variedad_productos", obtenerRespuestaRadio(radioVariedadProductos))
+                put("marca_preferida", obtenerMarcaPreferida())
+            })
+
+            put("productos_frecuentes", obtenerProductosLista())
+            put("comentario_servicio", obtenerTexto(txtComentario, "Sin comentario"))
+            put("sugerencia",obtenerTexto(txtComentarioMejora, "Sin sugerencias"))
+        }
+
+        val body = json.toString().toRequestBody("application/json".toMediaType())
+        val request = Request.Builder().url(urlEncuestas).post(body).build()
+
+        btnEnviar.isEnabled = false  // evita doble envío
+
+        OkHttpClient().newCall(request).enqueue(object : Callback {
+
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("ENCUESTA", "Error de conexión", e)
+                runOnUiThread {
+                    btnEnviar.isEnabled = true
+                    Toast.makeText(
+                        this@EncuestaActivity,
+                        "No se pudo enviar. Revisa la conexión.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val cuerpo = response.body?.string()
+                Log.d("ENCUESTA", "Código: ${response.code} $cuerpo")
+                runOnUiThread {
+                    btnEnviar.isEnabled = true
+                    if (response.isSuccessful) {
+                        mostrarConfirmacion()
+                    } else {
+                        Toast.makeText(
+                            this@EncuestaActivity,
+                            "Error del servidor (${response.code})",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+        })
     }
 }
