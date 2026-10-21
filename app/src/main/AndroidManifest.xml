@@ -68,7 +68,7 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.operacional.catalogos.activity_inventario"
+            android:name=".ui.operacional.inventario.activity_inventario"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
@@ -96,7 +96,7 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activity_detalleproducto"
+            android:name=".ui.operacional.inventario.activity_detalleproducto"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
@@ -127,6 +127,10 @@
             android:name=".ui.operacional.catalogos.empleados.activity_detalleempleado"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.operacional.inventario.activity_detalleproducto"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>

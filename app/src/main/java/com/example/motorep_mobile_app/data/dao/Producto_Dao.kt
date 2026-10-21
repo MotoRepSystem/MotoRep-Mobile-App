@@ -3,26 +3,21 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Transaction
 import com.example.motorep_mobile_app.data.entity.Producto
 import kotlinx.coroutines.flow.Flow
 
 
 @Dao
 interface Producto_Dao {
-
-    @Query("SELECT * FROM productos_catalogo ORDER BY producto")
-    fun obtenerProductos(): Flow<List<Producto>>   // SIN suspend
+    @Query("SELECT * FROM productos ORDER BY detalle")
+    fun obtenerProductos(): Flow<List<Producto>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertarProductos(items: List<Producto>)
 
-    @Query("DELETE FROM productos_catalogo")
+    @Query("DELETE FROM productos")
     suspend fun borrarProductos()
 
-    @Transaction
-    suspend fun reemplazarProductos(items: List<Producto>) {
-        borrarProductos()
-        insertarProductos(items)
-    }
+    @Query("SELECT * FROM productos WHERE id = :id")
+    fun observarPorId(id: Int): Flow<Producto?>   // sin suspend, es un Flow
 }

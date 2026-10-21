@@ -84,6 +84,7 @@
             android:paddingTop="8dp"
             android:paddingBottom="90dp"
             android:backgroundTint="@color/white"
+            android:background="@color/white"
             app:layout_constraintTop_toBottomOf="@id/linearLayoutToolsbar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
