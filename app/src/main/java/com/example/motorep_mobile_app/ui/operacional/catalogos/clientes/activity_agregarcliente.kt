@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.motorep_mobile_app.R
 import com.example.motorep_mobile_app.data.database.Motorep_Database
 import com.example.motorep_mobile_app.data.entity.Cliente
-import com.example.motorep_mobile_app.data.remote.dto.Cliente_dto
+import com.example.motorep_mobile_app.data.remote.dto.toDto
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
 import com.example.motorep_mobile_app.data.repository.Cliente_ApiRepository
 import com.example.motorep_mobile_app.data.repository.Cliente_Repository
@@ -66,6 +66,7 @@ class activity_agregarcliente : AppCompatActivity() {
 
         btnguardar.setOnClickListener {
             btnguardar.isEnabled = false
+            Log.d("ClienteCreate", "Solicitud de guardar cliente recibida")
 
             val nombre =
                 edtNombre.text.toString().trim()
@@ -87,6 +88,7 @@ class activity_agregarcliente : AppCompatActivity() {
                 telefono.isEmpty()
             ) {
 
+                Log.w("ClienteCreate", "Alta detenida: hay campos obligatorios vacíos")
                 Toast.makeText(
                     this,
                     "Completa todos los campos.",
@@ -100,6 +102,7 @@ class activity_agregarcliente : AppCompatActivity() {
 
             val hayInternet =
                 NetworkUtils.hayInternet(this)
+            Log.d("ClienteCreate", "Conectividad disponible: $hayInternet")
 
 
             // El producto siempre se crea primero en Room con sincronizado = false
@@ -116,6 +119,7 @@ class activity_agregarcliente : AppCompatActivity() {
             lifecycleScope.launch {
                 try {
                     repository.insertar(cliente)
+                    Log.d("ClienteCreate", "Cliente guardado localmente")
                 } catch (e: Exception) {
                     Log.e("ClienteCreate", "No se pudo guardar el cliente en Room", e)
                     Toast.makeText(
@@ -130,18 +134,11 @@ class activity_agregarcliente : AppCompatActivity() {
                 var sincronizado = false
                 if (hayInternet) {
                     try {
-                        val respuesta = apiRepository.guardarCliente(
-                            Cliente_dto(
-                                id = null,
-                                syncId = cliente.syncId,
-                                nombre = cliente.nombre,
-                                apellido = cliente.apellido,
-                                cedula = cliente.cedula,
-                                telefono = cliente.telefono
-                            )
-                        )
+                        Log.d("ClienteCreate", "Enviando cliente a la API")
+                        val respuesta = apiRepository.guardarCliente(cliente.toDto())
+                        Log.d("ClienteCreate", "Respuesta API recibida; serverId=${respuesta.id}")
                         val serverId = respuesta.id
-                            ?: throw IllegalStateException("La API no devolvió el ID del cliente creado.")
+                            ?: throw IllegalStateException("La API no devolvió el ID del cliente creado ($respuesta).")
 
                         repository.marcarComoSincronizado(cliente.syncId, serverId)
                         sincronizado = true
@@ -157,6 +154,8 @@ class activity_agregarcliente : AppCompatActivity() {
                             Log.e("ClienteCreate", "No se pudo sincronizar el cliente con la API", e)
                         }
                     }
+                } else {
+                    Log.i("ClienteCreate", "Sin conexión: se conserva el cliente pendiente de sincronización")
                 }
 
                 val mensaje = when {

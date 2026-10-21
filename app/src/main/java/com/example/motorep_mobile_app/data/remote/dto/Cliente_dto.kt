@@ -4,18 +4,18 @@ import com.example.motorep_mobile_app.data.entity.Cliente
 import com.google.gson.annotations.SerializedName
 
 data class Cliente_dto(
-    @SerializedName("id", alternate = ["Id"])
-    val id: Int?,
+    @SerializedName("id", alternate = ["Id", "idCliente", "IdCliente", "id_cliente"])
+    val id: Int? = null,
     @SerializedName("syncId", alternate = ["SyncId", "sync_id"])
-    val syncId: String?,
-    @SerializedName("Nombres", alternate = ["nombre", "Nombre", "nombres"])
-    val nombre: String?,
-    @SerializedName("Apellidos", alternate = ["apellido", "Apellido", "apellidos"])
-    val apellido: String?,
-    @SerializedName("NumCedula", alternate = ["cedula", "Cedula", "numCedula"])
-    val cedula: String?,
-    @SerializedName("NumTeléfono", alternate = ["Telefono", "NumTelefono", "telefono"])
-    val telefono: String?
+    val syncId: String? = null,
+    @SerializedName("Nombres", alternate = ["nombre", "Nombre", "nombres", "nombresCliente"])
+    val nombre: String? = null,
+    @SerializedName("Apellidos", alternate = ["apellido", "Apellido", "apellidos", "apellidosCliente"])
+    val apellido: String? = null,
+    @SerializedName("NumCedula", alternate = ["cedula", "Cedula", "numCedula", "num_cedula"])
+    val cedula: String? = null,
+    @SerializedName("NumTeléfono", alternate = ["NumTelefono", "Telefono", "telefono", "numtelefono", "num_telefono", "Teléfono"])
+    val telefono: String? = null
 )
 
 // Mapper: convierte lo que llega de la API (DTO) en un Cliente de Room
