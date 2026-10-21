@@ -14,7 +14,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.motorep_mobile_app.MainActivity
 import com.example.motorep_mobile_app.R
 import com.example.motorep_mobile_app.ui.configuracion.activity_configuracion
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_inventario
+import com.example.motorep_mobile_app.ui.operacional.inventario.activity_inventario
 import com.example.motorep_mobile_app.ui.dashboard.activity_dashboard
 import com.example.motorep_mobile_app.ui.miscelanea.activity_notificaciones
 import com.example.motorep_mobile_app.ui.operacional.catalogos.clientes.activity_clientes

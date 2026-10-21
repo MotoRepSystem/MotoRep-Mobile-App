@@ -17,7 +17,7 @@ import com.example.motorep_mobile_app.data.entity.Producto
 
 @Database(
     entities = [Cliente::class, Empleado::class, Producto::class],
-    version = 8
+    version = 9
 )
 abstract class Motorep_Database :
     RoomDatabase() {
@@ -55,14 +55,12 @@ abstract class Motorep_Database :
         val MIGRATION_2_3 = object : Migration(2, 3) {   // X = versión actual, Y = X + 1
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("""
-            CREATE TABLE IF NOT EXISTS productos_catalogo (
+            CREATE TABLE IF NOT EXISTS productos (
                 id INTEGER NOT NULL,
-                codigo TEXT NOT NULL,
-                producto TEXT NOT NULL,
-                marca TEXT NOT NULL,
-                moto TEXT NOT NULL,
-                color TEXT NOT NULL,
-                size TEXT NOT NULL,
+                cantidad INTEGER NOT NULL,
+                preciocosto TEXT NOT NULL,
+                precioventa TEXT NOT NULL,
+                detalle-producto TEXT NOT NULL,
                 PRIMARY KEY(id)
             )
         """.trimIndent())

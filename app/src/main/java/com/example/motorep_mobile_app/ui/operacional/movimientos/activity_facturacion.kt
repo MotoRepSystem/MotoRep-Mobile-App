@@ -15,7 +15,7 @@ import com.example.motorep_mobile_app.MainActivity
 import com.example.motorep_mobile_app.R
 import com.example.motorep_mobile_app.ui.reportes.activity_incidencias
 import com.example.motorep_mobile_app.ui.reportes.activity_indicadores
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_inventario
+import com.example.motorep_mobile_app.ui.operacional.inventario.activity_inventario
 import com.example.motorep_mobile_app.ui.reportes.activity_tendencias
 import com.example.motorep_mobile_app.ui.dashboard.activity_dashboard
 import com.example.motorep_mobile_app.ui.operacional.catalogos.clientes.activity_clientes

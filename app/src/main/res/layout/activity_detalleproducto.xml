@@ -129,12 +129,12 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Código:"
+                        android:text="Marca:"
                         android:textColor="#000000"
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/tvCodigoProducto"
+                        android:id="@+id/tvMarcaProducto"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="LAP001"
@@ -155,12 +155,12 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Categoría"
+                        android:text="Moto:"
                         android:textColor="#000000"
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/tvCategoriaProducto"
+                        android:id="@+id/tvMotoProducto"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Electrico"
@@ -233,6 +233,6 @@
         layout="@layout/drawer_layout"
         android:layout_width="280dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start" />
+        android:layout_gravity="start" />-
 
 </androidx.drawerlayout.widget.DrawerLayout>

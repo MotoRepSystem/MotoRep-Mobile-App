@@ -43,40 +43,94 @@
                 android:textStyle="bold"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="12dp"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@id/imgProducto"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/txtrefModelo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="20dp"
+
+                android:text="Marca:"
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@id/txtcantidad"
+                app:layout_constraintTop_toTopOf="@id/txtcantidad" />
 
             <TextView
-                android:id="@+id/txtCodigo"
+                android:id="@+id/txtModelo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="20dp"
+
+                android:textColor="@color/black"
+                android:text="xxxxxxxxx"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/txtrefModelo"
+                app:layout_constraintTop_toTopOf="@id/txtrefModelo" />
+
+            <TextView
+                android:id="@+id/txtrefMoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="8dp"
 
-                android:text="Codigo"
+                android:textColor="@color/black"
+                android:text="Moto:"
                 android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@id/txtCantidad"
-                app:layout_constraintTop_toBottomOf="@id/txtCantidad" />
+                app:layout_constraintStart_toStartOf="@id/textorefcantidad"
+                app:layout_constraintTop_toBottomOf="@id/textorefcantidad" />
+            <TextView
+                android:id="@+id/txtMoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+
+                android:textColor="@color/black"
+                android:text="xxxxxxx"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/txtrefMoto"
+                app:layout_constraintTop_toTopOf="@id/txtrefMoto" />
 
             <TextView
-                android:id="@+id/txtCantidad"
+                android:id="@+id/textorefcantidad"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Stock:"
-
+                android:textColor="@color/black"
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="@id/txtNombreProducto"
                 app:layout_constraintTop_toBottomOf="@id/txtNombreProducto" />
 
             <TextView
-                android:id="@+id/txtPrecio"
+                android:id="@+id/txtcantidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="X"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                app:layout_constraintStart_toEndOf="@id/textorefcantidad"
+                app:layout_constraintTop_toTopOf="@id/textorefcantidad"/>
+
+
+
+            <TextView
+                android:id="@+id/txtPrecioVenta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="$00.00"
                 android:textSize="17sp"
                 android:textStyle="bold"
+
+                android:textColor="@color/black"
 
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="2dp"
