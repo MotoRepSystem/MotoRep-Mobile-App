@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.motorep_mobile_app.data.database.Motorep_Database
 import com.example.motorep_mobile_app.data.entity.Cliente
-import com.example.motorep_mobile_app.data.remote.dto.Cliente_dto
+import com.example.motorep_mobile_app.data.remote.dto.toDto
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
 import com.example.motorep_mobile_app.data.repository.Cliente_Repository
 import com.example.motorep_mobile_app.data.utils.NetworkUtils
@@ -22,8 +22,6 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
 class activity_editarcliente : AppCompatActivity() {
-
-
 
 
     private lateinit var binding: ActivityEditarclienteBinding
@@ -174,14 +172,7 @@ class activity_editarcliente : AppCompatActivity() {
                 if (serverId != 0 && NetworkUtils.hayInternet(this@activity_editarcliente)) {
                     try {
                         val api = RetrofitClient.create(this@activity_editarcliente)
-                        val clienteDto = Cliente_dto(
-                            id = serverId,
-                            syncId = syncId,
-                            nombre = nuevoNombre,
-                            apellido = nuevaApellido,
-                            cedula = nuevoCedula,
-                            telefono = nuevoTelefono
-                        )
+                        val clienteDto = clienteActualizado.toDto()
 
                         api.actualizarCliente(serverId, clienteDto)
                         viewModel.marcarComoSincronizado(syncId, serverId)

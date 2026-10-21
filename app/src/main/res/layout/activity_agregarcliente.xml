@@ -185,7 +185,7 @@
                     android:layout_height="48dp"
                     android:layout_marginTop="8dp"
                     android:hint="EJ: xxxx-xxxx"
-                    android:inputType="none"
+                    android:inputType="phone"
                     android:importantForAutofill="no"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"

@@ -1,17 +1,28 @@
 package com.example.motorep_mobile_app.data.dao
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.Delete
-import androidx.room.Update
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Transaction
 import com.example.motorep_mobile_app.data.entity.Producto
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
-interface ProductoDao {
-    @Insert suspend fun Insertar(producto: Producto)
-    @Update suspend fun Actualizar(producto: Producto)
-    @Delete suspend fun Eliminar(producto: Producto)
-    //linea sin completar
-    //@Query("SELECT * FROM Productos") suspend fun ObtenerTodos(): List<Producto>
-}
+interface Producto_Dao {
 
+    @Query("SELECT * FROM productos_catalogo ORDER BY producto")
+    fun obtenerProductos(): Flow<List<Producto>>   // SIN suspend
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertarProductos(items: List<Producto>)
+
+    @Query("DELETE FROM productos_catalogo")
+    suspend fun borrarProductos()
+
+    @Transaction
+    suspend fun reemplazarProductos(items: List<Producto>) {
+        borrarProductos()
+        insertarProductos(items)
+    }
+}

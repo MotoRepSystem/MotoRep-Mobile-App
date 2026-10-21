@@ -1,18 +1,21 @@
 package com.example.motorep_mobile_app.data.remote.api
-import com.example.motorep_mobile_app.data.entity.Empleado
 import com.example.motorep_mobile_app.data.remote.dto.Cliente_dto
+import com.example.motorep_mobile_app.data.remote.dto.Color_dto
+import com.example.motorep_mobile_app.data.remote.dto.DetalleProducto_dto
 import com.example.motorep_mobile_app.data.remote.dto.Empleado_dto
 import com.example.motorep_mobile_app.data.remote.dto.LoginRequest
 import com.example.motorep_mobile_app.data.remote.dto.LoginResponse
-import com.google.gson.JsonElement
-import okhttp3.Response
+import com.example.motorep_mobile_app.data.remote.dto.Marca_dto
+import com.example.motorep_mobile_app.data.remote.dto.Moto_dto
+import com.example.motorep_mobile_app.data.remote.dto.Producto_dto
+import com.example.motorep_mobile_app.data.remote.dto.Size_dto
 import retrofit2.http.*
 
 interface ApiService {
     @GET("catalogos/clientes")
     suspend fun obtenerCliente(): List<Cliente_dto>
 
-    @POST("catalogos/clientes")
+    @POST("catalogos/clientes/")
     suspend fun guardarCliente(@Body cliente: Cliente_dto): Cliente_dto
 
     @PATCH("catalogos/clientes/{id}")
@@ -36,4 +39,22 @@ interface ApiService {
 
     @DELETE("catalogos/empleados/{id}")
     suspend fun eliminarEmpleado(@Path("id") id: Int)
+
+
+
+
+    //Endpoints de productos
+    @GET("movimientos/productos/")
+    suspend fun obtenerProductos(): List<Producto_dto>
+    @GET("movimientos/productos/detalle/")
+    suspend fun obtenerDetalleProductos(): List<DetalleProducto_dto>
+
+    @GET("movimientos/marcas/")
+    suspend fun obtenerMarcas(): List<Marca_dto>
+    @GET("movimientos/moto/")
+    suspend fun obtenerMoto(): List<Moto_dto>
+    @GET("movimientos/colorproducto/")
+    suspend fun obtenerColor(): List<Color_dto>
+    @GET("movimientos/size/")
+    suspend fun obtenerTamaños(): List<Size_dto>
 }

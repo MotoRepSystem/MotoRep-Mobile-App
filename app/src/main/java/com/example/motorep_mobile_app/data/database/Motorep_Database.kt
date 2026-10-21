@@ -10,11 +10,13 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.motorep_mobile_app.data.dao.Cliente_Dao
 import com.example.motorep_mobile_app.data.dao.Empleado_Dao
+import com.example.motorep_mobile_app.data.dao.Producto_Dao
 import com.example.motorep_mobile_app.data.entity.Cliente
 import com.example.motorep_mobile_app.data.entity.Empleado
+import com.example.motorep_mobile_app.data.entity.Producto
 
 @Database(
-    entities = [Cliente::class, Empleado::class],
+    entities = [Cliente::class, Empleado::class, Producto::class],
     version = 8
 )
 abstract class Motorep_Database :
@@ -23,6 +25,9 @@ abstract class Motorep_Database :
             Cliente_Dao
     abstract fun empleadoDao():
             Empleado_Dao
+    abstract fun productoDao():
+            Producto_Dao
+
 
     companion object {
         @Volatile
@@ -47,11 +52,22 @@ abstract class Motorep_Database :
             }
         }
 
-        /*val MIGRATION_2_3 = object : Migration(2, 3) {
+        val MIGRATION_2_3 = object : Migration(2, 3) {   // X = versión actual, Y = X + 1
             override fun migrate(db: SupportSQLiteDatabase) {
-
+                db.execSQL("""
+            CREATE TABLE IF NOT EXISTS productos_catalogo (
+                id INTEGER NOT NULL,
+                codigo TEXT NOT NULL,
+                producto TEXT NOT NULL,
+                marca TEXT NOT NULL,
+                moto TEXT NOT NULL,
+                color TEXT NOT NULL,
+                size TEXT NOT NULL,
+                PRIMARY KEY(id)
+            )
+        """.trimIndent())
             }
-        }*/
+        }
 
         fun getDatabase(
             context: Context
