@@ -28,15 +28,15 @@ data class BuscarClienteResponse(
 
 // Respuestas relacionadas con la satisfacción del servicio.
 data class SatisfaccionServicioRequest(
-    val satisfaccion_general: String,
-    val atencion_personal: String,
-    val experiencia_compra: String
+    val satisfaccion_general: Int,
+    val atencion_personal: Int,
+    val experiencia_compra: Int
 )
 
 // Respuestas relacionadas con las preferencias del cliente.
 data class PreferenciasUsoRequest(
-    val facilidad_encontrar_producto: String,
-    val variedad_productos: String,
+    val facilidad_encontrar_producto: Int,
+    val variedad_productos: Int,
     val marca_preferida: String
 )
 
