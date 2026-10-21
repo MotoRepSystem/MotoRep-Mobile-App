@@ -1,49 +1,56 @@
-// Paquete donde se encuentra la pantalla de encuesta.
+
 package com.example.motorep_mobile_app.ui.encuesta
 
+// Importaciones para la pantalla y sus controles.
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.RadioGroup
 import android.widget.RadioButton
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import com.example.motorep_mobile_app.R
-import android.widget.ArrayAdapter
+import android.widget.RadioGroup
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
-import android.util.Log
-import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody.Companion.toRequestBody
+import androidx.appcompat.app.AppCompatActivity
+
+// Importaciones de la API Retrofit existente.
+import com.example.motorep_mobile_app.R
+import com.example.motorep_mobile_app.conexion.RetrofitClient
+import com.example.motorep_mobile_app.conexion.EncuestaRequest
+import com.example.motorep_mobile_app.conexion.EncuestaCrearResponse
+import com.example.motorep_mobile_app.conexion.SatisfaccionServicioRequest
+import com.example.motorep_mobile_app.conexion.PreferenciasUsoRequest
+
 import org.json.JSONArray
-import org.json.JSONObject
-import java.io.IOException
 
 class EncuestaActivity : AppCompatActivity() {
 
-    // Contenedores de las tres secciones de la pantalla.
+    // Contenedores de las secciones del formulario, revisión y confirmación.
     private lateinit var contenedorPreguntas: LinearLayout
     private lateinit var contenedorRevision: LinearLayout
     private lateinit var contenedorConfirmacion: LinearLayout
-    // Selector de facturas del cliente.
+
+    // Selector de facturas asociadas al cliente.
     private lateinit var spinnerFacturas: Spinner
-    // Identificador de la factura que seleccionó el cliente.
+
+    // Guarda el identificador de la factura seleccionada.
     private var facturaIdSeleccionada: Int = -1
 
-    // Identificador del cliente que inició sesión en la encuesta.
+    // Identificador del cliente recibido desde la pantalla anterior.
     private var clienteId: Int = -1
 
-    // Botones de navegación.
+    // Botones para navegar por las etapas de la encuesta.
     private lateinit var btnRevisar: Button
     private lateinit var btnEditar: Button
     private lateinit var btnEnviar: Button
     private lateinit var btnFinalizar: Button
 
-    // Grupos de opciones de respuesta única.
+    // Grupos de respuestas de selección única.
     private lateinit var radioExperiencia: RadioGroup
     private lateinit var radioAtencion: RadioGroup
     private lateinit var radioSatisfaccionGeneral: RadioGroup
@@ -51,40 +58,41 @@ class EncuestaActivity : AppCompatActivity() {
     private lateinit var radioVariedadProductos: RadioGroup
     private lateinit var radioMarcaPreferida: RadioGroup
 
-    // Casillas para seleccionar varios productos.
+    // Casillas para seleccionar los productos frecuentes.
     private lateinit var checkBujias: CheckBox
     private lateinit var checkPastillas: CheckBox
     private lateinit var checkAceite: CheckBox
     private lateinit var checkFiltros: CheckBox
     private lateinit var checkOtrosProductos: CheckBox
 
-    // Campos de texto de la encuesta.
+    // Campos de texto para respuestas adicionales.
     private lateinit var txtOtraMarca: EditText
     private lateinit var txtOtrosProductos: EditText
     private lateinit var txtComentario: EditText
     private lateinit var txtComentarioMejora: EditText
 
+    // Se ejecuta al abrir la pantalla de la encuesta.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Carga el diseño XML de la encuesta.
         setContentView(R.layout.activity_encuesta)
 
+        // Recupera el identificador del cliente.
         clienteId = intent.getIntExtra("cliente_id", -1)
 
-        // Busca e inicializa los controles del XML.
+        // Inicializa los controles de la pantalla.
         inicializarVistas()
 
-        // Carga las facturas recibidas desde la pantalla anterior.
+        // Carga las facturas disponibles para el cliente.
         cargarFacturas()
 
         // Configura los botones y las opciones condicionales.
         configurarEventos()
     }
 
-    // Inicializa los componentes visuales mediante sus identificadores.
+    // Relaciona las variables con los controles definidos en el XML.
     private fun inicializarVistas() {
-
         contenedorPreguntas = findViewById(R.id.contenedorPreguntas)
         contenedorRevision = findViewById(R.id.contenedorRevision)
         contenedorConfirmacion = findViewById(R.id.contenedorConfirmacion)
@@ -116,20 +124,16 @@ class EncuestaActivity : AppCompatActivity() {
         txtComentario = findViewById(R.id.txtComentario)
         txtComentarioMejora = findViewById(R.id.txtComentarioMejora)
 
-        // Busca el Spinner de facturas definido en el XML.
+        // Inicializa el selector de facturas.
         spinnerFacturas = findViewById(R.id.spinnerFacturas)
     }
 
-    // Carga las facturas que recibió la pantalla desde el login de encuesta.
+    // Carga las facturas y conserva el ID de la factura seleccionada.
     private fun cargarFacturas() {
-
-        // Recupera los identificadores de las facturas.
         val facturaIds = intent.getIntegerArrayListExtra("factura_ids")
-
-        // Recupera las etiquetas que se mostrarán en el Spinner.
         val facturaLabels = intent.getStringArrayListExtra("factura_labels")
 
-        // Comprueba que existan facturas y que ambas listas coincidan.
+        // Comprueba que existan facturas y que las listas coincidan.
         if (facturaIds.isNullOrEmpty() ||
             facturaLabels.isNullOrEmpty() ||
             facturaIds.size != facturaLabels.size
@@ -140,12 +144,13 @@ class EncuestaActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
             ).show()
 
-            // No permite seleccionar una factura inexistente.
+            // Impide continuar si no hay una factura disponible.
             btnRevisar.isEnabled = false
+            btnEnviar.isEnabled = false
             return
         }
 
-        // Crea el adaptador que mostrará las facturas en el Spinner.
+        // Prepara el adaptador que mostrará las facturas.
         val adaptador = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item,
@@ -157,18 +162,18 @@ class EncuestaActivity : AppCompatActivity() {
             android.R.layout.simple_spinner_dropdown_item
         )
 
-        // Asigna el adaptador al Spinner.
+        // Asigna las facturas al Spinner.
         spinnerFacturas.adapter = adaptador
 
-        // Guarda el ID de la primera factura seleccionada.
+        // Guarda el identificador de la primera factura.
         facturaIdSeleccionada = facturaIds[0]
 
-        // Actualiza el ID cada vez que el cliente elija otra factura.
+        // Actualiza el identificador cuando cambia la selección.
         spinnerFacturas.onItemSelectedListener =
-            object : android.widget.AdapterView.OnItemSelectedListener {
+            object : AdapterView.OnItemSelectedListener {
 
                 override fun onItemSelected(
-                    parent: android.widget.AdapterView<*>,
+                    parent: AdapterView<*>,
                     view: View?,
                     position: Int,
                     id: Long
@@ -176,18 +181,16 @@ class EncuestaActivity : AppCompatActivity() {
                     facturaIdSeleccionada = facturaIds[position]
                 }
 
-                override fun onNothingSelected(
-                    parent: android.widget.AdapterView<*>
-                ) {
+                override fun onNothingSelected(parent: AdapterView<*>) {
                     facturaIdSeleccionada = -1
                 }
             }
     }
 
-    // Configura los eventos de navegación y los campos opcionales.
+    // Configura los botones y los campos que aparecen condicionalmente.
     private fun configurarEventos() {
 
-        // Abre la revisión con las respuestas actuales.
+        // Muestra la revisión de las respuestas.
         btnRevisar.setOnClickListener {
             mostrarRevision()
         }
@@ -197,7 +200,7 @@ class EncuestaActivity : AppCompatActivity() {
             mostrarEncuesta()
         }
 
-        // Envía la encuesta a la API y confirma solo si se guardó.
+        // Envía las respuestas a la API.
         btnEnviar.setOnClickListener {
             enviarEncuesta()
         }
@@ -207,25 +210,25 @@ class EncuestaActivity : AppCompatActivity() {
             finish()
         }
 
-        // La marca escrita solo se muestra cuando se selecciona "Otra".
+        // Muestra el campo de texto si se selecciona "Otra".
         radioMarcaPreferida.setOnCheckedChangeListener { group, checkedId ->
-            val seleccion = group.findViewById<RadioButton>(checkedId)
+            val seleccion =
+                group.findViewById<RadioButton>(checkedId)
             val esOtra = seleccion?.text?.toString() == "Otra"
 
             txtOtraMarca.visibility =
                 if (esOtra) View.VISIBLE else View.GONE
         }
 
-        // El campo adicional se muestra cuando se selecciona "Otros".
+        // Muestra el campo adicional si se selecciona "Otros".
         checkOtrosProductos.setOnCheckedChangeListener { _, marcado ->
             txtOtrosProductos.visibility =
                 if (marcado) View.VISIBLE else View.GONE
         }
     }
 
-    // Devuelve el texto seleccionado en un grupo de opciones.
+    // Devuelve el texto de la opción seleccionada.
     private fun obtenerRespuestaRadio(group: RadioGroup): String {
-
         val idSeleccionado = group.checkedRadioButtonId
 
         if (idSeleccionado == -1) {
@@ -238,9 +241,77 @@ class EncuestaActivity : AppCompatActivity() {
         return radioButton?.text?.toString() ?: "Sin respuesta"
     }
 
-    // Obtiene la marca seleccionada y contempla la opción "Otra".
-    private fun obtenerMarcaPreferida(): String {
+    // Devuelve un número entero del 1 al 5 para las respuestas de escala.
+    private fun obtenerValorRadio(group: RadioGroup): Int {
+        val idSeleccionado = group.checkedRadioButtonId
 
+        // Devuelve 0 si no hay respuesta.
+        if (idSeleccionado == -1) {
+            return 0
+        }
+
+        val radioButton =
+            group.findViewById<RadioButton>(idSeleccionado)
+        val texto = radioButton?.text?.toString() ?: return 0
+
+        // Si el texto contiene un número, utiliza ese valor.
+        val numero = Regex("""\d+""")
+            .find(texto)
+            ?.value
+            ?.toIntOrNull()
+
+        if (numero != null) {
+            return if (numero in 1..5) numero else 0
+        }
+
+        // Convierte las opciones de texto conocidas a una escala.
+        return when (texto.trim().lowercase()) {
+            "muy mala",
+            "muy insatisfecho",
+            "muy difícil",
+            "muy dificil",
+            "muy baja" -> 1
+
+            "mala",
+            "insatisfecho",
+            "difícil",
+            "dificil",
+            "baja" -> 2
+
+            "regular",
+            "neutral" -> 3
+
+            "buena",
+            "satisfecho",
+            "fácil",
+            "facil",
+            "alta" -> 4
+
+            "muy buena",
+            "muy satisfecho",
+            "muy fácil",
+            "muy facil",
+            "muy alta" -> 5
+
+            // Utiliza la posición si el texto no coincide.
+            else -> {
+                val posicion = group.indexOfChild(radioButton)
+                if (posicion in 0..4) posicion + 1 else 0
+            }
+        }
+    }
+
+    // Comprueba que todas las preguntas de escala estén respondidas.
+    private fun escalasCompletas(): Boolean {
+        return radioSatisfaccionGeneral.checkedRadioButtonId != -1 &&
+                radioAtencion.checkedRadioButtonId != -1 &&
+                radioExperiencia.checkedRadioButtonId != -1 &&
+                radioFacilidadProducto.checkedRadioButtonId != -1 &&
+                radioVariedadProductos.checkedRadioButtonId != -1
+    }
+
+    // Obtiene la marca preferida y contempla la opción "Otra".
+    private fun obtenerMarcaPreferida(): String {
         val marca = obtenerRespuestaRadio(radioMarcaPreferida)
 
         if (marca == "Otra") {
@@ -256,57 +327,38 @@ class EncuestaActivity : AppCompatActivity() {
         return marca
     }
 
-    // Reúne los productos marcados por el cliente.
-    private fun obtenerProductosSeleccionados(): String {
+    // Reúne los productos marcados en un arreglo JSON.
+    private fun obtenerProductosLista(): JSONArray {
+        val lista = JSONArray()
 
-        val productos = mutableListOf<String>()
+        if (checkBujias.isChecked) lista.put("Bujías")
+        if (checkPastillas.isChecked) lista.put("Pastillas de freno")
+        if (checkAceite.isChecked) lista.put("Aceite")
+        if (checkFiltros.isChecked) lista.put("Filtros")
 
-        if (checkBujias.isChecked) {
-            productos.add("Bujías")
-        }
-
-        if (checkPastillas.isChecked) {
-            productos.add("Pastillas de freno")
-        }
-
-        if (checkAceite.isChecked) {
-            productos.add("Aceite")
-        }
-
-        if (checkFiltros.isChecked) {
-            productos.add("Filtros")
-        }
-
+        // Agrega el nombre de otros productos, si corresponde.
         if (checkOtrosProductos.isChecked) {
             val otros = txtOtrosProductos.text.toString().trim()
 
-            productos.add(
+            lista.put(
                 if (otros.isNotEmpty()) "Otros: $otros" else "Otros"
             )
         }
 
-        return if (productos.isEmpty()) {
-            "Sin selección"
-        } else {
-            productos.joinToString(", ")
-        }
+        return lista
     }
 
-    // Devuelve el texto escrito o un mensaje cuando el campo está vacío.
+    // Devuelve el texto escrito o un mensaje predeterminado.
     private fun obtenerTexto(
         campo: EditText,
         textoVacio: String
     ): String {
-
         val texto = campo.text.toString().trim()
-
         return if (texto.isEmpty()) textoVacio else texto
     }
 
-    // Muestra todas las respuestas en la sección de revisión.
+    // Muestra las respuestas para que el cliente las revise.
     private fun mostrarRevision() {
-
-        // Obtiene las respuestas seleccionadas.
         val experiencia = obtenerRespuestaRadio(radioExperiencia)
         val atencion = obtenerRespuestaRadio(radioAtencion)
         val satisfaccion =
@@ -314,19 +366,19 @@ class EncuestaActivity : AppCompatActivity() {
         val facilidad = obtenerRespuestaRadio(radioFacilidadProducto)
         val variedad = obtenerRespuestaRadio(radioVariedadProductos)
         val marca = obtenerMarcaPreferida()
-        val productos = obtenerProductosSeleccionados()
+
+        val productos = obtenerProductosLista()
 
         val comentario = obtenerTexto(
             txtComentario,
             "Sin comentario"
         )
-
         val mejora = obtenerTexto(
             txtComentarioMejora,
             "Sin sugerencias"
         )
 
-        // Presenta cada respuesta en su TextView correspondiente.
+        // Muestra las respuestas en los TextView de revisión.
         findViewById<TextView>(R.id.txtRevisionExperiencia).text =
             experiencia
 
@@ -343,11 +395,10 @@ class EncuestaActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.txtRevisionVariedad).text =
             variedad
 
-        findViewById<TextView>(R.id.txtRevisionMarca).text =
-            marca
+        findViewById<TextView>(R.id.txtRevisionMarca).text = marca
 
         findViewById<TextView>(R.id.txtRevisionProductos).text =
-            productos
+            productos.toString()
 
         findViewById<TextView>(R.id.txtRevisionComentario).text =
             comentario
@@ -360,7 +411,7 @@ class EncuestaActivity : AppCompatActivity() {
         contenedorRevision.visibility = View.VISIBLE
         contenedorConfirmacion.visibility = View.GONE
 
-        // Regresa el desplazamiento al principio de la pantalla.
+        // Regresa al principio de la pantalla.
         findViewById<android.widget.ScrollView>(
             R.id.scrollEncuesta
         ).post {
@@ -370,22 +421,20 @@ class EncuestaActivity : AppCompatActivity() {
         }
     }
 
-    // Regresa al formulario conservando todas las selecciones.
+    // Regresa al formulario conservando las selecciones.
     private fun mostrarEncuesta() {
-
         contenedorPreguntas.visibility = View.VISIBLE
         contenedorRevision.visibility = View.GONE
         contenedorConfirmacion.visibility = View.GONE
 
-        // Desplaza el formulario hasta el principio.
+        // Desplaza la pantalla hasta el principio.
         findViewById<android.widget.ScrollView>(
             R.id.scrollEncuesta
         ).smoothScrollTo(0, 0)
     }
 
-    // muestra la confirmacion
+    // Muestra la confirmación después de guardar correctamente.
     private fun mostrarConfirmacion() {
-
         contenedorPreguntas.visibility = View.GONE
         contenedorRevision.visibility = View.GONE
         contenedorConfirmacion.visibility = View.VISIBLE
@@ -396,87 +445,153 @@ class EncuestaActivity : AppCompatActivity() {
         ).smoothScrollTo(0, 0)
     }
 
-    //Url
-    private val urlEncuestas = "http://127.0.0.1:8000/encuestas/crear/"
-
-    // Lista de productos para guardarla como arreglo en Mongo.
-    private fun obtenerProductosLista(): JSONArray {
-        val lista = JSONArray()
-        if (checkBujias.isChecked) lista.put("Bujías")
-        if (checkPastillas.isChecked) lista.put("Pastillas de freno")
-        if (checkAceite.isChecked) lista.put("Aceite")
-        if (checkFiltros.isChecked) lista.put("Filtros")
-        if (checkOtrosProductos.isChecked) {
-            val otros = txtOtrosProductos.text.toString().trim()
-            lista.put(if (otros.isNotEmpty()) "Otros: $otros" else "Otros")
-        }
-        return lista
-    }
-
-    // Arma el JSON con la estructura de la colección y lo envía a la API.
+    // Valida, construye y envía la encuesta mediante Retrofit.
     private fun enviarEncuesta() {
 
+        // Comprueba que existan el cliente y la factura.
         if (clienteId == -1 || facturaIdSeleccionada == -1) {
-            Toast.makeText(this, "Faltan datos del cliente o la factura", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                "Faltan datos del cliente o la factura",
+                Toast.LENGTH_LONG
+            ).show()
             return
         }
 
-        val json = JSONObject().apply {
-            put("cliente_id", clienteId)
-            put("factura_id", facturaIdSeleccionada)
-
-            put("satisfaccion_servicio", JSONObject().apply {
-                put("satisfaccion_general", obtenerRespuestaRadio(radioSatisfaccionGeneral))
-                put("atencion_personal", obtenerRespuestaRadio(radioAtencion))
-                put("experiencia_compra", obtenerRespuestaRadio(radioExperiencia))
-            })
-
-            put("preferencias_uso", JSONObject().apply {
-                put("facilidad_encontrar_producto", obtenerRespuestaRadio(radioFacilidadProducto))
-                put("variedad_productos", obtenerRespuestaRadio(radioVariedadProductos))
-                put("marca_preferida", obtenerMarcaPreferida())
-            })
-
-            put("productos_frecuentes", obtenerProductosLista())
-            put("comentario_servicio", obtenerTexto(txtComentario, "Sin comentario"))
-            put("sugerencia",obtenerTexto(txtComentarioMejora, "Sin sugerencias"))
+        // Impide enviar la encuesta si falta alguna valoración.
+        if (!escalasCompletas()) {
+            Toast.makeText(
+                this,
+                "Responde todas las preguntas de valoración",
+                Toast.LENGTH_LONG
+            ).show()
+            return
         }
 
-        val body = json.toString().toRequestBody("application/json".toMediaType())
-        val request = Request.Builder().url(urlEncuestas).post(body).build()
+        // Convierte las respuestas de escala a números.
+        val satisfaccion = obtenerValorRadio(radioSatisfaccionGeneral)
+        val atencion = obtenerValorRadio(radioAtencion)
+        val experiencia = obtenerValorRadio(radioExperiencia)
+        val facilidad = obtenerValorRadio(radioFacilidadProducto)
+        val variedad = obtenerValorRadio(radioVariedadProductos)
 
-        btnEnviar.isEnabled = false  // evita doble envío
+        // Comprueba que todos los valores estén entre 1 y 5.
+        if (listOf(
+                satisfaccion,
+                atencion,
+                experiencia,
+                facilidad,
+                variedad
+            ).any { it !in 1..5 }
+        ) {
+            Toast.makeText(
+                this,
+                "Verifica las respuestas de valoración",
+                Toast.LENGTH_LONG
+            ).show()
+            return
+        }
 
-        OkHttpClient().newCall(request).enqueue(object : Callback {
+        // Convierte la lista JSON de productos a una lista de Kotlin.
+        val productosJson = obtenerProductosLista()
+        val productos = List(productosJson.length()) { indice ->
+            productosJson.getString(indice)
+        }
 
-            override fun onFailure(call: Call, e: IOException) {
-                Log.e("ENCUESTA", "Error de conexión", e)
-                runOnUiThread {
-                    btnEnviar.isEnabled = true
-                    Toast.makeText(
-                        this@EncuestaActivity,
-                        "No se pudo enviar. Revisa la conexión.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
+        // Construye las respuestas de satisfacción.
+        val datosSatisfaccion = SatisfaccionServicioRequest(
+            satisfaccion_general = satisfaccion,
+            atencion_personal = atencion,
+            experiencia_compra = experiencia
+        )
 
-            override fun onResponse(call: Call, response: Response) {
-                val cuerpo = response.body?.string()
-                Log.d("ENCUESTA", "Código: ${response.code} $cuerpo")
-                runOnUiThread {
-                    btnEnviar.isEnabled = true
-                    if (response.isSuccessful) {
-                        mostrarConfirmacion()
-                    } else {
+        // Construye las preferencias de uso.
+        val datosPreferencias = PreferenciasUsoRequest(
+            facilidad_encontrar_producto = facilidad,
+            variedad_productos = variedad,
+            marca_preferida = obtenerMarcaPreferida()
+        )
+
+        // Construye el objeto completo que recibirá la API.
+        val datosEncuesta = EncuestaRequest(
+            cliente_id = clienteId,
+            factura_id = facturaIdSeleccionada,
+            satisfaccion_servicio = datosSatisfaccion,
+            preferencias_uso = datosPreferencias,
+            productos_frecuentes = productos,
+            comentario_servicio = obtenerTexto(
+                txtComentario,
+                "Sin comentario"
+            ),
+            sugerencia = obtenerTexto(
+                txtComentarioMejora,
+                "Sin sugerencias"
+            )
+        )
+
+        // Desactiva el botón para evitar envíos duplicados.
+        btnEnviar.isEnabled = false
+
+        // Envía la encuesta mediante la API centralizada.
+        RetrofitClient.clienteEncuestaApi.crearEncuesta(datosEncuesta)
+            .enqueue(object :
+                retrofit2.Callback<EncuestaCrearResponse> {
+
+                // Gestiona los errores de conexión.
+                override fun onFailure(
+                    call: retrofit2.Call<EncuestaCrearResponse>,
+                    t: Throwable
+                ) {
+                    Log.e(
+                        "ENCUESTA",
+                        "Error al enviar la encuesta",
+                        t
+                    )
+
+                    runOnUiThread {
+                        btnEnviar.isEnabled = true
+
                         Toast.makeText(
                             this@EncuestaActivity,
-                            "Error del servidor (${response.code})",
+                            "No se pudo enviar. Revisa la conexión.",
                             Toast.LENGTH_LONG
                         ).show()
                     }
                 }
-            }
-        })
+
+                // Gestiona la respuesta de la API.
+                override fun onResponse(
+                    call: retrofit2.Call<EncuestaCrearResponse>,
+                    response: retrofit2.Response<EncuestaCrearResponse>
+                ) {
+                    Log.d(
+                        "ENCUESTA",
+                        "Código: ${response.code()}, respuesta: ${response.body()}"
+                    )
+
+                    runOnUiThread {
+                        btnEnviar.isEnabled = true
+
+                        if (response.isSuccessful) {
+                            // Muestra la confirmación si el servidor responde con éxito.
+                            mostrarConfirmacion()
+                        } else {
+                            // Registra el error devuelto por Django.
+                            val error = response.errorBody()?.string()
+
+                            Log.e(
+                                "ENCUESTA",
+                                "Error del servidor: $error"
+                            )
+
+                            Toast.makeText(
+                                this@EncuestaActivity,
+                                "Error del servidor (${response.code()})",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }
+            })
     }
 }

@@ -28,23 +28,20 @@ import kotlinx.coroutines.launch
 
 class activity_clientes : AppCompatActivity() {
 
-
     // Las guardamos como propiedades de la clase para poder reutilizarlas en onResume() sin volver a crearlas
     private lateinit var apiViewModel: Cliente_ApiViewModel
-    private lateinit var apiRepository: Cliente_ApiRepository // NUEVO: necesario para sincronizarPendientes()
+    private lateinit var apiRepository: Cliente_ApiRepository
+
+    // NUEVO: necesario para sincronizarPendientes()
     private lateinit var viewModel: Cliente_Viewmodel
     private lateinit var adapter: Cliente_Adapter
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_clientes)
 
-
         MenuLateral(this).configurar()
-
 
         // Nos permite recrear y traer el flujo de la base de datos para poder utilizarlo aquí
         val database = Motorep_Database.getDatabase(applicationContext)
@@ -235,7 +232,6 @@ class activity_clientes : AppCompatActivity() {
 
             onFinish()
         }
-
 
     }
 
