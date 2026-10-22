@@ -78,7 +78,7 @@
                     android:id="@+id/lblNombre"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nombre empleado"
+                    android:text="Nombre cliente"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
