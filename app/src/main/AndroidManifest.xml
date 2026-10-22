@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" >
 
@@ -6,8 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <!-- Permitir que la aplicaciÃ³n acceda a Internet -->
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -17,7 +15,7 @@
         android:roundIcon="@drawable/icon_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.MotoRepMobileApp"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true" >
 
         <!-- Pantalla principal -->
         <activity
@@ -72,7 +70,7 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.operacional.catalogos.activity_proveedores"
+            android:name=".ui.operacional.catalogos.proveedores.activity_proveedores"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
@@ -128,9 +126,17 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.operacional.inventario.activity_detalleproducto"
+            android:name=".ui.operacional.catalogos.proveedores.activity_detalleproveedores"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.operacional.catalogos.proveedores.activity_editarproveedor"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.operacional.catalogos.proveedores.activity_agregarproveedor"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

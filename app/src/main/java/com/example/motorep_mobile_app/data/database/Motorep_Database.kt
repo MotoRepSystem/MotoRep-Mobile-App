@@ -11,13 +11,15 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.motorep_mobile_app.data.dao.Cliente_Dao
 import com.example.motorep_mobile_app.data.dao.Empleado_Dao
 import com.example.motorep_mobile_app.data.dao.Producto_Dao
+import com.example.motorep_mobile_app.data.dao.Proveedor_Dao
 import com.example.motorep_mobile_app.data.entity.Cliente
 import com.example.motorep_mobile_app.data.entity.Empleado
 import com.example.motorep_mobile_app.data.entity.Producto
+import com.example.motorep_mobile_app.data.entity.Proveedor
 
 @Database(
-    entities = [Cliente::class, Empleado::class, Producto::class],
-    version = 9
+    entities = [Cliente::class, Empleado::class, Producto::class, Proveedor::class],
+    version = 10
 )
 abstract class Motorep_Database :
     RoomDatabase() {
@@ -27,6 +29,9 @@ abstract class Motorep_Database :
             Empleado_Dao
     abstract fun productoDao():
             Producto_Dao
+    abstract fun proveedorDao():
+            Proveedor_Dao
+
 
 
     companion object {
@@ -49,6 +54,25 @@ abstract class Motorep_Database :
                 db.execSQL("ALTER TABLE empleado ADD COLUMN serverId INTEGER")
                 db.execSQL("ALTER TABLE empleado ADD COLUMN syncId TEXT NOT NULL DEFAULT ''")
                 db.execSQL("UPDATE empleado SET syncId = lower(hex(randomblob(16)))")
+
+            }
+        }
+
+        val MIGRATION_9_10 = object : Migration(9, 10) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS proveedor (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        syncId TEXT NOT NULL,
+                        serverId INTEGER,
+                        nombre TEXT NOT NULL,
+                        telefono TEXT NOT NULL,
+                        sincronizado INTEGER NOT NULL,
+                        pendienteEliminar INTEGER NOT NULL
+                    )
+                    """.trimIndent()
+                )
             }
         }
 
@@ -78,6 +102,7 @@ abstract class Motorep_Database :
                         "motorepdatabase"
                     )
                         .addMigrations(MIGRATION_1_2)
+                        .addMigrations(MIGRATION_9_10)
                         .fallbackToDestructiveMigration(true)
                         .build()
                 INSTANCE = instance

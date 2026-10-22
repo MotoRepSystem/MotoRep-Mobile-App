@@ -4,6 +4,7 @@ import com.example.motorep_mobile_app.data.remote.dto.Empleado_dto
 import com.example.motorep_mobile_app.data.remote.dto.LoginRequest
 import com.example.motorep_mobile_app.data.remote.dto.LoginResponse
 import com.example.motorep_mobile_app.data.remote.dto.Producto_dto
+import com.example.motorep_mobile_app.data.remote.dto.Proveedor_dto
 import retrofit2.http.*
 
 interface ApiService {
@@ -41,4 +42,14 @@ interface ApiService {
     //Endpoints de productos
     @GET("movimiento/productos/inventarioLote/")
     suspend fun obtenerProductos(): List<Producto_dto>
+
+    //Proveedores
+    @GET("catalogos/proveedor")
+    suspend fun obtenerProveedores(): List<Proveedor_dto>
+    @POST("catalogos/proveedor/")
+    suspend fun guardarProveedor(@Body proveedor: Proveedor_dto): Proveedor_dto
+    @PATCH("catalogos/proveedor/{id}")
+    suspend fun actualizarProveedor(@Path("id") id: Int, @Body proveedor: Proveedor_dto)
+    @DELETE("catalogos/proveedor/{id}")
+    suspend fun eliminarProveedor(@Path("id") id: Int)
 }

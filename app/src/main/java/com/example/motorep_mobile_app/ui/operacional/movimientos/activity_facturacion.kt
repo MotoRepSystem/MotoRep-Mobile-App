@@ -21,7 +21,7 @@ import com.example.motorep_mobile_app.ui.dashboard.activity_dashboard
 import com.example.motorep_mobile_app.ui.operacional.catalogos.clientes.activity_clientes
 import com.example.motorep_mobile_app.ui.operacional.catalogos.empleados.activity_empleados
 import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_marcas
-import com.example.motorep_mobile_app.ui.operacional.catalogos.activity_proveedores
+import com.example.motorep_mobile_app.ui.operacional.catalogos.proveedores.activity_proveedores
 import com.google.android.material.navigation.NavigationView
 
 class activity_facturacion : AppCompatActivity() {
