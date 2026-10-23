@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.motorep_mobile_app.R
 import com.example.motorep_mobile_app.data.database.Motorep_Database
 import com.example.motorep_mobile_app.data.entity.Cliente
-import com.example.motorep_mobile_app.data.remote.dto.toDto
+import com.example.motorep_mobile_app.data.remote.dto.toClienteDto
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
 import com.example.motorep_mobile_app.data.repository.Cliente_ApiRepository
 import com.example.motorep_mobile_app.data.repository.Cliente_Repository
@@ -135,7 +135,7 @@ class activity_agregarcliente : AppCompatActivity() {
                 if (hayInternet) {
                     try {
                         Log.d("ClienteCreate", "Enviando cliente a la API")
-                        val respuesta = apiRepository.guardarCliente(cliente.toDto())
+                        val respuesta = apiRepository.guardarCliente(cliente.toClienteDto())
                         Log.d("ClienteCreate", "Respuesta API recibida; serverId=${respuesta.id}")
                         val serverId = respuesta.id
                             ?: throw IllegalStateException("La API no devolvió el ID del cliente creado ($respuesta).")

@@ -19,7 +19,7 @@ data class Cliente_dto(
 )
 
 // Mapper: convierte lo que llega de la API (DTO) en un Cliente de Room
-fun Cliente_dto.toEntity(): Cliente {
+fun Cliente_dto.toClienteEntity(): Cliente {
     return Cliente(
         id = 0,
         syncId = syncId ?: java.util.UUID.randomUUID().toString(),
@@ -32,8 +32,7 @@ fun Cliente_dto.toEntity(): Cliente {
     )
 }
 
-// Mapper inverso: convierte un Cliente de Room en un DTO para enviarlo a la API
-fun Cliente.toDto(): Cliente_dto {
+fun Cliente.toClienteDto(): Cliente_dto {
     return Cliente_dto(
         id = serverId,
         syncId = syncId,

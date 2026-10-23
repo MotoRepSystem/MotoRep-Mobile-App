@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- Emulador de Android -->
+        <domain>10.0.2.2</domain>
+
+        <!-- Computadora conectada por Wi-Fi -->
+        <domain>10.138.242.167</domain>
+    </domain-config>
+</network-security-config>

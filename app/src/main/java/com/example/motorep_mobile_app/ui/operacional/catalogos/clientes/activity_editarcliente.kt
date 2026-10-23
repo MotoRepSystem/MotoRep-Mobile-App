@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.motorep_mobile_app.data.database.Motorep_Database
 import com.example.motorep_mobile_app.data.entity.Cliente
-import com.example.motorep_mobile_app.data.remote.dto.toDto
+import com.example.motorep_mobile_app.data.remote.dto.toClienteDto
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
 import com.example.motorep_mobile_app.data.repository.Cliente_Repository
 import com.example.motorep_mobile_app.data.utils.NetworkUtils
@@ -172,7 +172,7 @@ class activity_editarcliente : AppCompatActivity() {
                 if (serverId != 0 && NetworkUtils.hayInternet(this@activity_editarcliente)) {
                     try {
                         val api = RetrofitClient.create(this@activity_editarcliente)
-                        val clienteDto = clienteActualizado.toDto()
+                        val clienteDto = clienteActualizado.toClienteDto()
 
                         api.actualizarCliente(serverId, clienteDto)
                         viewModel.marcarComoSincronizado(syncId, serverId)

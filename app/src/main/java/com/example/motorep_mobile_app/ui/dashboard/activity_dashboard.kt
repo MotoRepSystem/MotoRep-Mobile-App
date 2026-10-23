@@ -8,6 +8,9 @@ import com.example.motorep_mobile_app.R
 import com.example.motorep_mobile_app.ui.common.MenuLateral
 import com.google.android.material.navigation.NavigationView
 
+import android.view.View
+import com.example.motorep_mobile_app.data.session.SessionManager
+
 class activity_dashboard : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
@@ -21,6 +24,8 @@ class activity_dashboard : AppCompatActivity() {
         setContentView(R.layout.activity_dashboard)
 
         MenuLateral(this).configurar()
+
+        configurarAccesoDashboard()
 
         /*drawerLayout = findViewById(R.id.DrawerLayout)
         navViews = findViewById(R.id.navigationView)
@@ -147,4 +152,72 @@ class activity_dashboard : AppCompatActivity() {
             startActivity(intent)
         }*/
     }
+
+
+    private fun configurarAccesoDashboard() {
+        val sessionManager = SessionManager(this)
+        val grupos = sessionManager.obtenerGrupos()
+
+        val esAdministrador = grupos.any {
+            it.equals("Administrador", ignoreCase = true)
+        }
+
+        val esJefeVentas = grupos.any {
+            it.equals("Jefe de ventas", ignoreCase = true)
+        }
+
+        val esGerencia = grupos.any {
+            it.equals("Gerencia", ignoreCase = true)
+        }
+
+        // El administrador conserva los accesos operativos.
+        if (esAdministrador) return
+
+        val accesosPermitidos = when {
+            esJefeVentas -> setOf(
+                R.id.LinearLayoutIndicadores,
+                R.id.LinearLayoutIncidencias
+            )
+
+            esGerencia -> setOf(
+                R.id.LinearLayoutIndicadores,
+                R.id.LinearLayoutTendencias,
+                R.id.LinearLayoutIncidencias
+            )
+
+            else -> emptySet()
+        }
+
+        // Ocultar accesos directos que no corresponden al grupo.
+        val accesosDashboard = listOf(
+            R.id.drawerLayoutFacturas,
+            R.id.drawerLayoutCompras,
+            R.id.drawerLayoutCaja,
+            R.id.drawerLayoutProveedores,
+            R.id.drawerLayoutMarcas,
+            R.id.drawerLayoutClientes,
+            R.id.drawerLayoutEmpleados,
+            R.id.drawerLayoutInventario,
+            R.id.LinearLayoutNotificaciones,
+            R.id.LinearLayoutConfiguracion
+        )
+
+        accesosDashboard.forEach { id ->
+            findViewById<View>(id)?.visibility =
+                View.GONE
+        }
+
+        // Los reportes autorizados permanecen visibles.
+        val accesosDeReportes = listOf(
+            R.id.LinearLayoutIndicadores,
+            R.id.LinearLayoutTendencias,
+            R.id.LinearLayoutIncidencias
+        )
+
+        accesosDeReportes.forEach { id ->
+            findViewById<View>(id)?.visibility =
+                if (id in accesosPermitidos) View.VISIBLE else View.GONE
+        }
+    }
+
 }

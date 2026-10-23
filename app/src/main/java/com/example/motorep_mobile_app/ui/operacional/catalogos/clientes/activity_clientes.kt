@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.motorep_mobile_app.Cliente_Adapter
 import com.example.motorep_mobile_app.R
 import com.example.motorep_mobile_app.data.database.Motorep_Database
-import com.example.motorep_mobile_app.data.remote.dto.toDto
-import com.example.motorep_mobile_app.data.remote.dto.toEntity
+import com.example.motorep_mobile_app.data.remote.dto.toClienteDto
+import com.example.motorep_mobile_app.data.remote.dto.toClienteEntity
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
 import com.example.motorep_mobile_app.data.repository.Cliente_ApiRepository
 import com.example.motorep_mobile_app.data.repository.Cliente_Repository
@@ -114,7 +114,7 @@ class activity_clientes : AppCompatActivity() {
 
         if (NetworkUtils.hayInternet(this)) {
             apiViewModel.obtenerClientes { listaDto ->
-                val listaCliente = listaDto.map { it.toEntity() }
+                val listaCliente = listaDto.map { it.toClienteEntity() }
 
                 lifecycleScope.launch {
                     listaCliente.forEach { cliente ->
@@ -153,11 +153,11 @@ class activity_clientes : AppCompatActivity() {
 
                 try {
                     val serverId = if (cliente.serverId == null) {
-                        val respuesta = apiRepository.guardarCliente(cliente.toDto())
+                        val respuesta = apiRepository.guardarCliente(cliente.toClienteDto())
                         respuesta.id
                             ?: throw IllegalStateException("La API no devolvió el ID del cliente.")
                     } else {
-                        apiRepository.actualizarCliente(cliente.serverId, cliente.toDto())
+                        apiRepository.actualizarCliente(cliente.serverId, cliente.toClienteDto())
                         cliente.serverId
                     }
 

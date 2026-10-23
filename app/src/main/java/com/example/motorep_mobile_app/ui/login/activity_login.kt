@@ -133,24 +133,39 @@ class activity_login : AppCompatActivity() {
             // Login real contra la API con JWT
             lifecycleScope.launch {
                 try {
+
                     val respuesta = RetrofitClient.create(this@activity_login).login(
-                        LoginRequest(username = usuario, password = contraseña)
+                        LoginRequest(
+                            username = usuario,
+                            password = contraseña
+                        )
                     )
-                    // Login exitoso: el backend devolvió un token válido.
-                    // Obtiene el token JWT enviado por la API.
-                    val token = respuesta.access
-                    // Guarda el token JWT mediante SessionManager.
-                    val sessionManager =    SessionManager(this@activity_login)
-                    sessionManager.guardarToken(token)
-                    // Comprueba en Logcat que el token fue almacenado.
+
+// Crear el gestor de sesión.
+                    val sessionManager = SessionManager(this@activity_login)
+
+// Guardar el token JWT.
+                    sessionManager.guardarToken(respuesta.access)
+
+// Guardar los grupos devueltos por Django.
+                    sessionManager.guardarGrupos(respuesta.grupos)
+
+// Registrar los grupos para comprobar la respuesta en Logcat.
                     android.util.Log.d(
-                        "JWT_TEST",
-                        "Token guardado correctamente: ${token.take(10)}..."
+                        "LOGIN_ROLES",
+                        "Grupos recibidos: ${respuesta.grupos}"
                     )
-                    // Abre el Dashboard después de guardar el token.
-                    val intent = Intent(this@activity_login, activity_dashboard::class.java)
+
+// Por ahora conservamos el destino actual.
+// La navegación por grupos se implementará en la etapa 2.
+                    val intent = Intent(
+                        this@activity_login,
+                        activity_dashboard::class.java
+                    )
+
                     startActivity(intent)
                     finish()
+
                 } catch (e: Exception) {
                     android.util.Log.e(
                         "LOGIN_ERROR",
