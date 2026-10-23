@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardIncidencia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="12dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="6dp"
+        app:strokeWidth="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <!-- CATEGORIA (TITULO) -->
+            <TextView
+                android:id="@+id/txtCategoria"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Categoría"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginStart="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- TIPO DE INCIDENCIA -->
+            <TextView
+                android:id="@+id/txtTipo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Tipo:"
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                app:layout_constraintStart_toStartOf="@id/txtCategoria"
+                app:layout_constraintTop_toBottomOf="@id/txtCategoria" />
+
+            <!-- FECHA -->
+            <TextView
+                android:id="@+id/txtFecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Fecha:"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                app:layout_constraintStart_toStartOf="@id/txtTipo"
+                app:layout_constraintTop_toBottomOf="@id/txtTipo" />
+
+            <!-- ORIGEN -->
+            <TextView
+                android:id="@+id/txtOrigen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Origen:"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                app:layout_constraintStart_toStartOf="@id/txtFecha"
+                app:layout_constraintTop_toBottomOf="@id/txtFecha" />
+
+            <!-- REGISTRADA POR -->
+            <TextView
+                android:id="@+id/txtRegistradoPor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Registrada por:"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                app:layout_constraintStart_toStartOf="@id/txtOrigen"
+                app:layout_constraintTop_toBottomOf="@id/txtOrigen" />
+
+            <!-- MONTO -->
+            <TextView
+                android:id="@+id/txtMonto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Monto:"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                app:layout_constraintStart_toStartOf="@id/txtRegistradoPor"
+                app:layout_constraintTop_toBottomOf="@id/txtRegistradoPor" />
+
+            <!-- PRIORIDAD -->
+            <TextView
+                android:id="@+id/txtPrioridad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Prioridad:"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                app:layout_constraintStart_toStartOf="@id/txtMonto"
+                app:layout_constraintTop_toBottomOf="@id/txtMonto" />
+
+            <!-- DESCRIPCION (SIN RECORTAR) -->
+            <TextView
+                android:id="@+id/txtDescripcion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Descripción:"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                app:layout_constraintStart_toStartOf="@id/txtPrioridad"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtPrioridad"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>
