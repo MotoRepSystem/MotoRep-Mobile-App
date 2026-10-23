@@ -1,4 +1,5 @@
 package com.example.motorep_mobile_app.data.remote.api
+import com.example.motorep_mobile_app.data.incidencias.IncidenciaPagina
 import com.example.motorep_mobile_app.data.remote.dto.Cliente_dto
 import com.example.motorep_mobile_app.data.remote.dto.Empleado_dto
 import com.example.motorep_mobile_app.data.remote.dto.LoginRequest
@@ -72,5 +73,16 @@ interface ApiService {
     // Elimina lógicamente una marca.
     @DELETE("movimiento/marcas/{id}")
     suspend fun eliminarMarca(@Path("id") id: Int)
+
+
+
+    //GET de incidencias
+    @GET("api/incidencias/lista")
+    suspend fun getIncidencias(
+        @Query("page") page: Int = 1,
+        @Query("limit") limit: Int = 20,
+        @Query("prioridad") prioridad: Int? = null,
+        @Query("tipo_incidencia") tipoIncidencia: String? = null
+    ): IncidenciaPagina
 
 }
