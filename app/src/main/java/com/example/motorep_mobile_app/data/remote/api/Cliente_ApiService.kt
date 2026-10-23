@@ -5,6 +5,8 @@ import com.example.motorep_mobile_app.data.remote.dto.LoginRequest
 import com.example.motorep_mobile_app.data.remote.dto.LoginResponse
 import com.example.motorep_mobile_app.data.remote.dto.Producto_dto
 import com.example.motorep_mobile_app.data.remote.dto.Proveedor_dto
+import com.example.motorep_mobile_app.data.remote.dto.Marca_dto
+import com.example.motorep_mobile_app.data.remote.dto.TipoMarca_dto
 import retrofit2.http.*
 
 interface ApiService {
@@ -36,9 +38,6 @@ interface ApiService {
     @DELETE("catalogos/empleados/{id}")
     suspend fun eliminarEmpleado(@Path("id") id: Int)
 
-
-
-
     //Endpoints de productos
     @GET("movimiento/productos/inventarioLote/")
     suspend fun obtenerProductos(): List<Producto_dto>
@@ -52,4 +51,26 @@ interface ApiService {
     suspend fun actualizarProveedor(@Path("id") id: Int, @Body proveedor: Proveedor_dto)
     @DELETE("catalogos/proveedor/{id}")
     suspend fun eliminarProveedor(@Path("id") id: Int)
+
+    //Endpoints de marca
+    // Consulta los tipos de marcas registrados.
+    @GET("catalogos/tipo/")
+    suspend fun obtenerTiposMarca(): List<TipoMarca_dto>
+
+    // Consulta las marcas activas.
+    @GET("movimiento/marcas/")
+    suspend fun obtenerMarcas(): List<Marca_dto>
+
+    // Registra una marca nueva.
+    @POST("movimiento/marcas/")
+    suspend fun guardarMarca(@Body marca: Marca_dto): Marca_dto
+
+    // Actualiza una marca existente.
+    @PATCH("movimiento/marcas/{id}")
+    suspend fun actualizarMarca(@Path("id") id: Int, @Body marca: Marca_dto): Marca_dto
+
+    // Elimina lógicamente una marca.
+    @DELETE("movimiento/marcas/{id}")
+    suspend fun eliminarMarca(@Path("id") id: Int)
+
 }

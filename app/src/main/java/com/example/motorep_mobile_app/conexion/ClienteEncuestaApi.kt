@@ -4,8 +4,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-// Datos que Android enviará a Django.
-// El backend recibe el nombre completo en un solo campo.
+// Datos que Android enviará a Django. El backend recibe el nombre completo en un solo campo.
 data class BuscarClienteRequest(
     val nombre_completo: String
 )

@@ -21,7 +21,7 @@ object RetrofitClient {
             response
         }
 
-        // Crea el cliente HTTP que utilizarÃ¡ Retrofit.
+        // Crea el cliente HTTP que utilizara Retrofit.
         val client = OkHttpClient.Builder()
             .addInterceptor(AuthInterceptor(context))
             .addInterceptor(loggingInterceptor)

@@ -21,7 +21,6 @@ object RetrofitClient {
             .addConverterFactory(GsonConverterFactory.create())
 
             // Construir la conexión
-
             .build()
     }
 
@@ -31,4 +30,3 @@ object RetrofitClient {
         retrofit.create(ClienteEncuestaApi::class.java)
     }
 }
-

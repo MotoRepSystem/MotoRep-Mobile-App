@@ -11,8 +11,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainConstraint"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
+        <!-- Encabezado principal -->
         <LinearLayout
             android:id="@+id/linearLayoutMainTitle"
             android:layout_width="0dp"
@@ -21,14 +23,15 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintEnd_toEndOf="parent">
 
             <ImageView
                 android:id="@+id/imgMenu"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                android:contentDescription="Abrir menú"
                 app:srcCompat="@drawable/icon_menuacces" />
 
             <TextView
@@ -36,77 +39,74 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Inicio"
+                android:text="Marcas"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/imgnotificacion"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                app:srcCompat="@drawable/icon_notificacion"
-                />
-
         </LinearLayout>
 
-        <!-- CONTENIDO DESPLAZABLE RESPONSIVO -->
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nestedScrollView"
+        <!-- Etiqueta del filtro -->
+        <TextView
+            android:id="@+id/txtFiltroMarca"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="Filtrar por tipo"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/linearLayoutMainTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Filtro desplegable -->
+        <Spinner
+            android:id="@+id/spinnerTipoMarca"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="#022D36"
+            app:layout_constraintTop_toBottomOf="@id/txtFiltroMarca"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Lista de marcas -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerMarcas"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:fillViewport="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:clipToPadding="false"
+            android:paddingStart="16dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="12dp"
+            app:layout_constraintTop_toBottomOf="@id/spinnerTipoMarca"
+            app:layout_constraintBottom_toTopOf="@id/FloatingActionButtonAgregar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutMainTitle">
+            app:layout_constraintEnd_toEndOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="24dp"
-                android:background="@color/white">
-
-                <TextView
-                    android:id="@+id/txtWelcome"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:fontFamily="@font/roboto"
-                    android:text="¡Compras!"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/FloatingActionButtonAgregar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="331dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="10dp"
-                    android:clickable="true"
-                    android:contentDescription="Boton para agregar"
-                    android:focusable="true"
-                    app:backgroundTint="#022D36"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:srcCompat="@android:drawable/ic_input_add"
-                    app:tint="#FFFFFF" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
+        <!-- Botón para agregar marcas -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/FloatingActionButtonAgregar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:contentDescription="Agregar marca"
+            app:backgroundTint="#022D36"
+            app:srcCompat="@android:drawable/ic_input_add"
+            app:tint="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- Menú lateral -->
     <include
         android:id="@+id/navigationView"
         layout="@layout/drawer_layout"

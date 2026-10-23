@@ -32,7 +32,7 @@ class activity_clientes : AppCompatActivity() {
     private lateinit var apiViewModel: Cliente_ApiViewModel
     private lateinit var apiRepository: Cliente_ApiRepository
 
-    // NUEVO: necesario para sincronizarPendientes()
+    //necesario para sincronizarPendientes()
     private lateinit var viewModel: Cliente_Viewmodel
     private lateinit var adapter: Cliente_Adapter
 
