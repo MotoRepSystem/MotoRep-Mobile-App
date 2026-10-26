@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient {
 
     // Dirección del servidor Django en la computadora
-    private const val BASE_URL = "https://motorepweb-api-h3ahb3c6hgfebpa6.centralus-01.azurewebsites.net/"
+    private const val BASE_URL = "https://motorepsystemapi-a9a4cmbfcte0hshq.westus-01.azurewebsites.net/"
 
     // Crear y configurar Retrofit
     val retrofit: Retrofit by lazy {
