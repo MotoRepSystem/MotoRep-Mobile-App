@@ -9,7 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-    private const val BASE_URL = "https://motorepweb-api-h3ahb3c6hgfebpa6.centralus-01.azurewebsites.net/"
+    private const val BASE_URL = "https://motorepsystemapi-a9a4cmbfcte0hshq.westus-01.azurewebsites.net/"
 
     fun create(context: Context): ApiService {
 

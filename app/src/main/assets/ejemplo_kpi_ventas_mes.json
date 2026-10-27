@@ -1,0 +1,16 @@
+{
+  "kpi": "ventas_por_mes",
+  "titulo": "Ventas por mes",
+  "moneda": "NIO",
+  "datos": [
+    {"mes": "Enero", "total_ventas": 125000},
+    {"mes": "Febrero", "total_ventas": 148000},
+    {"mes": "Marzo", "total_ventas": 132000},
+    {"mes": "Abril", "total_ventas": 175000},
+    {"mes": "Mayo", "total_ventas": 163000},
+    {"mes": "Junio", "total_ventas": 195000}
+  ],
+  "metadata": {
+    "es_dato_de_ejemplo": true
+  }
+}

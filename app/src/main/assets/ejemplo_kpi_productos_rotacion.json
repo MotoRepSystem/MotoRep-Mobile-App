@@ -1,0 +1,31 @@
+{
+  "kpi": "productos_mayor_rotacion",
+  "titulo": "Productos con mayor rotación",
+  "periodo": "Último mes",
+  "unidad": "unidades vendidas",
+  "datos": [
+    {
+      "producto": "Aceite 20W-50",
+      "unidades_vendidas": 185
+    },
+    {
+      "producto": "Filtro de aceite",
+      "unidades_vendidas": 142
+    },
+    {
+      "producto": "Bujía estándar",
+      "unidades_vendidas": 118
+    },
+    {
+      "producto": "Pastillas de freno",
+      "unidades_vendidas": 96
+    },
+    {
+      "producto": "Filtro de aire",
+      "unidades_vendidas": 83
+    }
+  ],
+  "metadata": {
+    "es_dato_de_ejemplo": true
+  }
+}
