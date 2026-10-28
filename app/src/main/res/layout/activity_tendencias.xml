@@ -68,39 +68,62 @@
                 android:paddingBottom="24dp"
                 android:background="@color/white">
 
-                <TextView
-                    android:id="@+id/txtWelcome"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:fontFamily="@font/roboto"
-                    android:text="¡Bienvenido - Resumen General!"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginTop="16dp"
+                    android:background="#FFFFFF"
+                    android:elevation="2dp"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="Ventas por mes"
+                        android:textSize="20sp"
+                        android:textColor="@color/green_let"
+                        android:textStyle="bold" />
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/chartVentasMes"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp" />
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="Ventas por método de pago"
+                        android:textColor="@color/green_let"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/chartMetodoPago"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp" />
 
 
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/FloatingActionButtonAgregar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="331dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="10dp"
-                    android:clickable="true"
-                    android:contentDescription="Boton para agregar"
-                    android:focusable="true"
-                    app:backgroundTint="#022D36"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:srcCompat="@android:drawable/ic_input_add"
-                    app:tint="#FFFFFF" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="Productos con mayor rotación"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <com.github.mikephil.charting.charts.HorizontalBarChart
+                        android:id="@+id/chartProductosRotacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="320dp" />
+
+
+                </LinearLayout>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>

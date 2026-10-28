@@ -38,7 +38,7 @@
                 android:layout_weight="1"
                 android:text="Indicadores"
                 android:textAlignment="center"
-                android:textColor="@color/black"
+                android:textColor="@color/green_let"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -68,46 +68,105 @@
                 android:paddingBottom="24dp"
                 android:background="@color/white">
 
-                <TextView
-                    android:id="@+id/txtWelcome"
-                    android:layout_width="wrap_content"
+                <!-- Tarjeta del KPI -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:fontFamily="@font/roboto"
-                    android:text="¡Bienvenido - Resumen General!"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginTop="16dp"
+                    android:background="#FFFFFF"
+                    android:elevation="2dp"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="INDICADOR KPI"
+                        android:textColor="#64748B"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Ventas por nivel de satisfacción"
+                        android:textColor="#173B43"
+                        android:textSize="19sp"
+                        android:textStyle="bold" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/FloatingActionButtonAgregar"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Volumen de ventas según la satisfacción del cliente."
+                        android:textColor="#53616C"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <!-- Contenedor del gráfico -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="331dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="10dp"
-                    android:clickable="true"
-                    android:contentDescription="Boton para agregar"
-                    android:focusable="true"
-                    app:backgroundTint="#022D36"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:srcCompat="@android:drawable/ic_input_add"
-                    app:tint="#FFFFFF" />
+                    android:layout_marginTop="16dp"
+                    android:background="#FFFFFF"
+                    android:elevation="2dp"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ventas por satisfacción"
+                        android:textColor="@color/green_let"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Total de ventas · NIO"
+                        android:textColor="#64748B"
+                        android:textSize="12sp" />
+
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/chartVentas"
+                        android:layout_width="match_parent"
+                        android:layout_height="320dp"
+                        android:layout_marginTop="12dp" />
+
+
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="Inventario por categoría"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/chartInventarioCategoria"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp" />
+
+
+
+                </LinearLayout>
+
+
+
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <include
+   <include
         android:id="@+id/navigationView"
         layout="@layout/drawer_layout"
         android:layout_width="280dp"

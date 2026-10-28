@@ -1,0 +1,34 @@
+{
+  "kpi": "ventas_por_nivel_satisfaccion",
+  "titulo": "Ventas por nivel de satisfacción",
+  "descripcion": "Suma del total de ventas agrupada por nivel de satisfacción del cliente.",
+  "moneda": "NIO",
+  "periodo": {
+    "tipo": "todos",
+    "desde": null,
+    "hasta": null
+  },
+  "unidad": "córdobas",
+  "datos": [
+    {
+      "nivel_satisfaccion": "Bajo",
+      "total_ventas": 18500.0
+    },
+    {
+      "nivel_satisfaccion": "Medio",
+      "total_ventas": 42750.5
+    },
+    {
+      "nivel_satisfaccion": "Alto",
+      "total_ventas": 86300.0
+    },
+    {
+      "nivel_satisfaccion": "Muy alto",
+      "total_ventas": 112450.75
+    }
+  ],
+  "metadata": {
+    "es_dato_de_ejemplo": true,
+    "nota": "Valores ficticios para practicar la lectura JSON y la visualización con MPAndroidChart."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "kpi": "inventario_por_categoria",
+  "titulo": "Inventario por categoría",
+  "unidad": "unidades",
+  "datos": [
+    {
+      "categoria": "Filtros",
+      "cantidad": 145
+    },
+    {
+      "categoria": "Lubricantes",
+      "cantidad": 210
+    },
+    {
+      "categoria": "Frenos",
+      "cantidad": 87
+    },
+    {
+      "categoria": "Bujías",
+      "cantidad": 126
+    },
+    {
+      "categoria": "Transmisión",
+      "cantidad": 64
+    },
+    {
+      "categoria": "Eléctricos",
+      "cantidad": 98
+    }
+  ],
+  "metadata": {
+    "es_dato_de_ejemplo": true
+  }
+}
