@@ -1,10 +1,12 @@
 package com.example.motorep_mobile_app.ui.operacional.catalogos
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -15,6 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.example.motorep_mobile_app.R
+import com.example.motorep_mobile_app.data.dao.Marcas_Dao
+import com.example.motorep_mobile_app.data.dao.TipoMarca_Dao
+import com.example.motorep_mobile_app.data.database.Motorep_Database
+import com.example.motorep_mobile_app.data.entity.Marcas
+import com.example.motorep_mobile_app.data.entity.TipoMarcaEntity
 import com.example.motorep_mobile_app.data.remote.dto.Marca_dto
 import com.example.motorep_mobile_app.data.remote.dto.TipoMarca_dto
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
@@ -23,75 +30,215 @@ import kotlinx.coroutines.launch
 
 class activity_marcas : AppCompatActivity() {
 
-    // Listas que almacenan los datos recibidos desde Django.
     private var listaMarcas: List<Marca_dto> = emptyList()
     private var listaTipos: List<TipoMarca_dto> = emptyList()
 
-    // Adaptador de la lista y selector del filtro.
     private lateinit var adapter: MarcaAdapter
     private lateinit var spinnerTipo: Spinner
+    private lateinit var marcasDao: Marcas_Dao
+    private lateinit var tipoMarcaDao: TipoMarca_Dao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_marcas)
 
-        // Configura el menú lateral.
+        val database = Motorep_Database.getDatabase(applicationContext)
+        marcasDao = database.marcasDao()
+        tipoMarcaDao = database.tipoMarcaDao()
+
         MenuLateral(this).configurar()
 
-        // Configura la lista de marcas.
         val recycler = findViewById<RecyclerView>(R.id.recyclerMarcas)
         recycler.layoutManager = LinearLayoutManager(this)
 
-        // Conecta las acciones de editar y eliminar con sus funciones.
         adapter = MarcaAdapter(
             emptyList(),
-            onEditar = { marca ->
-                mostrarFormulario(marca)
-            },
-            onEliminar = { marca ->
-                confirmarEliminacion(marca)
-            }
+            onEditar = { marca -> mostrarFormulario(marca) },
+            onEliminar = { marca -> confirmarEliminacion(marca) }
         )
         recycler.adapter = adapter
 
-        // Obtiene el selector del filtro por tipo.
         spinnerTipo = findViewById(R.id.spinnerTipoMarca)
 
-        // Abre el formulario para registrar una marca.
         findViewById<FloatingActionButton>(
             R.id.FloatingActionButtonAgregar
         ).setOnClickListener {
             mostrarFormulario()
         }
 
-        // Consulta los datos de la API.
+        observarMarcasLocales()
         cargarDatos()
     }
 
-    // Consulta los tipos y las marcas de Django.
+    // Muestra los cambios guardados en Room.
+    private fun observarMarcasLocales() {
+        marcasDao.obtenerMarcas().observe(this) { marcasLocales ->
+            listaMarcas = marcasLocales.map { local ->
+                Marca_dto(
+                    id = local.serverId,
+                    nombre = local.nombre,
+                    tipoId = local.TipoId,
+                    tipoNombre = listaTipos.firstOrNull {
+                        it.id == local.TipoId
+                    }?.tipoMarca,
+                    localId = local.id
+                )
+            }
+            aplicarFiltro()
+        }
+    }
+
+    // Carga los datos locales y después intenta sincronizarlos con la API.
     private fun cargarDatos() {
         lifecycleScope.launch {
+            val api = RetrofitClient.create(this@activity_marcas)
+
+            // Carga primero los tipos guardados en Room.
             try {
-                val api = RetrofitClient.create(this@activity_marcas)
-
-                listaTipos = api.obtenerTiposMarca()
-                listaMarcas = api.obtenerMarcas()
-
+                val tiposLocales = tipoMarcaDao.obtenerTipos()
+                listaTipos = tiposLocales.map { local ->
+                    TipoMarca_dto(
+                        id = local.id,
+                        tipoMarca = local.tipoMarca
+                    )
+                }
                 configurarFiltro()
-                aplicarFiltro()
+            } catch (e: Exception) {
+                Log.e("SYNC_MARCAS", "Error al consultar los tipos locales", e)
+            }
+
+            // Actualiza los tipos desde el servidor.
+            try {
+                val tiposServidor = api.obtenerTiposMarca()
+
+                if (tiposServidor.isNotEmpty()) {
+                    val tiposLocales = tiposServidor.map { tipo ->
+                        TipoMarcaEntity(
+                            id = tipo.id,
+                            tipoMarca = tipo.tipoMarca
+                        )
+                    }
+                    tipoMarcaDao.guardarTipos(tiposLocales)
+                    listaTipos = tiposServidor
+                    configurarFiltro()
+                }
+            } catch (e: Exception) {
+                Log.e("SYNC_MARCAS", "No se pudieron actualizar los tipos", e)
+            }
+
+            // Descarga las marcas y elimina las que ya no existen en el servidor.
+            try {
+                val marcasServidor = api.obtenerMarcas()
+
+                for (remota in marcasServidor) {
+                    val idServidor = remota.id ?: continue
+
+                    val tipoId = remota.tipoId
+                        ?: listaTipos.firstOrNull {
+                            it.tipoMarca == remota.tipoNombre
+                        }?.id
+                        ?: continue
+
+                    val local = marcasDao.buscarPorServerId(idServidor)
+
+                    if (local == null) {
+                        marcasDao.insertar(
+                            Marcas(
+                                serverId = idServidor,
+                                nombre = remota.nombre,
+                                TipoId = tipoId,
+                                sincronizado = true
+                            )
+                        )
+                    } else if (local.sincronizado && !local.pendienteEliminar) {
+                        marcasDao.actualizar(
+                            local.copy(
+                                nombre = remota.nombre,
+                                TipoId = tipoId,
+                                sincronizado = true
+                            )
+                        )
+                    }
+                }
+
+                // Limpia de Room las marcas sincronizadas que ya no están en la API.
+                val idsServidor = marcasServidor.mapNotNull { it.id }.toSet()
+                val marcasLocales = marcasDao.obtenerMarcasSincronizadas()
+
+                for (local in marcasLocales) {
+                    if (local.serverId !in idsServidor) {
+                        marcasDao.eliminarPorId(local.id)
+                    }
+                }
 
             } catch (e: Exception) {
+                Log.e("SYNC_MARCAS", "No se pudieron descargar las marcas", e)
                 Toast.makeText(
                     this@activity_marcas,
-                    "No se pudieron cargar las marcas. Verifica tu conexión o sesión.",
+                    "No se pudo actualizar desde internet. Se conservarán los datos locales.",
                     Toast.LENGTH_LONG
                 ).show()
+            }
+
+            // Intenta sincronizar los cambios pendientes.
+            sincronizarPendientes()
+        }
+    }
+
+    // Envía al servidor las altas, modificaciones y eliminaciones pendientes.
+    private suspend fun sincronizarPendientes() {
+        val api = RetrofitClient.create(this@activity_marcas)
+
+        for (marca in marcasDao.obtenerPendientes()) {
+            try {
+                val respuesta = if (marca.serverId == null) {
+                    api.guardarMarca(
+                        Marca_dto(
+                            nombre = marca.nombre,
+                            tipoId = marca.TipoId
+                        )
+                    )
+                } else {
+                    api.actualizarMarca(
+                        marca.serverId,
+                        Marca_dto(
+                            nombre = marca.nombre,
+                            tipoId = marca.TipoId
+                        )
+                    )
+                }
+
+                val serverId = respuesta.id
+                    ?: throw IllegalStateException("La API no devolvió el ID de la marca.")
+
+                marcasDao.marcarComoSincronizada(marca.id, serverId)
+
+                Log.d("SYNC_MARCAS", "Marca sincronizada: ${marca.nombre}")
+            } catch (e: Exception) {
+                Log.e("SYNC_MARCAS", "No se pudo sincronizar ${marca.nombre}", e)
+            }
+        }
+
+        for (marca in marcasDao.obtenerPendientesEliminar()) {
+            try {
+                val serverId = marca.serverId
+
+                if (serverId == null) {
+                    marcasDao.eliminarLocal(marca.id)
+                } else {
+                    api.eliminarMarca(serverId)
+                    marcasDao.eliminarPorId(marca.id)
+                }
+
+                Log.d("SYNC_MARCAS", "Eliminación sincronizada: ${marca.nombre}")
+            } catch (e: Exception) {
+                Log.e("SYNC_MARCAS", "No se pudo eliminar ${marca.nombre}", e)
             }
         }
     }
 
-    // Configura las opciones disponibles para filtrar las marcas.
+    // Configura el filtro por tipo de marca.
     private fun configurarFiltro() {
         val opciones = listOf("Todos los tipos") +
                 listaTipos.map { it.tipoMarca }
@@ -101,16 +248,13 @@ class activity_marcas : AppCompatActivity() {
             android.R.layout.simple_spinner_item,
             opciones
         )
-
         spinnerAdapter.setDropDownViewResource(
             android.R.layout.simple_spinner_dropdown_item
         )
-
         spinnerTipo.adapter = spinnerAdapter
 
         spinnerTipo.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
-
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
                     view: View?,
@@ -120,144 +264,114 @@ class activity_marcas : AppCompatActivity() {
                     aplicarFiltro()
                 }
 
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    // No se requiere ninguna acción.
-                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
     }
 
-    // Filtra usando el nombre del tipo que devuelve Django.
+    // Aplica el filtro seleccionado.
     private fun aplicarFiltro() {
-        val posicion = spinnerTipo.selectedItemPosition
+        if (!::spinnerTipo.isInitialized || !::adapter.isInitialized) return
 
+        val posicion = spinnerTipo.selectedItemPosition
         val marcasFiltradas = if (posicion <= 0) {
-            // Muestra todas las marcas.
             listaMarcas
         } else {
-            // Obtiene el tipo seleccionado.
             val tipoSeleccionado = listaTipos.getOrNull(posicion - 1)
-
-            // Django devuelve tipo_nombre, no TipoId, en la consulta GET.
-            listaMarcas.filter {
-                it.tipoNombre == tipoSeleccionado?.tipoMarca
+            listaMarcas.filter { marca ->
+                marca.tipoId == tipoSeleccionado?.id ||
+                        marca.tipoNombre == tipoSeleccionado?.tipoMarca
             }
         }
 
-        // Actualiza la lista que se muestra en pantalla.
         adapter.actualizarMarcas(marcasFiltradas)
     }
 
-    // Utiliza el mismo formulario para registrar y editar marcas.
+    // Abre el formulario para crear o editar una marca.
     private fun mostrarFormulario(marca: Marca_dto? = null) {
-
         if (listaTipos.isEmpty()) {
             Toast.makeText(
                 this,
-                "No hay tipos de marca disponibles.",
+                "No hay tipos de marca guardados. Conéctate a internet para cargarlos.",
                 Toast.LENGTH_LONG
             ).show()
             return
         }
 
-        // Contenedor del formulario.
-        val contenedor = android.widget.LinearLayout(this).apply {
-            orientation = android.widget.LinearLayout.VERTICAL
+        val contenedor = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
             setPadding(48, 16, 48, 0)
         }
 
-        // Campo para introducir el nombre de la marca.
         val campoNombre = EditText(this).apply {
             hint = "Nombre de la marca"
             setSingleLine(true)
             setText(marca?.nombre ?: "")
         }
 
-        // Selector de tipos disponibles.
         val selectorTipo = Spinner(this)
-        val opcionesTipo = listaTipos.map { it.tipoMarca }
-
         val adaptadorTipos = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item,
-            opcionesTipo
+            listaTipos.map { it.tipoMarca }
         )
-
         adaptadorTipos.setDropDownViewResource(
             android.R.layout.simple_spinner_dropdown_item
         )
-
         selectorTipo.adapter = adaptadorTipos
 
-        // Selecciona el tipo actual por nombre al editar.
-        val indiceTipo = listaTipos.indexOfFirst {
-            it.tipoMarca == marca?.tipoNombre
+        val indiceTipo = listaTipos.indexOfFirst { tipo ->
+            tipo.id == marca?.tipoId || tipo.tipoMarca == marca?.tipoNombre
         }
+        if (indiceTipo >= 0) selectorTipo.setSelection(indiceTipo)
 
-        if (indiceTipo >= 0) {
-            selectorTipo.setSelection(indiceTipo)
-        }
-
-        // Agrega los campos al formulario.
         contenedor.addView(campoNombre)
         contenedor.addView(selectorTipo)
 
-        // Crea el diálogo de registro o edición.
         val dialogo = AlertDialog.Builder(this)
-            .setTitle(
-                if (marca == null) "Registrar marca"
-                else "Editar marca"
-            )
+            .setTitle(if (marca == null) "Registrar marca" else "Editar marca")
             .setView(contenedor)
             .setNegativeButton("Cancelar", null)
             .setPositiveButton("Guardar", null)
             .create()
 
         dialogo.setOnShowListener {
-            dialogo.getButton(AlertDialog.BUTTON_POSITIVE)
-                .setOnClickListener {
+            dialogo.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val nombre = campoNombre.text.toString().trim()
+                val tipoSeleccionado =
+                    listaTipos.getOrNull(selectorTipo.selectedItemPosition)
 
-                    val nombre = campoNombre.text.toString().trim()
+                if (nombre.isBlank()) {
+                    campoNombre.error = "Ingresa el nombre de la marca"
+                    return@setOnClickListener
+                }
 
-                    val tipoSeleccionado = listaTipos.getOrNull(
-                        selectorTipo.selectedItemPosition
-                    )
+                if (tipoSeleccionado == null) {
+                    Toast.makeText(
+                        this@activity_marcas,
+                        "Selecciona un tipo de marca.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
 
-                    // Valida que el nombre no esté vacío.
-                    if (nombre.isBlank()) {
-                        campoNombre.error =
-                            "Ingresa el nombre de la marca"
-                        return@setOnClickListener
-                    }
-
-                    // Valida que exista un tipo seleccionado.
-                    if (tipoSeleccionado == null) {
-                        Toast.makeText(
-                            this@activity_marcas,
-                            "Selecciona un tipo de marca.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        return@setOnClickListener
-                    }
-
-                    // Prepara los datos que espera Django.
-                    val marcaGuardar = Marca_dto(
+                guardarMarca(
+                    marca = Marca_dto(
                         id = marca?.id,
                         nombre = nombre,
-                        tipoId = tipoSeleccionado.id
-                    )
-
-                    guardarMarca(
-                        marca = marcaGuardar,
-                        editando = marca != null,
-                        dialogo = dialogo
-                    )
-                }
+                        tipoId = tipoSeleccionado.id,
+                        tipoNombre = tipoSeleccionado.tipoMarca,
+                        localId = marca?.localId
+                    ),
+                    editando = marca != null,
+                    dialogo = dialogo
+                )
+            }
         }
 
         dialogo.show()
     }
 
-    // Registra una marca nueva o actualiza una existente.
+    // Guarda primero en Room y luego intenta sincronizar.
     private fun guardarMarca(
         marca: Marca_dto,
         editando: Boolean,
@@ -265,97 +379,117 @@ class activity_marcas : AppCompatActivity() {
     ) {
         lifecycleScope.launch {
             try {
-                val api = RetrofitClient.create(this@activity_marcas)
-
                 if (editando) {
-                    val id = marca.id
+                    val local = marca.localId?.let {
+                        marcasDao.buscarPorId(it)
+                    } ?: marca.id?.let {
+                        marcasDao.buscarPorServerId(it)
+                    }
 
-                    if (id == null) {
+                    if (local == null) {
                         Toast.makeText(
                             this@activity_marcas,
-                            "No se encontró el ID de la marca.",
+                            "No se encontró la marca local.",
                             Toast.LENGTH_LONG
                         ).show()
                         return@launch
                     }
 
-                    api.actualizarMarca(id, marca)
+                    marcasDao.actualizar(
+                        local.copy(
+                            nombre = marca.nombre,
+                            TipoId = marca.tipoId ?: local.TipoId,
+                            sincronizado = false,
+                            pendienteEliminar = false
+                        )
+                    )
                 } else {
-                    api.guardarMarca(marca)
+                    val tipoId = marca.tipoId ?: return@launch
+
+                    marcasDao.insertar(
+                        Marcas(
+                            nombre = marca.nombre,
+                            TipoId = tipoId,
+                            sincronizado = false
+                        )
+                    )
                 }
 
-                // Cierra el formulario cuando la operación termina.
                 dialogo.dismiss()
+                sincronizarPendientes()
 
                 Toast.makeText(
                     this@activity_marcas,
-                    if (editando) {
-                        "Marca actualizada."
-                    } else {
-                        "Marca registrada."
-                    },
+                    "Marca guardada localmente. Se intentó sincronizar con Azure.",
                     Toast.LENGTH_SHORT
                 ).show()
 
-                // Recarga los datos para mostrar los cambios.
-                cargarDatos()
-
             } catch (e: Exception) {
+                Log.e("SYNC_MARCAS", "Error al guardar la marca", e)
                 Toast.makeText(
                     this@activity_marcas,
-                    "No se pudo guardar la marca. Verifica los datos o la conexión.",
+                    "No se pudo guardar la marca localmente.",
                     Toast.LENGTH_LONG
                 ).show()
             }
         }
     }
 
-    // Solicita confirmación antes de eliminar una marca.
+    // Pide confirmación antes de eliminar.
     private fun confirmarEliminacion(marca: Marca_dto) {
-        val id = marca.id
-
-        if (id == null) {
-            Toast.makeText(
-                this,
-                "No se encontró el ID de la marca.",
-                Toast.LENGTH_LONG
-            ).show()
-            return
-        }
-
         AlertDialog.Builder(this)
             .setTitle("Eliminar marca")
-            .setMessage(
-                "¿Deseas eliminar la marca \"${marca.nombre}\"?"
-            )
+            .setMessage("¿Deseas eliminar la marca \"${marca.nombre}\"?")
             .setNegativeButton("Cancelar", null)
             .setPositiveButton("Eliminar") { _, _ ->
-                eliminarMarca(id)
+                eliminarMarca(marca)
             }
             .show()
     }
 
-    // Solicita a Django la eliminación lógica de la marca.
-    private fun eliminarMarca(id: Int) {
+    // Registra la eliminación local y trata de sincronizarla.
+    private fun eliminarMarca(marca: Marca_dto) {
         lifecycleScope.launch {
             try {
-                val api = RetrofitClient.create(this@activity_marcas)
+                val local = marca.localId?.let {
+                    marcasDao.buscarPorId(it)
+                } ?: marca.id?.let {
+                    marcasDao.buscarPorServerId(it)
+                }
 
-                api.eliminarMarca(id)
+                if (local == null) {
+                    Toast.makeText(
+                        this@activity_marcas,
+                        "No se encontró la marca local.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@launch
+                }
+
+                if (local.serverId == null) {
+                    marcasDao.eliminarLocal(local.id)
+                } else {
+                    marcasDao.actualizar(
+                        local.copy(
+                            pendienteEliminar = true,
+                            sincronizado = false
+                        )
+                    )
+                }
+
+                sincronizarPendientes()
 
                 Toast.makeText(
                     this@activity_marcas,
-                    "Marca eliminada.",
+                    "Se guardó la eliminación local y se intentó sincronizar con Azure.",
                     Toast.LENGTH_SHORT
                 ).show()
 
-                // Recarga el listado, que solo incluye marcas activas.
-                cargarDatos()
-
             } catch (e: Exception) {
+                Log.e("SYNC_MARCAS", "Error al eliminar la marca", e)
                 Toast.makeText(
                     this@activity_marcas,
-                    "No se pudo eliminar la marca.",
+                    "No se pudo eliminar la marca localmente.",
                     Toast.LENGTH_LONG
                 ).show()
             }
