@@ -44,6 +44,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation("androidx.recyclerview:recyclerview:1.4.0")
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.identity.jvm)
     implementation(libs.material)
     implementation(libs.play.services.cast.framework)
