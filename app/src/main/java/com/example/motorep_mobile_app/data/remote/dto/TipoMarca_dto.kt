@@ -1,4 +1,3 @@
-
 package com.example.motorep_mobile_app.data.remote.dto
 
 import com.google.gson.annotations.SerializedName

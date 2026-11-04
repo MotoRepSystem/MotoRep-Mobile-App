@@ -1,6 +1,4 @@
-
 package com.example.motorep_mobile_app.data.database
-
 
 import android.content.Context
 import androidx.room.Database
@@ -16,10 +14,14 @@ import com.example.motorep_mobile_app.data.entity.Cliente
 import com.example.motorep_mobile_app.data.entity.Empleado
 import com.example.motorep_mobile_app.data.entity.Producto
 import com.example.motorep_mobile_app.data.entity.Proveedor
+import com.example.motorep_mobile_app.data.dao.Marcas_Dao
+import com.example.motorep_mobile_app.data.entity.Marcas
+import com.example.motorep_mobile_app.data.dao.TipoMarca_Dao
+import com.example.motorep_mobile_app.data.entity.TipoMarcaEntity
 
 @Database(
-    entities = [Cliente::class, Empleado::class, Producto::class, Proveedor::class],
-    version = 10
+    entities = [Cliente::class, Empleado::class, Producto::class, Proveedor::class, Marcas::class, TipoMarcaEntity::class ],
+    version = 12
 )
 abstract class Motorep_Database :
     RoomDatabase() {
@@ -31,8 +33,9 @@ abstract class Motorep_Database :
             Producto_Dao
     abstract fun proveedorDao():
             Proveedor_Dao
+    abstract fun marcasDao(): Marcas_Dao
 
-
+    abstract fun tipoMarcaDao(): TipoMarca_Dao
 
     companion object {
         @Volatile
@@ -91,6 +94,37 @@ abstract class Motorep_Database :
             }
         }
 
+        val MIGRATION_10_11 = object : Migration(10, 11) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+            CREATE TABLE IF NOT EXISTS marcas (
+                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                syncId TEXT NOT NULL,
+                serverId INTEGER,
+                nombre TEXT NOT NULL,
+                TipoId INTEGER NOT NULL,
+                sincronizado INTEGER NOT NULL,
+                pendienteEliminar INTEGER NOT NULL
+            )
+            """.trimIndent()
+                )
+            }
+        }
+
+        val MIGRATION_11_12 = object : Migration(11, 12) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+            CREATE TABLE IF NOT EXISTS tipos_marca (
+                id INTEGER NOT NULL PRIMARY KEY,
+                tipoMarca TEXT NOT NULL
+            )
+            """.trimIndent()
+                )
+            }
+        }
+
         fun getDatabase(
             context: Context
         ): Motorep_Database {
@@ -103,6 +137,8 @@ abstract class Motorep_Database :
                     )
                         .addMigrations(MIGRATION_1_2)
                         .addMigrations(MIGRATION_9_10)
+                        .addMigrations(MIGRATION_10_11)
+                        .addMigrations(MIGRATION_11_12)
                         .fallbackToDestructiveMigration(true)
                         .build()
                 INSTANCE = instance

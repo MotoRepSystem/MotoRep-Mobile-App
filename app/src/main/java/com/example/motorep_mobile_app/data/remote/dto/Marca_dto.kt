@@ -20,5 +20,9 @@ data class Marca_dto(
 
     // Nombre del tipo que Django devuelve al consultar.
     @SerializedName("tipo_nombre")
-    val tipoNombre: String? = null
+    val tipoNombre: String? = null,
+
+    // Identificador local de Room; no se envia a django
+    @Transient
+    val localId: Int? = null
 )
