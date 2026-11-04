@@ -68,61 +68,28 @@
                 android:paddingBottom="24dp"
                 android:background="@color/white">
 
-                <LinearLayout
+                <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="#FFFFFF"
-                    android:elevation="2dp"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
+                    android:layout_height="300dp">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:text="Ventas por mes"
-                        android:textSize="20sp"
-                        android:textColor="@color/green_let"
-                        android:textStyle="bold" />
+                        android:text="Tendencias"
+                        android:textSize="24sp"
+                        android:textStyle="bold"/>
 
-                    <com.github.mikephil.charting.charts.LineChart
-                        android:id="@+id/chartVentasMes"
+                    <WebView
+                        android:id="@+id/webView"
                         android:layout_width="match_parent"
-                        android:layout_height="300dp" />
+                        android:layout_height="match_parent" />
 
-
-                    <TextView
-                        android:layout_width="match_parent"
+                    <ProgressBar
+                        android:id="@+id/progress"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:text="Ventas por método de pago"
-                        android:textColor="@color/green_let"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/chartMetodoPago"
-                        android:layout_width="match_parent"
-                        android:layout_height="300dp" />
-
-
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:text="Productos con mayor rotación"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <com.github.mikephil.charting.charts.HorizontalBarChart
-                        android:id="@+id/chartProductosRotacion"
-                        android:layout_width="match_parent"
-                        android:layout_height="320dp" />
-
-
-                </LinearLayout>
+                        android:layout_gravity="center" />
+                </FrameLayout>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
