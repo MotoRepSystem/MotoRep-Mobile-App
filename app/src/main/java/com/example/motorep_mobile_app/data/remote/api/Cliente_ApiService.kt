@@ -77,7 +77,7 @@ interface ApiService {
 
 
     //GET de incidencias
-    @GET("api/incidencias/lista")
+    @GET("api/incidencia/listar")
     suspend fun getIncidencias(
         @Query("page") page: Int = 1,
         @Query("limit") limit: Int = 20,

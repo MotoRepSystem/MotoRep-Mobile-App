@@ -17,7 +17,7 @@ data class Incidencia(
     val origen: Origen?,
     @SerializedName("detalle_incidencia") val detalle: Detalle?,
     val gestion: Gestion?,
-    val evidencia: String?
+    val evidencia: Evidencia?   // antes: String?
 )
 
 data class Origen(
@@ -31,7 +31,7 @@ data class Origen(
         "cliente" -> "Cliente #$clienteId"
         "empleado" -> "Empleado #$empleadoId"
         "proveedor" -> "Proveedor #$proveedorId"
-        "interno" -> "Interno: ${referencia.orEmpty()}"
+        "interno" -> if (referencia.isNullOrBlank()) "Interno" else "Interno: $referencia"
         else -> "Desconocido"
     }
 }
@@ -45,4 +45,8 @@ data class Detalle(
 data class Gestion(
     @SerializedName("empleado_id") val empleadoId: Int?,
     val prioridad: Int?
+)
+
+data class Evidencia(
+    val url: String?
 )
