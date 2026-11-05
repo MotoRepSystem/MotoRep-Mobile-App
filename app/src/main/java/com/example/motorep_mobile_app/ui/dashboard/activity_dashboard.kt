@@ -9,12 +9,16 @@ import com.example.motorep_mobile_app.ui.common.MenuLateral
 import com.google.android.material.navigation.NavigationView
 
 import android.view.View
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import android.widget.ProgressBar
 import com.example.motorep_mobile_app.data.session.SessionManager
 
 class activity_dashboard : AppCompatActivity() {
 
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navViews: NavigationView
+    private lateinit var webView: WebView
+    private val reporteUrl = "https://app.powerbi.com/view?r=eyJrIjoiY2IwMzdlMmMtOTk1My00NTc4LTg5YTctZmRmNTJlZTlmN2M2IiwidCI6ImU0NzY0NmZlLWRhMjctNDUxOC04NDM2LTVmOGIxNThiYTEyNyIsImMiOjR9"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,133 +30,35 @@ class activity_dashboard : AppCompatActivity() {
         MenuLateral(this).configurar()
 
         configurarAccesoDashboard()
+        webView = findViewById(R.id.webView)
+        val progress = findViewById<ProgressBar>(R.id.progress)
 
-        /*drawerLayout = findViewById(R.id.DrawerLayout)
-        navViews = findViewById(R.id.navigationView)
-
-        val mainConstraint = findViewById<ConstraintLayout>(R.id.mainConstraint)
-        val linearLayout = findViewById<LinearLayout>(R.id.linearLayoutMainTitle)
-
-        // Responsividad del Dashboard y del menú lateral
-        ViewCompat.setOnApplyWindowInsetsListener(drawerLayout) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-            linearLayout.setPadding(
-                linearLayout.paddingLeft,
-                systemBars.top,
-                linearLayout.paddingRight,
-                linearLayout.paddingBottom
-            )
-
-            mainConstraint.setPadding(0, 0, 0, systemBars.bottom)
-
-            navViews.setPadding(
-                0,
-                systemBars.top,
-                0,
-                systemBars.bottom
-            )
-
-            insets
+        webView.settings.apply {
+            javaScriptEnabled = true      // Power BI lo necesita
+            domStorageEnabled = true      // también
+            loadWithOverviewMode = true
+            useWideViewPort = true
         }
 
-        // Botón abrir menú
-        val btnMenu = findViewById<ImageView>(R.id.imgMenu)
-        btnMenu.setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
+        webView.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                progress.visibility = View.GONE
+            }
         }
 
-        /*// Botón cerrar menú
-        val btnMenuVolver = findViewById<ImageView>(R.id.imgCerrarMenu)
-        btnMenuVolver.setOnClickListener {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        }*/
-
-        val btnFacturas = findViewById<LinearLayout>(R.id.drawerLayoutFacturas)
-        btnFacturas?.setOnClickListener {
-            val intent = Intent(this, activity_facturacion::class.java)
-            startActivity(intent)
-        }
-
-        val btnCompras = findViewById<LinearLayout>(R.id.drawerLayoutCompras)
-        btnCompras?.setOnClickListener {
-            val intent = Intent(this, activity_marcas::class.java)
-            startActivity(intent)
-        }
-
-        val btnClientes = findViewById<LinearLayout>(R.id.drawerLayoutClientes)
-        btnClientes?.setOnClickListener {
-            val intent = Intent(this, activity_clientes::class.java)
-            startActivity(intent)
-        }
-
-        val btnEmpleados = findViewById<LinearLayout>(R.id.drawerLayoutEmpleados)
-        btnEmpleados?.setOnClickListener {
-            val intent = Intent(this, activity_empleados::class.java)
-            startActivity(intent)
-        }
-
-        val btnInventario = findViewById<LinearLayout>(R.id.drawerLayoutInventario)
-        btnInventario?.setOnClickListener {
-            val intent = Intent(this, activity_inventario::class.java)
-            startActivity(intent)
-        }
-
-        val btnCaja = findViewById<LinearLayout>(R.id.drawerLayoutCaja)
-        btnCaja?.setOnClickListener {
-            val intent = Intent(this, activity_proveedores::class.java)
-            startActivity(intent)
-        }
-
-
-        val btnIndicadores = findViewById<LinearLayout>(R.id.LinearLayoutIndicadores)
-        btnIndicadores?.setOnClickListener {
-            val intent = Intent(this, activity_indicadores::class.java)
-            startActivity(intent)
-        }
-
-        val btnTendencias = findViewById<LinearLayout>(R.id.LinearLayoutTendencias)
-        btnTendencias?.setOnClickListener {
-            val intent = Intent(this, activity_tendencias::class.java)
-            startActivity(intent)
-        }
-
-        val btnIncidencias = findViewById<LinearLayout>(R.id.LinearLayoutIncidencias)
-        btnIncidencias?.setOnClickListener {
-            val intent = Intent(this, activity_incidencias::class.java)
-            startActivity(intent)
-        }
-        val btnInicio = findViewById<LinearLayout>(R.id.drawerLayoutInicio)
-        btnInicio?.setOnClickListener {
-            val intent = Intent(this, activity_dashboard::class.java)
-            startActivity(intent)
-        }
-
-        // Abrir la pantalla de Notificaciones.
-        val btnNotificaciones =
-            findViewById<LinearLayout>(R.id.LinearLayoutNotificaciones)
-
-        btnNotificaciones?.setOnClickListener {
-            val intent = Intent(this, activity_notificaciones::class.java)
-            startActivity(intent)
-        }
-
-        // Abrir la pantalla de Configuración.
-        val btnConfiguracion =
-            findViewById<LinearLayout>(R.id.LinearLayoutConfiguracion)
-
-        btnConfiguracion?.setOnClickListener {
-            val intent = Intent(this, activity_configuracion::class.java)
-            startActivity(intent)
-        }
-
-        val btnSalir = findViewById<LinearLayout>(R.id.linearLayoutCerrarSesion)
-        btnSalir?.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }*/
+        if (savedInstanceState == null) webView.loadUrl(reporteUrl)
+        else webView.restoreState(savedInstanceState)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        webView.saveState(outState)
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        if (webView.canGoBack()) webView.goBack() else super.onBackPressed()
+    }
 
     private fun configurarAccesoDashboard() {
         val sessionManager = SessionManager(this)
