@@ -15,7 +15,7 @@ import com.example.motorep_mobile_app.ui.common.MenuLateral
 class activity_tendencias : AppCompatActivity() {
 
     private lateinit var webView: WebView
-    private val reporteUrl = "https://app.powerbi.com/view?r=eyJrIjoiMTVmMjU4OGEtNTEwYy00MmQ4LWJiNTktNWU5NDVjMDdhNTkwIiwidCI6ImU0NzY0NmZlLWRhMjctNDUxOC04NDM2LTVmOGIxNThiYTEyNyIsImMiOjR9"
+    private val reporteUrl = "https://app.powerbi.com/view?r=eyJrIjoiMDhmMGU5NmMtMGI1OC00MmRkLWEyYTAtNmNkYmJkYWExODA0IiwidCI6ImU0NzY0NmZlLWRhMjctNDUxOC04NDM2LTVmOGIxNThiYTEyNyIsImMiOjR9"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
