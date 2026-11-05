@@ -9,12 +9,23 @@ import com.example.motorep_mobile_app.data.incidencias.Incidencia
 import com.example.motorep_mobile_app.databinding.ItemIncidenciaBinding
 import java.time.Instant
 import java.time.ZoneId
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 private val formatoFecha: DateTimeFormatter =
-    DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a", Locale("es", "NI"))
+    DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a", Locale.forLanguageTag("es-NI"))
 
+private fun formatearFecha(iso: String): String =
+    try {
+        if (iso.endsWith("Z")) {
+            Instant.parse(iso).atZone(ZoneId.systemDefault()).format(formatoFecha)
+        } else {
+            LocalDateTime.parse(iso).format(formatoFecha) // ya viene en hora de Managua
+        }
+    } catch (e: Exception) {
+        iso
+    }
 class IncidenciaAdapter :
     ListAdapter<Incidencia, IncidenciaAdapter.ViewHolder>(Diff) {
 
