@@ -43,6 +43,8 @@ class activity_marcas : AppCompatActivity() {
     private lateinit var adapter: MarcaAdapter
     private lateinit var spinnerTipo: Spinner
 
+    private lateinit var edtBuscarMarca: EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -71,6 +73,35 @@ class activity_marcas : AppCompatActivity() {
         recycler.adapter = adapter
 
         spinnerTipo = findViewById(R.id.spinnerTipoMarca)
+
+        edtBuscarMarca = findViewById(R.id.edtBuscarMarca)
+
+        edtBuscarMarca.addTextChangedListener(
+            object : android.text.TextWatcher {
+
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    before: Int,
+                    count: Int
+                ) {
+                    aplicarFiltro()
+                }
+
+                override fun afterTextChanged(
+                    s: android.text.Editable?
+                ) {
+                }
+            }
+        )
 
         findViewById<FloatingActionButton>(
             R.id.FloatingActionButtonAgregar
@@ -227,15 +258,28 @@ class activity_marcas : AppCompatActivity() {
             }
     }
 
-    // Filtra las marcas utilizando el nombre de su tipo.
+    // Filtra las marcas por nombre y tipo.
     private fun aplicarFiltro() {
+
         if (!::spinnerTipo.isInitialized) return
 
+        // Obtener el texto escrito en el buscador.
+        val textoBusqueda = if (::edtBuscarMarca.isInitialized) {
+            edtBuscarMarca.text.toString().trim()
+        } else {
+            ""
+        }
+
+        // Obtener el tipo seleccionado.
         val posicion = spinnerTipo.selectedItemPosition
 
-        val marcasFiltradas = if (posicion <= 0) {
+        // Filtrar por tipo.
+        val marcasPorTipo = if (posicion <= 0) {
+
             listaMarcas
+
         } else {
+
             val tipoSeleccionado = listaTipos.getOrNull(posicion - 1)
 
             listaMarcas.filter {
@@ -243,6 +287,16 @@ class activity_marcas : AppCompatActivity() {
             }
         }
 
+        // Filtrar por nombre de marca o producto.
+        val marcasFiltradas = marcasPorTipo.filter { marca ->
+
+            marca.nombre.contains(
+                textoBusqueda,
+                ignoreCase = true
+            )
+        }
+
+        // Actualizar la lista.
         adapter.actualizarMarcas(marcasFiltradas)
     }
 
