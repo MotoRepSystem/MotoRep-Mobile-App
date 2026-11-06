@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.motorep_mobile_app.Producto_Adapter
 import com.example.motorep_mobile_app.R
 import com.example.motorep_mobile_app.data.database.Motorep_Database
+import com.example.motorep_mobile_app.data.entity.Producto
+import com.example.motorep_mobile_app.data.entity.partesDetalle
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
 import com.example.motorep_mobile_app.data.repository.Producto_Repository
 import com.example.motorep_mobile_app.ui.common.MenuLateral
@@ -26,6 +29,8 @@ import kotlinx.coroutines.launch
 class activity_inventario : AppCompatActivity() {
 
     private lateinit var adapter: Producto_Adapter
+    private var productos: List<Producto> = emptyList()
+    private var textoBusqueda: String = ""
     private val db: Motorep_Database by lazy {
         Motorep_Database.getDatabase(applicationContext)
     }
@@ -62,11 +67,29 @@ class activity_inventario : AppCompatActivity() {
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter
 
+        val searchView = findViewById<SearchView>(R.id.searchView)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                filtrarProductos(query.orEmpty())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filtrarProductos(newText.orEmpty())
+                return true
+            }
+        })
+
         val raiz = findViewById<View>(android.R.id.content)
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch { viewModel.inventario.collect { adapter.submitList(it) } }
+                launch {
+                    viewModel.inventario.collect {
+                        productos = it
+                        filtrarProductos(textoBusqueda)
+                    }
+                }
                 launch {
                     viewModel.error.collect { msg ->
                         msg?.let {
@@ -77,6 +100,31 @@ class activity_inventario : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun filtrarProductos(texto: String) {
+        textoBusqueda = texto.trim()
+        val resultados = if (textoBusqueda.isBlank()) {
+            productos
+        } else {
+            productos.filter { producto ->
+                val partes = producto.partesDetalle()
+                listOf(
+                    producto.id.toString(),
+                    producto.cantidad.toString(),
+                    producto.precioCosto,
+                    producto.precioVenta,
+                    producto.fechaRegistro,
+                    producto.detalle,
+                    partes.producto,
+                    partes.marca,
+                    partes.moto
+                ).any { atributo ->
+                    atributo.contains(textoBusqueda, ignoreCase = true)
+                }
+            }
+        }
+        adapter.submitList(resultados)
     }
 
     override fun onResume() {

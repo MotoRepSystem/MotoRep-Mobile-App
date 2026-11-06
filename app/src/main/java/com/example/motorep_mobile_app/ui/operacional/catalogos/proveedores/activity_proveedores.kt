@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +16,7 @@ import com.example.motorep_mobile_app.Cliente_Adapter
 import com.example.motorep_mobile_app.Proveedor_Adapter
 import com.example.motorep_mobile_app.R
 import com.example.motorep_mobile_app.data.database.Motorep_Database
+import com.example.motorep_mobile_app.data.entity.Proveedor
 import com.example.motorep_mobile_app.data.remote.dto.toDto
 import com.example.motorep_mobile_app.data.remote.dto.toEntity
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
@@ -42,6 +44,8 @@ class activity_proveedores : AppCompatActivity() {
     // NUEVO: necesario para sincronizarPendientes()
     private lateinit var viewModel: Proveedor_Viewmodel
     private lateinit var adapter: Proveedor_Adapter
+    private var proveedores: List<Proveedor> = emptyList()
+    private var textoBusqueda: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,9 +92,23 @@ class activity_proveedores : AppCompatActivity() {
         }
         recyclerProveedor.adapter = adapter
 
+        val searchView = findViewById<SearchView>(R.id.searchView)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                filtrarProveedores(query.orEmpty())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filtrarProveedores(newText.orEmpty())
+                return true
+            }
+        })
+
         // Permite preguntar si desde el ViewModel nos envia Productos (fuente local, Room)
         viewModel.proveedores.observe(this) { proveedores ->
-            adapter.submitList(proveedores)
+            this.proveedores = proveedores
+            filtrarProveedores(textoBusqueda)
         }
 
         // GET remoto (API -> SQL Server)
@@ -103,6 +121,28 @@ class activity_proveedores : AppCompatActivity() {
             val intent = Intent(this, activity_agregarproveedor::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun filtrarProveedores(texto: String) {
+        textoBusqueda = texto.trim()
+        val resultados = if (textoBusqueda.isBlank()) {
+            proveedores
+        } else {
+            proveedores.filter { proveedor ->
+                listOf(
+                    proveedor.id.toString(),
+                    proveedor.syncId,
+                    proveedor.serverId?.toString().orEmpty(),
+                    proveedor.nombre,
+                    proveedor.telefono,
+                    proveedor.sincronizado.toString(),
+                    proveedor.pendienteEliminar.toString()
+                ).any { atributo ->
+                    atributo.contains(textoBusqueda, ignoreCase = true)
+                }
+            }
+        }
+        adapter.submitList(resultados)
     }
 
     override fun onResume() {

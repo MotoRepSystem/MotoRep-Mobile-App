@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.motorep_mobile_app.Empleado_Adpter
 import com.example.motorep_mobile_app.R
 import com.example.motorep_mobile_app.data.database.Motorep_Database
+import com.example.motorep_mobile_app.data.entity.Empleado
 import com.example.motorep_mobile_app.data.remote.dto.toDto
 import com.example.motorep_mobile_app.data.remote.dto.toEntity
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
@@ -32,8 +34,8 @@ class activity_empleados : AppCompatActivity() {
     private lateinit var apiRepository: Empleado_ApiRepository // NUEVO: necesario para sincronizarPendientes()
     private lateinit var viewModel: Empleado_ViewModel
     private lateinit var adapter: Empleado_Adpter
-
-
+    private var empleados: List<Empleado> = emptyList()
+    private var textoBusqueda: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,9 +86,23 @@ class activity_empleados : AppCompatActivity() {
         }
         recyclerEmpleados.adapter = adapter
 
+        val searchView = findViewById<SearchView>(R.id.searchView)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                filtrarEmpleados(query.orEmpty())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filtrarEmpleados(newText.orEmpty())
+                return true
+            }
+        })
+
         // Permite preguntar si desde el ViewModel nos envia Productos (fuente local, Room)
         viewModel.Empleados.observe(this) { empleados ->
-            adapter.submitList(empleados)
+            this.empleados = empleados
+            filtrarEmpleados(textoBusqueda)
         }
 
         // GET remoto (API -> SQL Server)
@@ -99,6 +115,30 @@ class activity_empleados : AppCompatActivity() {
             val intent = Intent(this, activity_agregarempleado::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun filtrarEmpleados(texto: String) {
+        textoBusqueda = texto.trim()
+        val resultados = if (textoBusqueda.isBlank()) {
+            empleados
+        } else {
+            empleados.filter { empleado ->
+                listOf(
+                    empleado.id.toString(),
+                    empleado.syncId,
+                    empleado.serverId?.toString().orEmpty(),
+                    empleado.nombre,
+                    empleado.apellido,
+                    empleado.telefono,
+                    empleado.cedula,
+                    empleado.sincronizado.toString(),
+                    empleado.pendienteEliminar.toString()
+                ).any { atributo ->
+                    atributo.contains(textoBusqueda, ignoreCase = true)
+                }
+            }
+        }
+        adapter.submitList(resultados)
     }
 
     override fun onResume() {
