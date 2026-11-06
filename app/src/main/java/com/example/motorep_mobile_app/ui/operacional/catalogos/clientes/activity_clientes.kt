@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.motorep_mobile_app.Cliente_Adapter
 import com.example.motorep_mobile_app.R
 import com.example.motorep_mobile_app.data.database.Motorep_Database
+import com.example.motorep_mobile_app.data.entity.Cliente
 import com.example.motorep_mobile_app.data.remote.dto.toClienteDto
 import com.example.motorep_mobile_app.data.remote.dto.toClienteEntity
 import com.example.motorep_mobile_app.data.remote.retrofit.RetrofitClient
@@ -35,6 +37,8 @@ class activity_clientes : AppCompatActivity() {
     //necesario para sincronizarPendientes()
     private lateinit var viewModel: Cliente_Viewmodel
     private lateinit var adapter: Cliente_Adapter
+    private var clientes: List<Cliente> = emptyList()
+    private var textoBusqueda: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,9 +92,23 @@ class activity_clientes : AppCompatActivity() {
         }
         recyclerCliente.adapter = adapter
 
+        val searchView = findViewById<SearchView>(R.id.searchView)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                filtrarClientes(query.orEmpty())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filtrarClientes(newText.orEmpty())
+                return true
+            }
+        })
+
         // Permite preguntar si desde el ViewModel nos envia Productos (fuente local, Room)
         viewModel.clientes.observe(this) { clientes ->
-            adapter.submitList(clientes)
+            this.clientes = clientes
+            filtrarClientes(textoBusqueda)
         }
 
         // GET remoto (API -> SQL Server)
@@ -103,6 +121,30 @@ class activity_clientes : AppCompatActivity() {
             val intent = Intent(this, activity_agregarcliente::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun filtrarClientes(texto: String) {
+        textoBusqueda = texto.trim()
+        val resultados = if (textoBusqueda.isBlank()) {
+            clientes
+        } else {
+            clientes.filter { cliente ->
+                listOf(
+                    cliente.id.toString(),
+                    cliente.syncId,
+                    cliente.serverId?.toString().orEmpty(),
+                    cliente.nombre,
+                    cliente.apellido,
+                    cliente.cedula,
+                    cliente.telefono,
+                    cliente.sincronizado.toString(),
+                    cliente.pendienteEliminar.toString()
+                ).any { atributo ->
+                    atributo.contains(textoBusqueda, ignoreCase = true)
+                }
+            }
+        }
+        adapter.submitList(resultados)
     }
 
     override fun onResume() {
